@@ -1,0 +1,9 @@
+.figura{
+  border-radius: 10px 10px 10px 10px;
+}
+
+
+.nav-link,
+.navbar-brand {
+  cursor: pointer !important;
+}

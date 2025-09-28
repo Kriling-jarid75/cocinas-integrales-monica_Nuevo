@@ -1,13 +1,43 @@
+
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router';
+import { ComponenteNavegacionComponent } from './navegacion/componente-navegacion/componente-navegacion.component';
+import { InicioSesionComponent } from './login/inicio-sesion/inicio-sesion.component';
+import { ComponentePiePaginaComponent } from './footer/componente-pie-pagina/componente-pie-pagina.component';
+import { filter } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
+
+
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  standalone: true,
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    CommonModule,
+    ComponenteNavegacionComponent,
+    InicioSesionComponent,
+    ComponentePiePaginaComponent
+  ]
 })
 export class AppComponent {
-  title = 'angular-pwa-sw-example';
+  esAdmin = false;
+  initialized = false;
+
+  constructor(private router: Router) {} // ✅ solo inyectamos Router
+
+  ngOnInit() {
+    // Inicializar esAdmin según la URL actual
+    this.esAdmin = this.router.url.startsWith('/admin');
+
+    // Escuchar cambios de ruta
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.esAdmin = event.urlAfterRedirects.startsWith('/admin');
+      this.initialized = true; // indica que ya se puede mostrar el contenido
+    });
+  }
 }

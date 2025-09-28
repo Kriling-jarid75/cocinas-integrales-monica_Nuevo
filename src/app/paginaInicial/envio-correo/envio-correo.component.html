@@ -1,0 +1,38 @@
+<div class="contact-container">
+  <h1>Contáctanos</h1>
+
+  <div class="contact-card">
+    <div class="contact-card-left">
+      <img src="icons/contactanos.png" alt="Contacto">
+    </div>
+    <div class="contact-card-right">
+      <form class="contact-form">
+        <mat-form-field appearance="fill">
+          <mat-label>Nombre:</mat-label>
+          <input matInput placeholder="Tu nombre">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Correo:</mat-label>
+          <input matInput placeholder="Tu correo electrónico">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Asunto:</mat-label>
+          <mat-select>
+            <mat-option value="consulta">Realización de presupuesto</mat-option>
+            <mat-option value="soporte">Toma de medidas (visita a domicilio)</mat-option>
+            <mat-option value="otros">Otros</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Mensaje:</mat-label>
+          <textarea matInput placeholder="Escribe tu mensaje"></textarea>
+        </mat-form-field>
+
+        <button type="button" class="contact-btn" (click)="enviarCorreo()">Enviar Mensaje</button>
+      </form>
+    </div>
+  </div>
+</div>

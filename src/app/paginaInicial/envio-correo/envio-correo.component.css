@@ -1,0 +1,86 @@
+.contact-container {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 0 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.contact-container h1 {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #2a2f92;
+  font-weight: 700;
+}
+
+.contact-card {
+  display: flex;
+  flex-wrap: wrap;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  overflow: hidden;
+}
+
+.contact-card-left {
+  flex: 1 1 40%;
+  min-width: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f3f4ff;
+}
+
+.contact-card-left img {
+  max-width: 80%;
+  height: auto;
+}
+
+.contact-card-right {
+  flex: 1 1 60%;
+  padding: 30px 40px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.contact-btn {
+  background-color: #2a2f92;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.contact-btn:hover {
+  background-color: #1f236f;
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-card {
+    flex-direction: column;
+  }
+
+  .contact-card-left, .contact-card-right {
+    flex: 1 1 100%;
+  }
+
+  .contact-card-left {
+    padding: 20px 0;
+  }
+
+  .contact-card-right {
+    padding: 20px;
+  }
+}

@@ -1,0 +1,13 @@
+.icono-red {
+  width: 30px;   /* tamaño ideal */
+  height: 30px;  /* mismo ancho y alto para no deformar */
+  object-fit: contain;
+}
+
+.perfilPersonal{
+  color: rgb(177, 175, 175);
+}
+
+.perfilPersonal:hover{
+  color: rgb(70, 69, 69);
+}

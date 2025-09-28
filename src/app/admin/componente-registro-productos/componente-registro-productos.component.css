@@ -1,0 +1,14 @@
+.custom-card {
+  margin-top: 30px; /* ajusta el valor a tu gusto */
+}
+
+.product-card {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}

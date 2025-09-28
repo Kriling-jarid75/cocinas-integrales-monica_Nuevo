@@ -1,0 +1,161 @@
+/* .circulo{
+  border-radius: 50% 50% 50% 50%;
+  border-image: round;
+
+} */
+
+
+/* --- Reset general --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html, body {
+  height: 100%;                /* Ocupa toda la altura de la ventana */
+  display: flex;                /* Activamos flexbox */
+  justify-content: center;      /* Centrado horizontal */
+  align-items: center;          /* Centrado vertical */
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+}
+
+/* --- Contenedor del login --- */
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ocupa todo el alto */
+}
+
+/* --- Caja del login --- */
+.login-box {
+  background: rgba(255, 255, 255, 0.95); /* Fondo semitransparente tipo modal */
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  width: 100%;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.login-box h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+  font-weight: 600;
+}
+
+/* --- Inputs --- */
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+  font-size: 14px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.input-group input:focus {
+  border-color: #2575fc;
+  box-shadow: 0 0 8px rgba(37, 117, 252, 0.3);
+  outline: none;
+}
+
+/* --- Botón --- */
+button {
+  width: 100%;
+  padding: 14px;
+  background-color: #2575fc;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+button:hover {
+  background-color: #1a5edb;
+  transform: translateY(-2px);
+}
+
+/* --- Link de registro --- */
+.signup-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.signup-link a {
+  color: #2575fc;
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+
+/* --- Responsivo --- */
+@media screen and (max-width: 480px) {
+  .login-box {
+    padding: 25px 20px;
+    border-radius: 12px;
+  }
+
+  button {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
+/* --- Animaciones --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+.linea{
+  width: 100%;
+
+}
+
+
+.linea {
+  width: 100%;
+}
+
+.imagenUsuario {
+  display: block;
+  margin: 0 auto; /* esto centra horizontalmente */
+  border-radius: 50%;
+  width: 20%;
+  height: auto; /* mejor para que no se deforme */
+}
+
+.letras {
+ text-align: center;
+}
+
+
+.centrar-pagina {
+  display: grid;
+  place-items: center;   /* Centra en ambos ejes */
+  min-height: 100vh;     /* Ocupa toda la altura de la ventana */
+  background: linear-gradient(135deg, #6a11cb, #2575fc); /* tu fondo */
+}

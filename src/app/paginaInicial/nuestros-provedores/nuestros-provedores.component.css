@@ -1,0 +1,88 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.careermilestone_marque {
+  background: #ffffff;
+  padding: 15px 0;
+  overflow: hidden;
+  position: relative;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.careermilestone_marque_container {
+  display: flex;
+  width: fit-content;
+  animation: careermilestone_marque_scroll 10s linear infinite;
+}
+
+.careermilestone_marque_content {
+  display: flex;
+  gap: 50px;
+  padding: 0 25px;
+}
+
+.careermilestone_marque_text {
+  font-family: "Segoe UI", sans-serif;
+  color: #333;
+  font-size: 16px;
+  white-space: nowrap;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.careermilestone_marque_text i {
+  margin-right: 8px;
+  color: #2a2f92;
+}
+
+@keyframes careermilestone_marque_scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Smooth edges */
+.careermilestone_marque::before,
+.careermilestone_marque::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 100px;
+  height: 100%;
+  z-index: 2;
+}
+
+.careermilestone_marque::before {
+  left: 0;
+  background: linear-gradient(to right, #fff, transparent);
+}
+
+.careermilestone_marque::after {
+  right: 0;
+  background: linear-gradient(to left, #fff, transparent);
+}
+
+@media (max-width: 768px) {
+  .careermilestone_marque_text {
+    font-size: 14px;
+  }
+
+  .careermilestone_marque_content {
+    gap: 30px;
+  }
+}
+
+
+.careermilestone_marque_text img {
+  width: 120px;
+  height: auto;
+  margin-right: 40px; /* espacio entre logos */
+}

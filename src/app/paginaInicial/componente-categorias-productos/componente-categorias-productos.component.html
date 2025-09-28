@@ -1,0 +1,18 @@
+<div>
+  <h2>Nuestros Productos</h2>
+</div>
+<mat-form-field appearance="outline">
+  <mat-label>Selecciona una categoría</mat-label>
+  <mat-select [(value)]="categoriaSeleccionada"
+              (selectionChange)="onCategoriaChange($event.value)">
+    <mat-option *ngFor="let cat of categorias" [value]="cat">
+      {{ cat }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- Aquí le pasamos la categoría seleccionada al componente hijo -->
+<app-visualizacion-productos-cliente
+  *ngIf="categoriaSeleccionada"
+  [categoria]="categoriaSeleccionada">
+</app-visualizacion-productos-cliente>
