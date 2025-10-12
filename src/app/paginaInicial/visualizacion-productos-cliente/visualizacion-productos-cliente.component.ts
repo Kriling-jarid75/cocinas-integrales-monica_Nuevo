@@ -1,9 +1,9 @@
 import { MatCardModule } from '@angular/material/card';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { ServicioProductosService } from '../../services/servicio-productos.service';
 import { DetalleProductosComponent } from '../detalle-productos/detalle-productos.component';
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
@@ -19,36 +19,38 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 })
 export class VisualizacionProductosClienteComponent {
   @Input() categoria: string = '';
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   readonly dialog = inject(MatDialog);
-
   isLoading = true;
   productos: any[] = [];
   pagedProductos: any[] = [];
   pageSize = 6;
   currentPage = 0;
   pageSizeOptions = [6, 12, 24];
-  imagenCargada: { [key: number]: boolean } = {};
-
 
   constructor(private usuariosService: ServicioProductosService) {}
 
   ngOnChanges() {
     if (this.categoria) {
-      this.cargarProductos(this.categoria); // <<-- aquí usas tu método comentado
+      this.cargarProductos(this.categoria);
     }
   }
 
   cargarProductos(categoria: string) {
-    console.log('Mostramos la categoría: ' + categoria);
     this.isLoading = true;
-
     setTimeout(() => {
       this.productos = this.usuariosService.getProductosPorCategoria(categoria);
+
+      // 🔹 Reiniciamos la página y el paginador al cambiar de categoría
       this.currentPage = 0;
+      if (this.paginator) {
+        this.paginator.firstPage();
+      }
+
       this.updatePage();
       this.isLoading = false;
-    }, 3000);
+    }, 1000);
   }
 
   updatePage() {
@@ -58,22 +60,30 @@ export class VisualizacionProductosClienteComponent {
   }
 
   handlePageEvent(event: PageEvent) {
+    // 🔹 Reinicia al cambiar el tamaño de página
+    if (event.pageSize !== this.pageSize) {
+      this.currentPage = 0;
+      this.paginator.firstPage();
+    } else {
+      this.currentPage = event.pageIndex;
+    }
+
     this.pageSize = event.pageSize;
-    this.currentPage = event.pageIndex;
     this.updatePage();
   }
 
   onImagenError(event: Event) {
     const target = event.target as HTMLImageElement;
-    target.src = 'icons/no-disponible.png'; // Aquí pones la imagen de “no disponible”
+    target.src = 'icons/no-disponible.png';
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(DetalleProductosComponent);
+  openDialog(producto: any) {
+    const dialogRef = this.dialog.open(DetalleProductosComponent, {
+      data: { producto, categoria: this.categoria }
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
   }
-
 }

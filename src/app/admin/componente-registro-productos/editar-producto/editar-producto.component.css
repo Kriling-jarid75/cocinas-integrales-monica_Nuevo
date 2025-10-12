@@ -1,0 +1,61 @@
+.form-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.submit-btn {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+/* Estilo del campo */
+.precio-field {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Prefijo ($) */
+.peso-prefix {
+  color: #6c757d; /* gris suave */
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+/* Efecto al enfocar */
+.precio-field.mat-focused .peso-prefix {
+  color: #00bfa6; /* color tipo Mercado Pago */
+}
+
+.precio-field.mat-focused .mat-mdc-outline {
+  border-color: #00bfa6 !important;
+}
+
+/* Estilo general del input */
+.mat-mdc-input-element {
+  font-weight: 500;
+  font-size: 1.1rem;
+}

@@ -1,11 +1,12 @@
 
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { ComponenteNavegacionComponent } from './navegacion/componente-navegacion/componente-navegacion.component';
-import { InicioSesionComponent } from './login/inicio-sesion/inicio-sesion.component';
 import { ComponentePiePaginaComponent } from './footer/componente-pie-pagina/componente-pie-pagina.component';
 import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { InactivityService } from './services/inactivity-service.service';
+
 
 
 
@@ -15,10 +16,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     RouterOutlet,
-    RouterLink,
     CommonModule,
     ComponenteNavegacionComponent,
-    InicioSesionComponent,
     ComponentePiePaginaComponent
   ]
 })
@@ -26,7 +25,9 @@ export class AppComponent {
   esAdmin = false;
   initialized = false;
 
-  constructor(private router: Router) {} // ✅ solo inyectamos Router
+  constructor(private router: Router,
+    private inactivityService: InactivityService
+  ) {} // ✅ solo inyectamos Router
 
   ngOnInit() {
     // Inicializar esAdmin según la URL actual

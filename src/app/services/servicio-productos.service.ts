@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ProductosModule } from '../modules/productos-module/productos-module';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
-import { ProductosModuleCocinas } from '../models/productos/productos.module';
+import { GenericResponse, ProductosModuleCocinas, ProductosModuleCocinasNuevos } from '../models/productos/productos.module';
+import { environment } from '../../environments/environments';
+
 
 
 @Injectable({
@@ -13,8 +15,6 @@ export class ServicioProductosService {
   urlEndPoint = "https://jsonplaceholder.typicode.com/posts";
 
   urlEnpointDos = "https://dummyjson.com/image/400x200/008080/ffffff?text=Hello+Peter!&fontSize=16";
-
-
 
 
 
@@ -40,7 +40,7 @@ export class ServicioProductosService {
 
 
   productosCocinas: ProductosModuleCocinas[] = [
-    { categoria: 'Cocinas', titulo: 'Cocina Moderna', descripcion: 'Cocina de lujo', url: "" },
+    { categoria: '', titulo: '', descripcion: '', url: "" },
     { categoria: 'Cocinas', titulo: 'Cocina Rústica', descripcion: 'Estilo clásico', url: "https://images.unsplash.com/photo-1573496773905-f5b17e717f05?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
     { categoria: 'Cocinas', titulo: 'Cocina Rústica', descripcion: 'Estilo clásico', url: "https://images.unsplash.com/photo-1573496773905-f5b17e717f05?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
     { categoria: 'Cocinas', titulo: 'Cocina Rústica', descripcion: 'Estilo clásico', url: "https://images.unsplash.com/photo-1573496773905-f5b17e717f05?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
@@ -55,28 +55,85 @@ export class ServicioProductosService {
     { categoria: 'Cocinas', titulo: 'Cocina Rústica', descripcion: 'Estilo clásico', url: "https://images.unsplash.com/photo-1573496773905-f5b17e717f05?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
     { categoria: 'Cocinas', titulo: 'Cocina Rústica', descripcion: 'Estilo clásico', url: "https://images.unsplash.com/photo-1573496773905-f5b17e717f05?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
     { categoria: 'Cocinas', titulo: 'Cocina Rústica', descripcion: 'Estilo clásico', url: "https://images.unsplash.com/photo-1573496773905-f5b17e717f05?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { categoria: 'Bufeteros', titulo: 'Bufetero Blanco', descripcion: 'Espacioso y elegante', url: 'https://picsum.photos/202' },
-    { categoria: 'Sillas', titulo: 'Closet Minimalista', descripcion: 'Diseño compacto', url: 'https://picsum.photos/203' },
+    { categoria: '', titulo: '', descripcion: '', url: '' },
+    { categoria: 'Sillas', titulo: 'Silla Minimalista', descripcion: 'Diseño compacto', url: 'https://picsum.photos/203' },
     { categoria: 'mesasDeCentro', titulo: 'Mesa de Madera', descripcion: 'Clásica y resistente', url: 'https://picsum.photos/204' },
     { categoria: 'puertasDeRecamara', titulo: 'Puerta de Roble', descripcion: 'Segura y elegante', url: 'https://picsum.photos/205' }
   ];
 
-  constructor(protected http: HttpClient) { }
+
+    private http = inject(HttpClient);
+  private baseUrl = environment.apiUrl + '/productos';  // 👈 toma la URL según el entorno
+
+  constructor() { }
 
 
- /*  getProductos() {
+  /*  getProductos() {
 
-    return this.productos;
-  }
- */
+     return this.productos;
+   }
+  */
 
-   getProductos() {
+  getProductos() {
 
     return this.productosCocinas;
   }
 
   getProductosPorCategoria(categoria: string) {
     return this.productosCocinas.filter(p => p.categoria === categoria);
+  }
+
+
+
+
+  listarProductos(): Observable<any> {
+    // Aquí ya no es necesario volver a mapear las propiedades si coinciden
+    return this.http.post<string>(`${this.baseUrl}/listar`, {}).pipe(
+      catchError(this.handleError) // 👈 Manejo centralizado
+    );;
+  }
+
+
+  // Método para crear un producto
+  crearProducto(producto: ProductosModuleCocinasNuevos): Observable<GenericResponse<string>> {
+    // Aquí ya no es necesario volver a mapear las propiedades si coinciden
+    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/registrar`, producto).pipe(
+      catchError(this.handleError) // 👈 Manejo centralizado
+    );
+  }
+
+  // Método para crear un producto
+  editarProducto(producto: ProductosModuleCocinasNuevos): Observable<GenericResponse<string>> {
+    // Aquí ya no es necesario volver a mapear las propiedades si coinciden
+    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/editar`, producto).pipe(
+      catchError(this.handleError) // 👈 Manejo centralizado
+    );
+  }
+
+    eliminarProducto(producto: ProductosModuleCocinasNuevos) {
+     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
+    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/eliminar`, producto).pipe(
+      catchError(this.handleError) // 👈 Manejo centralizado
+    );
+  }
+
+
+  private handleError(error: any) {
+    let errorMessage = '';
+
+    if (error.status === 0) {
+      // Error de red o backend caído
+      errorMessage = 'No se pudo conectar con el servidor. Verifica tu conexión o si el backend está activo.';
+    } else if (error.status >= 400 && error.status < 500) {
+      errorMessage = `Error del cliente (${error.status}): ${error.error?.message || error.message}`;
+    } else if (error.status >= 500) {
+      errorMessage = `Error del servidor (${error.status}): Intenta más tarde.`;
+    } else {
+      errorMessage = 'Ocurrió un error inesperado.';
+    }
+
+    console.error('Error HTTP detectado:', error);
+    return throwError(() => new Error(errorMessage));
   }
 
 

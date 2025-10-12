@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { InicioSesionService } from '../../services/inicio-sesion.service';
 import { LoginResponse } from '../../models/login-response/login-response.module';
@@ -13,8 +13,10 @@ import { LoginResponse } from '../../models/login-response/login-response.module
   imports: [
     MatDialogModule,
     MatButtonModule,
-    ReactiveFormsModule   // 👈 obligatorio para que [formGroup] funcione
-  ],
+    ReactiveFormsModule // 👈 obligatorio para que [formGroup] funcione
+    ,
+    RouterLink
+],
   templateUrl: './inicio-sesion.component.html',
   styleUrl: './inicio-sesion.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

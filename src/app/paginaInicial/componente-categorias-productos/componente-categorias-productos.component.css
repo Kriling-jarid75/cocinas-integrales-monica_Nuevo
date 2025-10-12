@@ -1,3 +1,43 @@
 .mat-tab-group {
   margin-bottom: 48px;
 }
+
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #2a2f92;
+  font-weight: 700;
+}
+
+/* Centrar todo el campo de selección */
+.estiloSelect {
+  width: 320px;               /* Tamaño más grande del selector */
+  font-size: 1.2rem;          /* Aumenta el tamaño del texto */
+  margin: 20px auto;          /* Centra horizontalmente */
+  display: block;             /* Asegura que se pueda centrar */
+}
+
+
+
+
+
+
+/* Mejora el borde y sombra del mat-form-field */
+.estiloSelect .mat-mdc-form-field-outline {
+  border-radius: 12px;
+}
+
+.estiloSelect .mat-mdc-form-field {
+  background-color: #fff;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  border-radius: 12px;
+}
+
+/* Título principal (si tienes un h2 arriba) */
+h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #333;
+}

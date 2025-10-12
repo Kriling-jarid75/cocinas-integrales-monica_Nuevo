@@ -4,5 +4,6 @@ export interface LoginResponse {
   data: {
     administrador: string;
     token: string;
+    rol: string;
   };
 }

@@ -1,30 +1,34 @@
 import { CommonModule, formatCurrency, getCurrencySymbol } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { ServicioProductosService } from '../../services/servicio-productos.service';
 import Swal from 'sweetalert2';
+import { ServicioProductosService } from '../../../services/servicio-productos.service';
 
 @Component({
-  selector: 'app-componente-registro-productos',
+  selector: 'app-editar-producto',
   standalone: true,
-  imports: [CommonModule,
-    ReactiveFormsModule,
+  imports: [MatDialogModule,
+    MatButtonModule,
+    CommonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
     MatSelectModule,
-    MatCardModule],
-  templateUrl: './componente-registro-productos.component.html',
-  styleUrl: './componente-registro-productos.component.css'
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,],
+  templateUrl: './editar-producto.component.html',
+  styleUrl: './editar-producto.component.css'
 })
-export class ComponenteRegistroProductosComponent {
-  productoForm: FormGroup;
-  public precio: string;
+export class EditarProductoComponent {
+
+  producto: any;
+  productoForm!: FormGroup;
+  cantidad: any;
 
   categorias = [
     { value: 'Integrales', viewValue: 'Integrales' },
@@ -33,47 +37,81 @@ export class ComponenteRegistroProductosComponent {
     { value: 'Decoración', viewValue: 'Decoración' }
   ];
 
-  constructor(private fb: FormBuilder, private service: ServicioProductosService,) {
-    this.productoForm = this.fb.group({
-      nombre: ['', Validators.required],
-      descripcion: ['', Validators.required],
-      categoria: ['', Validators.required],
-      precio: ['', [Validators.required, Validators.pattern(/^[\$\d,]+(\.\d{1,2})?$/)]]
-    });
 
-    this.precio = '';
+  constructor(public dialogRef: MatDialogRef<EditarProductoComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+   private service: ServicioProductosService,
+    private fb: FormBuilder) {
+
+    this.producto = data.producto;
+
+
   }
 
-  registrarProducto() {
+  ngOnInit() {
 
+    console.log("Mostramos los productos " + JSON.stringify(this.producto));
+
+    this.productoForm = this.fb.group({
+      nombre: [this.producto?.nombre || '', Validators.required],
+      descripcion: [this.producto?.descripcion || '', Validators.required],
+      // Si categoria es string:
+      categoria: [this.producto?.categoria || '', Validators.required],
+      // Si fuera arreglo, cámbialo por: this.producto?.categoria[0] || ''
+      precio: [this.formatCurrencyVal(this.producto?.precio || null),
+      [Validators.required, Validators.pattern(/^[\$\d,]+(\.\d{1,2})?$/)]],
+    });
+  }
+
+  formatCurrencyVal(value: string): string {
+    if (value.includes('$')) {
+      value = value.replace('$', '');
+    }
+    if (value.includes(',')) {
+      value = value.replace(/,/g, '');
+    }
+
+    let val;
+    if (value === '' || value === undefined) {
+      val = 0;
+    } else {
+      val = parseFloat(value);
+    }
+
+    return formatCurrency(val, 'en-USD', getCurrencySymbol('USD', 'wide'));
+  }
+
+
+
+
+  editarProducto() {
     if (this.productoForm.valid) {
-
-
-
-      const precioLimpio = this.precioFormateado(this.productoForm.value.precio);
-      const productoNuevo = {
+        const precioLimpio = this.precioFormateado(this.productoForm.value.precio);
+      const productoActualizado = {
         ...this.productoForm.value,
-        precio: precioLimpio // 👈 aquí debe seguir siendo number
+        precio: precioLimpio,
+        idProducto: this.producto.idProducto
       };
 
 
-
-
       // Llamada al servicio
-      this.service.crearProducto(productoNuevo).subscribe({
+      this.service.editarProducto(productoActualizado).subscribe({
         next: (data) => {
           if (data.code === 200) {
             Swal.fire({
               icon: 'success',
-              title: `Se registró correctamente el producto: ${productoNuevo.nombre}`,
+              title: `Se actualizó correctamente el producto: ${productoActualizado.nombre}`,
               text: data.message
             });
             this.limiarCampos();
+            this.cerrar();
+            // Cierra el diálogo y notifica al padre
+            this.dialogRef.close('updated');
 
           } else {
             Swal.fire({
               icon: 'error',
-              title: 'Ocurrió un error al registrar el producto',
+              title: 'Ocurrió un error al actualizar el producto',
               text: data.message
             });
           }
@@ -86,12 +124,9 @@ export class ComponenteRegistroProductosComponent {
           });
         }
       });
-
-      console.log('Producto registrado:', productoNuevo);
-
     } else {
       // Muestra los errores solo después de intentar enviar
-      //this.productoForm.markAllAsTouched();
+      this.productoForm.markAllAsTouched();
     }
   }
 
@@ -104,9 +139,13 @@ export class ComponenteRegistroProductosComponent {
   }
 
 
+  cerrar(): void {
+    this.dialogRef.close(); // 👈 puedes devolver algo si quieres
+  }
 
 
-  validateFormat(event: KeyboardEvent) {
+
+ validateFormat(event: KeyboardEvent) {
     const CATORCE = 14;
     const DOS = 2;
 
@@ -176,7 +215,8 @@ export class ComponenteRegistroProductosComponent {
 
 
 
-   precioFormateado(precio: string): number {
+  //formateamos el precio
+  precioFormateado(precio: string): number {
     if (!precio) return 0;
 
     // Elimina el signo de pesos y las comas
@@ -185,7 +225,6 @@ export class ComponenteRegistroProductosComponent {
     // Convierte a número flotante
     return parseFloat(valorLimpio);
   }
-
 
 
 

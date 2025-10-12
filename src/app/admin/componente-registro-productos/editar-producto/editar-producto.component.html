@@ -1,8 +1,6 @@
-<div class="form-container">
-  <h1>Crear un producto nuevo</h1>
-  <form [formGroup]="productoForm" (ngSubmit)="registrarProducto()" class="product-form">
-
-    <!-- Nombre -->
+<mat-dialog-content class="mat-typography p-3">
+  <h4>Editar el producto <i>"{{producto.nombre}}"</i></h4>
+  <form [formGroup]="productoForm" class="product-form">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Nombre del producto</mat-label>
       <input matInput formControlName="nombre" placeholder="Ej: Pollo asado">
@@ -11,7 +9,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Descripcion -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Descripcion del producto</mat-label>
       <input matInput formControlName="descripcion" placeholder="Ej: Pollo asado">
@@ -20,7 +17,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Categoría -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Categoría de productos</mat-label>
       <mat-select formControlName="categoria">
@@ -34,16 +30,13 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Precio -->
-    <mat-form-field appearance="outline" class="full-width">
+    <mat-form-field appearance="outline" class="full-width precio-field">
       <mat-label>Precio</mat-label>
-      <!-- <input matInput type="text" formControlName="precio"
-      placeholder="0.00"  (input)="formatPrecio()"
-      /> -->
 
-       <input matInput autocomplete="off" #monto [value]="precio"
-       name="precio" formControlName="precio" placeholder="$0.00"
-        (change)="updateValue(monto.value)" (keypress)="validateFormat($event)" />
+
+      <input matInput autocomplete="off" #monto name="precio" formControlName="precio"
+        placeholder="$0.00" (change)="updateValue(monto.value)" (keypress)="validateFormat($event)" />
+
 
       <mat-error *ngIf="productoForm.get('precio')?.hasError('required')">
         El precio es obligatorio
@@ -53,11 +46,13 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Botón -->
-    <button class="btn btn-primary" type="submit" [disabled]="productoForm.invalid">
-      Registrar Producto
-    </button>
-  </form>
-</div>
+    <!-- Botones -->
+    <div class="d-flex justify-content-end mt-4 gap-2">
+      <button class="btn btn-warning" (click)="editarProducto()" [disabled]="productoForm.invalid">
+        Actualizar Producto
+      </button>
+      <button class="btn btn-danger" color="primary" (click)="cerrar()">Cerrar</button>
 
-<hr width="100%">
+    </div>
+  </form>
+</mat-dialog-content>
