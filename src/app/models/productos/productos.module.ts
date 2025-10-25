@@ -7,19 +7,20 @@ export class ProductosModuleCocinas {
 }
 
 
+//creacion de un producto nuevo con una categoria
 export class ProductosModuleCocinasNuevos {
-  id?: number; // opcional, porque es nuevo
-  "categoria":string;
-  "nombre":string;
-  "descripcion":string;
-  "precio":string
+  id?: number;
+  "nombre": string;
+  "descripcion": string;
+  "categoria": ModeloCategorias;
+ // "precio": string;
 
 }
 
-
-// Modelo de respuesta genérica que devuelve tu backend
-export interface GenericResponse<T> {
-  code: number;
-  message: string;
-  data: T;
+//Gestion de una categoria nueva
+export class ModeloCategorias {
+  "idCategoria": number;
+  "nombreCategoria": string;
 }
+
+

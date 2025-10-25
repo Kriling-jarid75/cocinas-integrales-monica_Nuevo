@@ -1,0 +1,23 @@
+<mat-dialog-content class="mat-typography p-3">
+  <h4>Editar la Categoria <i>"{{categoria.nombreCategoria}}"</i></h4>
+  <form [formGroup]="categoriaForm" class="product-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nombre de la categoria</mat-label>
+      <input matInput formControlName="nombreCategoria" placeholder="Ej: Pollo asado">
+      <mat-error *ngIf="categoriaForm.get('nombreCategoria')?.hasError('required')">
+        El nombre es obligatorio
+      </mat-error>
+    </mat-form-field>
+
+
+    <!-- Botones -->
+    <div class="d-flex justify-content-end mt-4 gap-2">
+      <button class="btn btn-warning" (click)="editarCategoria()" [disabled]="categoriaForm.invalid">
+        Actualizar Categoria
+      </button>
+      <button class="btn btn-danger" color="primary" (click)="cerrar()">Cerrar</button>
+
+    </div>
+  </form>
+</mat-dialog-content>
+

@@ -4,3 +4,7 @@ export class ProductosModule {
   "url": string
 }
 
+export class CategoriasProductos {
+  "idCategorias": number;
+  "nombreCategoria":string
+}

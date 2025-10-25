@@ -1,21 +1,4 @@
-/* .custom-card {
-  margin-top: 30px;
-}
-
-.product-card {
-  max-width: 500px;
-  margin: 30px auto;
-  padding: 20px;
-}
-
-.full-width {
-  width: 100%;
-  margin-bottom: 15px;
-}
- */
-
-
- .form-container {
+.form-container {
   max-width: 600px;
   margin: 2rem auto;
   padding: 2rem;
@@ -47,5 +30,71 @@
   font-size: 1rem;
   font-weight: 600;
   border-radius: 8px;
+}
+
+
+.file-input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.file-name {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+
+/* para las imagenes */
+.upload-container {
+  margin-top: 1rem;
+}
+
+.preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.preview {
+  position: relative;
+  display: inline-block;
+}
+
+.preview img {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease-in-out;
+}
+
+.preview img:hover {
+  transform: scale(1.05);
+}
+
+.delete-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(220, 53, 69, 0.9); /* rojo Bootstrap danger */
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.delete-btn:hover {
+  background-color: #bb2d3b; /* tono más oscuro */
+  transform: scale(1.1);
 }
 

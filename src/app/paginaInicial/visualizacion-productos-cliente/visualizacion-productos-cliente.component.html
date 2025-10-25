@@ -24,8 +24,8 @@
               <div class="card h-100 shadow-custom">
                 <img class="card-img-top" [src]="producto.url" alt="{{ producto.nombre }}" (error)="onImagenError($event)" />
                 <div class="card-body">
-                  <h5 class="card-title">{{ producto.titulo }}</h5>
-                  <p class="card-text">{{ producto.descripcion }}</p>
+                  <h6 class="card-title"> <strong>Nombre Producto:</strong> {{ producto.nombre }}</h6>
+                  <p class="card-text"> <strong>Descripcion Producto:</strong> {{ producto.descripcion }}</p>
                   <a type="button" (click)="openDialog(producto)" class="btn btn-primary">Ver detalle</a>
                 </div>
               </div>

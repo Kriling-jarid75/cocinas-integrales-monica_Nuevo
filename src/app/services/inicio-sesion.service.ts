@@ -13,7 +13,7 @@ import { environment } from '../../environments/environments';
 export class InicioSesionService {
 
   private http = inject(HttpClient);
-  private baseUrl = environment.apiUrl + '/auth/login';  // 👈 toma la URL según el entorno
+  private baseUrl = environment.apiUrl;  // 👈 toma la URL según el entorno
   private tokenKey = 'auth_token';
   private expiryKey = 'token_expiry';
   private nombreKey = 'nombre';
@@ -23,7 +23,7 @@ export class InicioSesionService {
 
   login(username: string, password: string): Observable<LoginResponse> {
     const request: LoginRequest = { username, password };
-    return this.http.post<LoginResponse>(`${this.baseUrl}`, request).pipe(
+    return this.http.post<LoginResponse>(`${this.baseUrl}/auth/login`, request).pipe(
       tap((response: LoginResponse) => {
         if (response.data.token) {
           const expiry = new Date();

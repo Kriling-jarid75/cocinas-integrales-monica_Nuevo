@@ -8,6 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import Swal from 'sweetalert2';
 import { ServicioProductosService } from '../../../services/servicio-productos.service';
+import { ModeloCategorias, ProductosModuleCocinasNuevos } from '../../../models/productos/productos.module';
+
 
 @Component({
   selector: 'app-editar-producto',
@@ -26,27 +28,18 @@ import { ServicioProductosService } from '../../../services/servicio-productos.s
 })
 export class EditarProductoComponent {
 
-  producto: any;
-  productoForm!: FormGroup;
-  cantidad: any;
 
-  categorias = [
-    { value: 'Integrales', viewValue: 'Integrales' },
-    { value: 'Electrodomésticos', viewValue: 'Electrodomésticos' },
-    { value: 'Muebles', viewValue: 'Muebles' },
-    { value: 'Decoración', viewValue: 'Decoración' }
-  ];
+  productoForm!: FormGroup;
+  categoriasNuevas!: Array<ModeloCategorias>;
+  // 🧠 Caché para evitar llamadas repetidas
+  static categoriasCache: Array<ModeloCategorias> | null = null;
+
 
 
   constructor(public dialogRef: MatDialogRef<EditarProductoComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-   private service: ServicioProductosService,
-    private fb: FormBuilder) {
-
-    this.producto = data.producto;
-
-
-  }
+    @Inject(MAT_DIALOG_DATA) public producto: ProductosModuleCocinasNuevos,
+    private service: ServicioProductosService,
+    private fb: FormBuilder) {  }
 
   ngOnInit() {
 
@@ -56,11 +49,55 @@ export class EditarProductoComponent {
       nombre: [this.producto?.nombre || '', Validators.required],
       descripcion: [this.producto?.descripcion || '', Validators.required],
       // Si categoria es string:
-      categoria: [this.producto?.categoria || '', Validators.required],
+      categoria: [this.producto?.categoria?.nombreCategoria || '', Validators.required],
       // Si fuera arreglo, cámbialo por: this.producto?.categoria[0] || ''
-      precio: [this.formatCurrencyVal(this.producto?.precio || null),
-      [Validators.required, Validators.pattern(/^[\$\d,]+(\.\d{1,2})?$/)]],
+      //precio: [this.formatCurrencyVal(this.producto?.precio || null),
+      //[Validators.required, Validators.pattern(/^[\$\d,]+(\.\d{1,2})?$/)]],
     });
+
+    this.cargarCategorias();
+
+  }
+
+
+  cargarCategorias() {
+
+    debugger
+    // ✅ Si hay caché, úsala
+    if (EditarProductoComponent.categoriasCache) {
+      this.categoriasNuevas = [...EditarProductoComponent.categoriasCache];
+      this.reaplicarCategoria();
+      return;
+    }
+
+    this.service.obtenerCategorias().subscribe({
+      next: (response) => {
+        if (response.code === 200 && response.data?.length > 0) {
+          this.categoriasNuevas = response.data;
+          EditarProductoComponent.categoriasCache = [...response.data];
+          this.reaplicarCategoria();
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al cargar categorías',
+            text: response.message
+          });
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en la conexión con el servidor',
+        });
+      }
+    });
+  }
+
+  private reaplicarCategoria(): void {
+    if (this.producto?.categoria) {
+      this.productoForm.get('categoria')?.setValue(this.producto.categoria.idCategoria);
+    }
   }
 
   formatCurrencyVal(value: string): string {
@@ -86,11 +123,11 @@ export class EditarProductoComponent {
 
   editarProducto() {
     if (this.productoForm.valid) {
-        const precioLimpio = this.precioFormateado(this.productoForm.value.precio);
+      const precioLimpio = this.precioFormateado(this.productoForm.value.precio);
       const productoActualizado = {
         ...this.productoForm.value,
         precio: precioLimpio,
-        idProducto: this.producto.idProducto
+        idProducto: this.producto.id
       };
 
 
@@ -145,7 +182,7 @@ export class EditarProductoComponent {
 
 
 
- validateFormat(event: KeyboardEvent) {
+  validateFormat(event: KeyboardEvent) {
     const CATORCE = 14;
     const DOS = 2;
 

@@ -5,7 +5,6 @@ import { ComponenteNavegacionComponent } from './navegacion/componente-navegacio
 import { ComponentePiePaginaComponent } from './footer/componente-pie-pagina/componente-pie-pagina.component';
 import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
-import { InactivityService } from './services/inactivity-service.service';
 
 
 
@@ -25,9 +24,7 @@ export class AppComponent {
   esAdmin = false;
   initialized = false;
 
-  constructor(private router: Router,
-    private inactivityService: InactivityService
-  ) {} // ✅ solo inyectamos Router
+  constructor(private router: Router) {} // ✅ solo inyectamos Router
 
   ngOnInit() {
     // Inicializar esAdmin según la URL actual

@@ -91,13 +91,9 @@ export class ComponenteDashboardComponent {
   }
 
   //Editar Producto
-  updateProduct(producto: ProductosModuleCocinasNuevos) {
+  updateProduct(prodcto: ProductosModuleCocinasNuevos) {
     const dialogRef = this.dialog.open(EditarProductoComponent, {
-      data: {
-        producto: producto,
-        // categoria:this.categoriaSeleccionada
-
-      }
+      data: prodcto, // 👈 En lugar de mandar todo el objeto, mandas solo el producto interno
     });
 
     // Espera a que se cierre el diálogo

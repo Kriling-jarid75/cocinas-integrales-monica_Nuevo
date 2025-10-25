@@ -3,9 +3,11 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { CommonModule } from '@angular/common';
 import { ServicioProductosService } from '../../services/servicio-productos.service';
 import { DetalleProductosComponent } from '../detalle-productos/detalle-productos.component';
-import { Component, inject, Input, ViewChild } from '@angular/core';
+import { Component, inject, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
+import { API_RESPONSE_CODES, API_RESPONSE_MESSAGES } from '../../shared/codigosDeRespuesta';
 
 
 @Component({
@@ -29,28 +31,56 @@ export class VisualizacionProductosClienteComponent {
   currentPage = 0;
   pageSizeOptions = [6, 12, 24];
 
-  constructor(private usuariosService: ServicioProductosService) {}
+  constructor(private service: ServicioProductosService) { }
 
-  ngOnChanges() {
-    if (this.categoria) {
-      this.cargarProductos(this.categoria);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['categoria']) {
+      this.categoria === 'Todos los productos'
+        ? this.cargarTodosLosProductos()
+        : this.cargarProductosPorCategoria(this.categoria);
     }
   }
 
-  cargarProductos(categoria: string) {
+  cargarTodosLosProductos(): void {
     this.isLoading = true;
-    setTimeout(() => {
-      this.productos = this.usuariosService.getProductosPorCategoria(categoria);
-
-      // 🔹 Reiniciamos la página y el paginador al cambiar de categoría
-      this.currentPage = 0;
-      if (this.paginator) {
-        this.paginator.firstPage();
+    this.service.listarProductos().subscribe({
+      next: (response) => {
+        this.productos = response.data || [];
+        this.updatePage();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.isLoading = false;
+        Swal.fire({ icon: 'error', title: 'Error al obtener productos' });
       }
+    });
+  }
 
-      this.updatePage();
-      this.isLoading = false;
-    }, 1000);
+  cargarProductosPorCategoria(categoria: string): void {
+    this.isLoading = true;
+    this.service.getProductosPorCategoriaNueva(categoria).subscribe({
+      next: (response) => {
+        this.productos = response.data || [];
+        this.updatePage();
+        this.isLoading = false;
+
+        if (this.productos.length === 0) {
+          Swal.fire({
+            title: 'Sin productos',
+                imageUrl: "icons/no_data_information.png",
+                imageWidth: 400,
+                imageHeight: 300,
+                imageAlt: "Custom image",
+                html: `Lo sentimos, No hay productos < disponibles para esa categoría <strong>"${categoria}"</strong>.
+              Lo invitamos a visualizar otras categorias.`
+          });
+        }
+      },
+      error: () => {
+        this.isLoading = false;
+        Swal.fire({ icon: 'error', title: 'Error al conectar con el servidor' });
+      }
+    });
   }
 
   updatePage() {
@@ -85,5 +115,10 @@ export class VisualizacionProductosClienteComponent {
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
+  }
+
+  formatearNombre(nombre: string): string {
+    return nombre.replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/^./, str => str.toUpperCase());
   }
 }

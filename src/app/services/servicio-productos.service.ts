@@ -2,8 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { ProductosModule } from '../modules/productos-module/productos-module';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
-import { GenericResponse, ProductosModuleCocinas, ProductosModuleCocinasNuevos } from '../models/productos/productos.module';
+import { ModeloCategorias, ProductosModuleCocinas, ProductosModuleCocinasNuevos } from '../models/productos/productos.module';
 import { environment } from '../../environments/environments';
+import { GenericResponse } from '../models/modeloGericoResponseEntity/modeloGenericResponse.module';
 
 
 
@@ -62,8 +63,9 @@ export class ServicioProductosService {
   ];
 
 
-    private http = inject(HttpClient);
-  private baseUrl = environment.apiUrl + '/productos';  // 👈 toma la URL según el entorno
+  private http = inject(HttpClient);
+  // Servicio de productos
+  private baseUrl = environment.apiUrl + '/gestion';
 
   constructor() { }
 
@@ -73,48 +75,106 @@ export class ServicioProductosService {
      return this.productos;
    }
   */
+  /*
+    getProductos() {
+  
+      return this.productosCocinas;
+    }
 
-  getProductos() {
+    getProductosPorCategoria(categoria: string) {
+      return this.productosCocinas.filter(p => p.categoria === categoria);
+    }
+   */
 
-    return this.productosCocinas;
+
+  /*   // Método para crear un producto
+    crearProducto(producto: ProductosModuleCocinasNuevos): Observable<GenericResponse<string>> {
+      // Aquí ya no es necesario volver a mapear las propiedades si coinciden
+      return this.http.post<GenericResponse<string>>(`${this.baseUrl}/registrar`, producto).pipe(
+        catchError(this.handleError) // 👈 Manejo centralizado
+      );
+    } */
+
+
+
+
+
+  crearProductoNuevo(producto: ProductosModuleCocinasNuevos, imagenes: File[]): Observable<GenericResponse<string>> {
+    const formData = new FormData();
+
+    // 🔹 Mandamos el modelo del producto como JSON
+    formData.append('producto', new Blob([JSON.stringify(producto)], { type: 'application/json' }));
+
+    // 🔹 Mandamos todas las imágenes
+    imagenes.forEach((file, index) => {
+      formData.append('imagenes', file); // el nombre "imagenes" debe coincidir con el del backend
+    });
+
+    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/productos/registro`, formData);
   }
 
-  getProductosPorCategoria(categoria: string) {
-    return this.productosCocinas.filter(p => p.categoria === categoria);
-  }
+
 
 
 
 
   listarProductos(): Observable<any> {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
-    return this.http.post<string>(`${this.baseUrl}/listar`, {}).pipe(
+    return this.http.post<string>(`${this.baseUrl}/productos/listar`, {}).pipe(
       catchError(this.handleError) // 👈 Manejo centralizado
     );;
   }
 
 
-  // Método para crear un producto
-  crearProducto(producto: ProductosModuleCocinasNuevos): Observable<GenericResponse<string>> {
-    // Aquí ya no es necesario volver a mapear las propiedades si coinciden
-    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/registrar`, producto).pipe(
-      catchError(this.handleError) // 👈 Manejo centralizado
-    );
-  }
 
   // Método para crear un producto
   editarProducto(producto: ProductosModuleCocinasNuevos): Observable<GenericResponse<string>> {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
-    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/editar`, producto).pipe(
+    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/productos/editar`, producto).pipe(
       catchError(this.handleError) // 👈 Manejo centralizado
     );
   }
 
-    eliminarProducto(producto: ProductosModuleCocinasNuevos) {
-     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
-    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/eliminar`, producto).pipe(
+  eliminarProducto(producto: ProductosModuleCocinasNuevos) {
+    // Aquí ya no es necesario volver a mapear las propiedades si coinciden
+    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/productos/eliminar`, producto).pipe(
       catchError(this.handleError) // 👈 Manejo centralizado
     );
+  }
+
+
+
+
+
+
+  /*  METODOS PARA OBTENER LA IFNROMACION DE LAS CATEGORIAS */
+
+
+  // Método para crear una categoria nueva
+  crearCategoria(categoria: ModeloCategorias): Observable<GenericResponse<string>> {
+    // Aquí ya no es necesario volver a mapear las propiedades si coinciden
+    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/categoria/registro`, categoria).pipe(
+      catchError(this.handleError) // 👈 Manejo centralizado
+    );
+  }
+
+
+
+
+  obtenerCategorias(): Observable<any> {
+
+    // Aquí ya no es necesario volver a mapear las propiedades si coinciden
+    return this.http.post(`${this.baseUrl}/listar/categorias`, {}).pipe(
+      catchError(this.handleError) // 👈 Manejo centralizado
+    );
+  }
+
+
+
+  // 🔹 Obtener productos por categoría
+  getProductosPorCategoriaNueva(categoria: string): Observable<any> {
+
+    return this.http.post<any>(`${this.baseUrl}/categoria/${categoria}`, {});
   }
 
 
@@ -138,21 +198,6 @@ export class ServicioProductosService {
 
 
 
-  // Aquí puedes definir métodos para obtener, agregar, actualizar o eliminar datos.
-  // Por ejemplo:
-  getUsuarios(): Observable<any> {
-    const codeError = 400;
-    return this.http
-      .get(`${this.urlEndPoint}`)
-      .pipe(
-        catchError((e) => {
-          if (e.status == codeError) {
-            return throwError(e);
-          }
-          return throwError(e);
-        })
-      );
-  }
 }
 
 

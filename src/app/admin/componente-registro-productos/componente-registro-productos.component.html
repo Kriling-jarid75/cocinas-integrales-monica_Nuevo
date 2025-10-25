@@ -20,12 +20,17 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Categoría -->
+
+
+ <!-- Categoría -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Categoría de productos</mat-label>
       <mat-select formControlName="categoria">
-        <mat-option *ngFor="let cat of categorias" [value]="cat.value">
-          {{ cat.viewValue }}
+        <mat-option *ngIf="categoriasNuevas?.length === 0" [value]="'0'" disabled>
+          SIN REGISTROS
+        </mat-option>
+        <mat-option *ngFor="let cat of categoriasNuevas" [value]="cat">
+          {{ cat.nombreCategoria }}
         </mat-option>
 
       </mat-select>
@@ -34,12 +39,11 @@
       </mat-error>
     </mat-form-field>
 
+
     <!-- Precio -->
-    <mat-form-field appearance="outline" class="full-width">
+   <!--  <mat-form-field appearance="outline" class="full-width">
       <mat-label>Precio</mat-label>
-      <!-- <input matInput type="text" formControlName="precio"
-      placeholder="0.00"  (input)="formatPrecio()"
-      /> -->
+
 
        <input matInput autocomplete="off" #monto [value]="precio"
        name="precio" formControlName="precio" placeholder="$0.00"
@@ -51,7 +55,34 @@
       <mat-error *ngIf="productoForm.get('precio')?.hasError('min')">
         El precio debe ser mayor a 0
       </mat-error>
-    </mat-form-field>
+    </mat-form-field> -->
+
+
+
+
+    <!-- Selección de imágenes -->
+    <div class="upload-container">
+      <button class="btn btn-primary" type="button" (click)="fileInput.click()">Seleccionar imágenes</button>
+      <input type="file" #fileInput (change)="onFileSelected($event)" multiple accept="image/*" hidden />
+
+      <!-- Previsualización -->
+      <div class="preview-container" *ngIf="selectedImages.length > 0">
+        <div class="preview" *ngFor="let img of selectedImages; let i = index">
+          <img [src]="img" alt="Previsualización" />
+          <!-- Botón de eliminar -->
+          <button type="button" class="delete-btn" (click)="removeImage(i)">
+            <i class="bi bi-trash3-fill"></i>
+          </button>
+        </div>
+      </div>
+
+      <mat-error *ngIf="productoForm.get('imagenes')?.hasError('required') && productoForm.get('imagenes')?.touched">
+        Debes seleccionar al menos una imagen
+      </mat-error>
+    </div>
+
+
+
 
     <!-- Botón -->
     <button class="btn btn-primary" type="submit" [disabled]="productoForm.invalid">

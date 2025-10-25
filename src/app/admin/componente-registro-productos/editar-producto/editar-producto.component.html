@@ -17,25 +17,27 @@
       </mat-error>
     </mat-form-field>
 
+    <!-- Categoría -->
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Categoría de productos</mat-label>
+      <mat-label>Categoría</mat-label>
       <mat-select formControlName="categoria">
-        <mat-option *ngFor="let cat of categorias" [value]="cat.value">
-          {{ cat.viewValue }}
+        <mat-option *ngIf="categoriasNuevas?.length === 0" disabled>SIN CATEGORÍAS</mat-option>
+        <mat-option>Seleccione una categoria nueva</mat-option>
+        <mat-option *ngFor="let cat of categoriasNuevas" [value]="cat.idCategoria">
+          {{ cat.nombreCategoria }}
         </mat-option>
-
       </mat-select>
       <mat-error *ngIf="productoForm.get('categoria')?.hasError('required')">
         La categoría es obligatoria
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width precio-field">
+   <!--  <mat-form-field appearance="outline" class="full-width precio-field">
       <mat-label>Precio</mat-label>
 
 
-      <input matInput autocomplete="off" #monto name="precio" formControlName="precio"
-        placeholder="$0.00" (change)="updateValue(monto.value)" (keypress)="validateFormat($event)" />
+      <input matInput autocomplete="off" #monto name="precio" formControlName="precio" placeholder="$0.00"
+        (change)="updateValue(monto.value)" (keypress)="validateFormat($event)" />
 
 
       <mat-error *ngIf="productoForm.get('precio')?.hasError('required')">
@@ -44,7 +46,7 @@
       <mat-error *ngIf="productoForm.get('precio')?.hasError('min')">
         El precio debe ser mayor a 0
       </mat-error>
-    </mat-form-field>
+    </mat-form-field> -->
 
     <!-- Botones -->
     <div class="d-flex justify-content-end mt-4 gap-2">

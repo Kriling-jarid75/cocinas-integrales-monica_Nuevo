@@ -8,11 +8,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ServicioProductosService } from '../../services/servicio-productos.service';
 import Swal from 'sweetalert2';
+import { ModeloCategorias } from '../../models/productos/productos.module';
 
 @Component({
   selector: 'app-componente-registro-productos',
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -24,43 +26,111 @@ import Swal from 'sweetalert2';
 })
 export class ComponenteRegistroProductosComponent {
   productoForm: FormGroup;
-  public precio: string;
+  //public precio: string;
 
-  categorias = [
-    { value: 'Integrales', viewValue: 'Integrales' },
-    { value: 'Electrodomésticos', viewValue: 'Electrodomésticos' },
-    { value: 'Muebles', viewValue: 'Muebles' },
-    { value: 'Decoración', viewValue: 'Decoración' }
-  ];
 
-  constructor(private fb: FormBuilder, private service: ServicioProductosService,) {
+  categoriasNuevas!: Array<ModeloCategorias>;
+
+  selectedImages: string[] = []; // URLs para mostrar vista previa
+  imageFiles: File[] = []; // Archivos reales para enviar al backend
+
+
+  constructor(private fb: FormBuilder, private service: ServicioProductosService) {
     this.productoForm = this.fb.group({
       nombre: ['', Validators.required],
       descripcion: ['', Validators.required],
       categoria: ['', Validators.required],
-      precio: ['', [Validators.required, Validators.pattern(/^[\$\d,]+(\.\d{1,2})?$/)]]
+      // precio: ['', [Validators.required, Validators.pattern(/^[\$\d,]+(\.\d{1,2})?$/)]]
     });
 
-    this.precio = '';
+    // this.precio = '';
   }
 
+  ngOnInit() {
+    this.obtenerCategorias();
+  }
+
+
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files) return;
+
+    this.selectedImages = [];
+    this.imageFiles = [];
+
+    const tamañoMaximoMB = 2; // 🔹 máximo 2MB por imagen
+    const tamañoMaximoBytes = tamañoMaximoMB * 1024 * 1024;
+
+    const archivos = Array.from(input.files);
+    let archivosInvalidos: string[] = [];
+
+    for (let file of archivos) {
+      if (file.size > tamañoMaximoBytes) {
+        archivosInvalidos.push(file.name);
+        continue; // ❌ No procesamos esta imagen
+      }
+
+      // ✅ Si pasa la validación, la guardamos
+      this.imageFiles.push(file);
+
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.selectedImages.push(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // ✅ Mostrar alerta si hubo imágenes demasiado grandes
+    if (archivosInvalidos.length > 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Imágenes demasiado grandes',
+        html: `
+        Las siguientes imágenes superan el tamaño máximo permitido (${tamañoMaximoMB} MB):<br>
+        <ul style="text-align:left; margin-top:10px;">
+          ${archivosInvalidos.map(n => `<li>${n}</li>`).join('')}
+        </ul>
+      `,
+        confirmButtonColor: '#d33'
+      });
+    }
+
+    // ✅ Actualiza el control del formulario
+    this.productoForm.patchValue({ imagenes: this.imageFiles });
+    this.productoForm.get('imagenes')?.markAsTouched();
+
+    // 🔹 Limpia el input para permitir volver a subir las mismas si el usuario quiere
+    input.value = '';
+  }
+
+
+
+  removeImage(index: number): void {
+    this.selectedImages.splice(index, 1);
+    this.imageFiles.splice(index, 1);
+
+    // Si ya no hay imágenes, marcar el campo como inválido
+    if (this.imageFiles.length === 0) {
+      this.productoForm.patchValue({ imagenes: null });
+      this.productoForm.get('imagenes')?.setErrors({ required: true });
+    } else {
+      this.productoForm.patchValue({ imagenes: this.imageFiles });
+    }
+  }
+
+
+
   registrarProducto() {
-
     if (this.productoForm.valid) {
-
-
-
       const precioLimpio = this.precioFormateado(this.productoForm.value.precio);
       const productoNuevo = {
         ...this.productoForm.value,
-        precio: precioLimpio // 👈 aquí debe seguir siendo number
+        precio: precioLimpio,
+
       };
 
-
-
-
-      // Llamada al servicio
-      this.service.crearProducto(productoNuevo).subscribe({
+      this.service.crearProductoNuevo(productoNuevo, this.imageFiles).subscribe({
         next: (data) => {
           if (data.code === 200) {
             Swal.fire({
@@ -69,6 +139,8 @@ export class ComponenteRegistroProductosComponent {
               text: data.message
             });
             this.limiarCampos();
+            this.selectedImages = [];
+            this.imageFiles = [];
 
           } else {
             Swal.fire({
@@ -90,8 +162,8 @@ export class ComponenteRegistroProductosComponent {
       console.log('Producto registrado:', productoNuevo);
 
     } else {
-      // Muestra los errores solo después de intentar enviar
-      //this.productoForm.markAllAsTouched();
+
+      this.productoForm.markAllAsTouched();
     }
   }
 
@@ -100,10 +172,8 @@ export class ComponenteRegistroProductosComponent {
     this.productoForm.controls['nombre'].setValue('');
     this.productoForm.controls['descripcion'].setValue('')
     this.productoForm.controls['categoria'].setValue([0]);
-    this.productoForm.controls['precio'].setValue('');
+    // this.productoForm.controls['precio'].setValue('');
   }
-
-
 
 
   validateFormat(event: KeyboardEvent) {
@@ -176,7 +246,7 @@ export class ComponenteRegistroProductosComponent {
 
 
 
-   precioFormateado(precio: string): number {
+  precioFormateado(precio: string): number {
     if (!precio) return 0;
 
     // Elimina el signo de pesos y las comas
@@ -184,6 +254,37 @@ export class ComponenteRegistroProductosComponent {
 
     // Convierte a número flotante
     return parseFloat(valorLimpio);
+  }
+
+
+
+  obtenerCategorias() {
+
+    this.service.obtenerCategorias().subscribe({
+      next: (response) => {
+        if (response.code === 200) {
+
+          this.categoriasNuevas = response.data as ModeloCategorias[];
+
+          console.log("Mostramos todos los valores " + JSON.stringify(this.categoriasNuevas));
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Ocurrió un error al obtener las categorias',
+            text: response.message
+          });
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en la conexión con el servidor',
+        });
+      }
+    });
+
+
   }
 
 
