@@ -7,8 +7,6 @@ import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 
 
-
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,7 +15,8 @@ import { CommonModule } from '@angular/common';
     RouterOutlet,
     CommonModule,
     ComponenteNavegacionComponent,
-    ComponentePiePaginaComponent
+    ComponentePiePaginaComponent,
+
   ]
 })
 export class AppComponent {
