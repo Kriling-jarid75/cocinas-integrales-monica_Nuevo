@@ -214,7 +214,7 @@
   <section id="Productos">
     <div class="container mt-5">
       <hr class="featurette-divider" />
-       <app-componente-categorias-productos/>
+      <app-componente-categorias-productos />
     </div>
   </section>
 
@@ -226,7 +226,7 @@
     </div>
   </section>
 
-   <section id="Ubicacion">
+  <section id="Ubicacion">
     <div class="container justify-content-center mt-4">
       <hr class="featurette-divider" />
       <h2 class="text-center mb-3 contact-container">Nos encontramos en esta ubicación</h2>
@@ -241,8 +241,16 @@
 
   <section id="Contacto">
     <div class="container justify-content-center mt-4">
-      <app-envio-correo/>
-      <hr class="featurette-divider" />
+      <app-envio-correo />
+
     </div>
   </section>
+
+
+
+  <a [href]="whatsappLink" target="_blank" class="floating-whatsapp">
+    <img src="icons/whatsapp.png" alt="WhatsApp" />
+  </a>
+
+
 </main>

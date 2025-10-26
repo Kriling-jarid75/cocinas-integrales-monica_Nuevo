@@ -23,4 +23,19 @@ export class HomeComponent {
   ];
 
   duration = 20; // segundos que tarda en pasar toda la cinta
+
+
+
+// componente.ts
+numeroWhatsApp = '5523537292';
+mensaje = `🌟 ¡Hola! Gracias por escribirnos a Cocinas Integrales Mónica.
+🏠 Estamos comprometidos en ayudarte a crear la cocina ideal para tu hogar.
+💬 ¿En qué podemos asistirte hoy?`;
+
+get whatsappLink() {
+  // encodeURIComponent para que los espacios y emojis funcionen correctamente
+  return `https://wa.me/${this.numeroWhatsApp}?text=${encodeURIComponent(this.mensaje)}`;
+}
+
+
 }
