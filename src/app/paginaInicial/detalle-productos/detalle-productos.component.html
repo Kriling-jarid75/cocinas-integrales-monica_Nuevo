@@ -12,13 +12,14 @@
   <mat-tab-group mat-align-tabs="center" dynamicHeight>
     @for (img of producto.imagen; track $index) {
     <mat-tab [label]="'Imagen ' + ($index + 1)">
-      <div class="flex justify-center items-center p-4">
+      <div class="flex justify-center items-center p-4 w-full h-full">
         <img [src]="img.urlImagen" alt="{{ producto.nombre || 'Imagen del producto' }}" (error)="onImagenError($event)"
-          class="rounded-lg shadow-md object-contain" />
+          class="max-w-full max-h-[400px] object-contain rounded shadow-sm" />
       </div>
     </mat-tab>
     }
   </mat-tab-group>
+
 
   <hr width="100%">
   <!-- Categoría -->
@@ -29,7 +30,7 @@
   </p>
 
   <!-- Descripción larga -->
-  <p class="mb-3">Descripción del producto: {{ producto.descripcion }}</p>
+  <p class="mb-3"><strong> Descripción del producto: </strong> {{ producto.descripcion }}</p>
 
   <!-- Características destacadas (si quieres agregar más info) -->
   <div *ngIf="producto.caracteristicas?.length">

@@ -22,7 +22,7 @@
           @for (producto of pagedProductos; track $index) {
             <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
               <div class="card h-100 shadow-custom">
-                <img class="card-img-top" [src]="producto.url" alt="{{ producto.nombre }}" (error)="onImagenError($event)" />
+                <img class="card-img-top" [src]="producto.imagen[0].urlImagen" alt="{{ producto.nombre }}" (error)="onImagenError($event)" />
                 <div class="card-body">
                   <h6 class="card-title"> <strong>Nombre Producto:</strong> {{ producto.nombre }}</h6>
                   <p class="card-text"> <strong>Descripcion Producto:</strong> {{ producto.descripcion }}</p>

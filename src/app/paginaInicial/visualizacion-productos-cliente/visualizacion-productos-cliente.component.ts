@@ -42,12 +42,17 @@ export class VisualizacionProductosClienteComponent {
   }
 
   cargarTodosLosProductos(): void {
+
+    debugger
     this.isLoading = true;
     this.service.listarProductos().subscribe({
       next: (response) => {
         this.productos = response.data || [];
         this.updatePage();
         this.isLoading = false;
+
+        console.log("Mostramos los productos " + JSON.stringify(this.productos));
+
       },
       error: (err) => {
         this.isLoading = false;
@@ -64,14 +69,16 @@ export class VisualizacionProductosClienteComponent {
         this.updatePage();
         this.isLoading = false;
 
+
+
         if (this.productos.length === 0) {
           Swal.fire({
             title: 'Sin productos',
-                imageUrl: "icons/no_data_information.png",
-                imageWidth: 400,
-                imageHeight: 300,
-                imageAlt: "Custom image",
-                html: `Lo sentimos, No hay productos < disponibles para esa categoría <strong>"${categoria}"</strong>.
+            imageUrl: "icons/no_data_information.png",
+            imageWidth: 400,
+            imageHeight: 300,
+            imageAlt: "Custom image",
+            html: `Lo sentimos, No hay productos < disponibles para esa categoría <strong>"${categoria}"</strong>.
               Lo invitamos a visualizar otras categorias.`
           });
         }
