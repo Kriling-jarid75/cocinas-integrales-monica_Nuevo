@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { ModeloCategorias } from '../../models/productos/productos.module';
 import { ComponenteSinConexionComponent } from '../../componente-sin-conexion/componente-sin-conexion.component';
 import { OnlineServiceService } from '../../services/online-service.service';
+import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta';
 
 @Component({
   selector: 'app-componente-registro-productos',
@@ -37,6 +38,7 @@ export class ComponenteRegistroProductosComponent {
   selectedImages: string[] = []; // URLs para mostrar vista previa
   imageFiles: File[] = []; // Archivos reales para enviar al backend
   online = true;
+  isLoading = false;
 
   constructor(private fb: FormBuilder,
     private service: ServicioProductosService,
@@ -144,9 +146,12 @@ export class ComponenteRegistroProductosComponent {
 
       };
 
+
+      this.isLoading = true; // 🚀 activa el loading
+
       this.service.crearProductoNuevo(productoNuevo, this.imageFiles).subscribe({
         next: (data) => {
-          if (data.code === 200) {
+          if (data.code === API_RESPONSE_CODES.SUCCESS) {
             Swal.fire({
               icon: 'success',
               title: `Se registró correctamente el producto: ${productoNuevo.nombre}`,
@@ -170,6 +175,10 @@ export class ComponenteRegistroProductosComponent {
             icon: 'error',
             title: 'Error en la conexión con el servidor',
           });
+        },
+
+        complete: () => {
+          this.isLoading = false; // ✅ desactiva el loading al terminar
         }
       });
 

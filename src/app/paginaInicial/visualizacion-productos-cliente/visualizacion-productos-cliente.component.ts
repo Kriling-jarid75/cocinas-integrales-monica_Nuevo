@@ -74,9 +74,6 @@ export class VisualizacionProductosClienteComponent {
         this.productos = response.data || [];
         this.updatePage();
         this.isLoading = false;
-
-
-
         if (this.productos.length === 0) {
           Swal.fire({
             title: 'Sin productos',

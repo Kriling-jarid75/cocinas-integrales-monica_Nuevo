@@ -82,9 +82,21 @@
   <hr />
 
   <ul class="nav nav-pills flex-column mb-auto">
-    <li><a class="dropdown-item" routerLink="/admin/dashboard">Listado de Productos</a></li>
+    <li>
+      <div class="d-flex gap-2">
+        <img src="icons/nuevo-producto.png" style="border-radius: 30px; width: 50px; height: 40px;" alt="">
+        <a class="dropdown-item" routerLink="/admin/dashboard">Listado de Productos</a>
+      </div>
+
+    </li>
     <hr />
-    <li><a class="dropdown-item" routerLink="/admin/productos/registro">Registro de Productos</a></li>
+    <li>
+      <div class="d-flex gap-2">
+        <img src="icons/nuevo-producto.png" style="border-radius: 30px; width: 50px; height: 40px;" alt="">
+        <a class="dropdown-item" routerLink="/admin/productos/registro">Registro de Productos</a>
+      </div>
+    </li>
+
     <hr />
     <li><a class="dropdown-item" routerLink="/admin/categorias/listar">Listado de Categorias</a></li>
     <hr />
@@ -100,7 +112,7 @@
       <strong>Configuración</strong>
     </a>
     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-      <li><a class="dropdown-item" href="#">Perfil</a></li>
+      <li><a class="dropdown-item" >Perfil</a></li>
       <li>
         <hr class="dropdown-divider" />
       </li>

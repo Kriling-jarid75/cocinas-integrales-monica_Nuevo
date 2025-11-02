@@ -2,13 +2,7 @@
 <!-- Si hay conexión, mostrar el contenido normal -->
 
 <ng-template #contenidoOnline>
-
-
   <div class="form-container">
-
-
-
-
     <h1>Crear un producto nuevo</h1>
     <form [formGroup]="productoForm" (ngSubmit)="registrarProducto()" class="product-form">
 
@@ -89,9 +83,17 @@
       </div>
 
       <!-- Botón -->
-      <button class="btn btn-primary" type="submit" [disabled]="productoForm.invalid">
-        Registrar Producto
+      <button class="btn btn-primary" type="submit" [disabled]="productoForm.invalid || isLoading">
+        <ng-container *ngIf="!isLoading; else loading">
+          Registrar Producto
+        </ng-container>
+
+        <ng-template #loading>
+          <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+          <span class="ms-2" role="status">Registrando...</span>
+        </ng-template>
       </button>
+
     </form>
   </div>
 </ng-template>
