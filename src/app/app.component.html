@@ -1,16 +1,31 @@
 <div *ngIf="initialized">
+
+  <!-- Configuracion para el cliente o usuario que visite la pagina completa -->
+
   <ng-container *ngIf="!esAdmin">
     <app-componente-navegacion></app-componente-navegacion>
-    <router-outlet></router-outlet>
+    <!-- Si no hay conexión, mostrar componente de sin conexión -->
+    <app-componente-sin-conexion *ngIf="!online; else contenidoOnline"></app-componente-sin-conexion>
+    <!-- Si hay conexión, mostrar el contenido normal -->
+    <ng-template #contenidoOnline>
+      <router-outlet></router-outlet>
+    </ng-template>
     <app-componente-pie-pagina></app-componente-pie-pagina>
   </ng-container>
 
+
+
+  <!-- Configuracion para el admin  -->
   <ng-container *ngIf="esAdmin">
-    <router-outlet></router-outlet>
+      <router-outlet></router-outlet>
   </ng-container>
 </div>
+
+
 
 <div *ngIf="!initialized">
   Cargando...
 </div>
 
+<!-- Mostramos la barra sin internet sino lo hay -->
+<app-componente-barra-sin-internet/>

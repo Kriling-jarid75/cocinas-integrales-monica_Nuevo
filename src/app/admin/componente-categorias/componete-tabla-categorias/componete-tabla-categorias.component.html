@@ -1,4 +1,14 @@
 <div class="container mt-3">
+
+  <app-componente-sin-conexion *ngIf="!online; else contenidoOnline"></app-componente-sin-conexion>
+  <!-- Si hay conexión, mostrar el contenido normal -->
+  <ng-template #contenidoOnline>
+
+
+
+
+
+
     <div class="card shadow">
         <div class="card-body">
             <h1>Listado de Categorias Nuevas</h1>
@@ -82,7 +92,7 @@
                 <mat-paginator [length]="productos.length" [pageSize]="pageSize" [pageIndex]="currentPage"
                     [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)">
                 </mat-paginator>
-               
+
             </div>
 
 
@@ -94,4 +104,6 @@
             }
         </div> <!-- end card-body -->
     </div> <!-- end card -->
+
+    </ng-template>
 </div> <!-- end container -->

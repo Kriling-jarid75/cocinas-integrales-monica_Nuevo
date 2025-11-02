@@ -1,24 +1,25 @@
 <div class="container">
-
+  <app-componente-sin-conexion *ngIf="!online; else contenidoOnline"></app-componente-sin-conexion>
+  <!-- Si hay conexión, mostrar el contenido normal -->
+  <ng-template #contenidoOnline>
     <div id="productos" class="form-container">
-        <h1>Crear una categoria nueva</h1>
-        <form [formGroup]="categoriaForm" (ngSubmit)="registrarCategoria()" class="product-form">
+      <h1>Crear una categoria nueva</h1>
+      <form [formGroup]="categoriaForm" (ngSubmit)="registrarCategoria()" class="product-form">
 
-            <!-- Nombre -->
-            <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Nombre del categoria</mat-label>
-                <input matInput formControlName="nombreCategoria" placeholder="Ej: Pollo asado">
-                <mat-error *ngIf="categoriaForm.get('nombreCategoria')?.hasError('required')">
-                    El nombre de la categoria es obligatorio
-                </mat-error>
-            </mat-form-field>
+        <!-- Nombre -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nombre del categoria</mat-label>
+          <input matInput formControlName="nombreCategoria" placeholder="Ej: Pollo asado">
+          <mat-error *ngIf="categoriaForm.get('nombreCategoria')?.hasError('required')">
+            El nombre de la categoria es obligatorio
+          </mat-error>
+        </mat-form-field>
 
-            <!-- Botón -->
-            <button class="btn btn-primary" type="submit" [disabled]="!categoriaForm.valid">
-                Registrar Categoria
-            </button>
-        </form>
+        <!-- Botón -->
+        <button class="btn btn-primary" type="submit" [disabled]="!categoriaForm.valid">
+          Registrar Categoria
+        </button>
+      </form>
     </div>
-
-    <hr width="100%">
+  </ng-template>
 </div>

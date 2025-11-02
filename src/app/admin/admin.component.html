@@ -1,3 +1,10 @@
-<app-componente-navegacion></app-componente-navegacion>
+<div class="d-flex">
+  <!-- Sidebar -->
+  <app-componente-navegacion></app-componente-navegacion>
 
-<router-outlet></router-outlet>
+  <!-- Contenido dinámico -->
+  <div class="flex-grow-1 p-4 bg-light">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+

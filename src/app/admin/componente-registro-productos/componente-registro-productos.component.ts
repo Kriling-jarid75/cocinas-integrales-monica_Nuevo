@@ -9,6 +9,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { ServicioProductosService } from '../../services/servicio-productos.service';
 import Swal from 'sweetalert2';
 import { ModeloCategorias } from '../../models/productos/productos.module';
+import { ComponenteSinConexionComponent } from '../../componente-sin-conexion/componente-sin-conexion.component';
+import { OnlineServiceService } from '../../services/online-service.service';
 
 @Component({
   selector: 'app-componente-registro-productos',
@@ -20,7 +22,8 @@ import { ModeloCategorias } from '../../models/productos/productos.module';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    MatCardModule],
+    MatCardModule,
+    ComponenteSinConexionComponent],
   templateUrl: './componente-registro-productos.component.html',
   styleUrl: './componente-registro-productos.component.css'
 })
@@ -33,9 +36,11 @@ export class ComponenteRegistroProductosComponent {
 
   selectedImages: string[] = []; // URLs para mostrar vista previa
   imageFiles: File[] = []; // Archivos reales para enviar al backend
+  online = true;
 
-
-  constructor(private fb: FormBuilder, private service: ServicioProductosService) {
+  constructor(private fb: FormBuilder,
+    private service: ServicioProductosService,
+    private serviceSinConexion: OnlineServiceService) {
     this.productoForm = this.fb.group({
       nombre: ['', Validators.required],
       descripcion: ['', Validators.required],
@@ -48,6 +53,15 @@ export class ComponenteRegistroProductosComponent {
 
   ngOnInit() {
     this.obtenerCategorias();
+
+    this.validarInternet();
+  }
+
+  validarInternet() {
+    this.serviceSinConexion.online$.subscribe(status => {
+      this.online = status;
+      if (status) this.obtenerCategorias();
+    });
   }
 
 

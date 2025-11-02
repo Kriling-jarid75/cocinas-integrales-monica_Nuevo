@@ -1,0 +1,31 @@
+.banner {
+  position: fixed;
+  bottom: 0; /* 👈 si prefieres arriba, cambia por top: 0 */
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  font-weight: bold;
+  color: white;
+  font-size: 16px;
+  z-index: 9999;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.banner-offline {
+  background-color: #e53935; /* rojo alerta */
+}
+
+.banner-online {
+  background-color: #43a047; /* verde éxito */
+}
+
+.animate-fade {
+  animation: fadeOut 4s forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; transform: translateY(0); }
+  70% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(100%); visibility: hidden; }
+}

@@ -8,14 +8,20 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { API_RESPONSE_CODES, API_RESPONSE_MESSAGES } from '../../shared/codigosDeRespuesta';
+import { ɵEmptyOutletComponent } from "@angular/router";
+import { ComponenteSinConexionComponent } from '../../componente-sin-conexion/componente-sin-conexion.component';
+import { OnlineServiceService } from '../../services/online-service.service';
 
 
 @Component({
   selector: 'app-visualizacion-productos-cliente',
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     MatCardModule,
-    MatPaginatorModule, MatButtonModule, MatDialogModule],
+    MatPaginatorModule,
+    MatButtonModule,
+    MatDialogModule],
   templateUrl: './visualizacion-productos-cliente.component.html',
   styleUrl: './visualizacion-productos-cliente.component.css'
 })
@@ -31,6 +37,7 @@ export class VisualizacionProductosClienteComponent {
   currentPage = 0;
   pageSizeOptions = [6, 12, 24];
 
+
   constructor(private service: ServicioProductosService) { }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -43,7 +50,6 @@ export class VisualizacionProductosClienteComponent {
 
   cargarTodosLosProductos(): void {
 
-    debugger
     this.isLoading = true;
     this.service.listarProductos().subscribe({
       next: (response) => {

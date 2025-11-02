@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-light shadow">
+<!-- <nav class="navbar navbar-expand-lg bg-light shadow">
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/admin/" routerLinkActive="active">Bienvenido: <strong> {{nombreUsuario}}
       </strong></a>
@@ -8,7 +8,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <!-- Menú izquierda -->
+
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
         <li class="nav-item dropdown">
@@ -24,12 +24,17 @@
             <li><a class="dropdown-item" href="#">Something else here</a></li>
           </ul>
         </li>
+
+
+
+
+
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Gestion Categorias
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" routerLink="/admin/categorias/listar">Tabla de registros de categorias</a></li>
+            <li><a class="dropdown-item" routerLink="/admin/categorias/listar">Listado de Categorias</a></li>
             <li><a class="dropdown-item" routerLink="/admin/categorias/registro">Registro de categorias</a></li>
             <li>
               <hr class="dropdown-divider">
@@ -47,7 +52,7 @@
 
 
 
-      <!-- Bloque derecho: usuario -->
+
       <div class="dropdown">
         <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
           aria-expanded="false">
@@ -66,3 +71,40 @@
     </div>
   </div>
 </nav>
+ -->
+<div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px; height: 100vh;">
+  <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+    <img src="icons/admin.png" style="border-radius: 30px; width: 50px; height: 40px;" alt="">
+    <a class="navbar-brand" routerLink="/admin/" routerLinkActive="active">Bienvenido: <strong> {{nombreUsuario}}
+      </strong></a>
+  </a>
+
+  <hr />
+
+  <ul class="nav nav-pills flex-column mb-auto">
+    <li><a class="dropdown-item" routerLink="/admin/dashboard">Listado de Productos</a></li>
+    <hr />
+    <li><a class="dropdown-item" routerLink="/admin/productos/registro">Registro de Productos</a></li>
+    <hr />
+    <li><a class="dropdown-item" routerLink="/admin/categorias/listar">Listado de Categorias</a></li>
+    <hr />
+    <li><a class="dropdown-item" routerLink="/admin/categorias/registro">Registro de categorias</a></li>
+
+  </ul>
+
+  <div class="dropdown mt-auto">
+    <hr />
+    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+      data-bs-toggle="dropdown" aria-expanded="false">
+      <img src="icons/user.png" alt="" width="32" height="32" class="rounded-circle me-2" />
+      <strong>Configuración</strong>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+      <li><a class="dropdown-item" href="#">Perfil</a></li>
+      <li>
+        <hr class="dropdown-divider" />
+      </li>
+      <li><a class="dropdown-item" type="button" (click)="questionUser()">Cerrar Sesión</a></li>
+    </ul>
+  </div>
+</div>

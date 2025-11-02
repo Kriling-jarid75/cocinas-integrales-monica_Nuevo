@@ -6,11 +6,18 @@ import { ComponeteEditarCategoriasComponent } from '../componete-editar-categori
 import { MatDialog } from '@angular/material/dialog';
 import { ModeloCategorias } from '../../../models/productos/productos.module';
 import { ServicioProductosService } from '../../../services/servicio-productos.service';
+import { ComponenteSinConexionComponent } from '../../../componente-sin-conexion/componente-sin-conexion.component';
+import { OnlineServiceService } from '../../../services/online-service.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-componete-tabla-categorias',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatPaginatorModule,
+     ComponenteSinConexionComponent],
   templateUrl: './componete-tabla-categorias.component.html',
   styleUrl: './componete-tabla-categorias.component.css'
 })
@@ -29,11 +36,22 @@ export class ComponeteTablaCategoriasComponent {
 
   displayedColumns: string[] = ['idRegistro', 'nombreCategoria', 'Acciones'];
   dataSource = new MatTableDataSource<PeriodicElement>([]);
+  online = true;
 
-  constructor(private service: ServicioProductosService) { }
+  constructor(private service: ServicioProductosService,
+    private serviceSinConexion: OnlineServiceService
+  ) { }
 
   ngOnInit() {
     this.cargarProductos();
+    this.validarInternet();
+  }
+
+  validarInternet() {
+    this.serviceSinConexion.online$.subscribe(status => {
+      this.online = status;
+      if (status) this.cargarProductos();
+    });
   }
 
   cargarProductos() {

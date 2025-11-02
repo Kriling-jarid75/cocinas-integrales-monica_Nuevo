@@ -10,6 +10,8 @@ import { ServicioProductosService } from '../../services/servicio-productos.serv
 import { MatDialog } from '@angular/material/dialog';
 import { EditarProductoComponent } from '../componente-registro-productos/editar-producto/editar-producto.component';
 import Swal from 'sweetalert2';
+import { ComponenteSinConexionComponent } from '../../componente-sin-conexion/componente-sin-conexion.component';
+import { OnlineServiceService } from '../../services/online-service.service';
 
 
 @Component({
@@ -20,7 +22,8 @@ import Swal from 'sweetalert2';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    CommonModule],
+    CommonModule,
+    ComponenteSinConexionComponent],
   templateUrl: './componente-dashboard.component.html',
   styleUrl: './componente-dashboard.component.css'
 })
@@ -34,18 +37,26 @@ export class ComponenteDashboardComponent {
   displayedColumns: string[] = ['nombre', 'descripcion', 'categoria', 'precio', 'acciones'];
   dataSource = new MatTableDataSource<ProductosModuleCocinasNuevos>([]);
 
-  /*  @ViewChild(MatPaginator) paginator!: MatPaginator; */
-
   // Config paginador
   pageSize = 6;               // productos por página
   currentPage = 0;            // página inicial
   pageSizeOptions = [6, 12, 18];
   pagedProductos: any[] = [];
+  online = true;
 
-  constructor(private service: ServicioProductosService) { }
+  constructor(private service: ServicioProductosService,
+    private serviceSinConexion: OnlineServiceService) { }
 
   ngOnInit() {
     this.cargarProductos();
+    this.validarInternet();
+  }
+
+  validarInternet() {
+    this.serviceSinConexion.online$.subscribe(status => {
+      this.online = status;
+      if (status) this.cargarProductos();
+    });
   }
 
   cargarProductos() {

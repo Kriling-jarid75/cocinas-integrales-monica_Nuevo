@@ -1,47 +1,57 @@
-<div class="form-container">
-  <h1>Crear un producto nuevo</h1>
-  <form [formGroup]="productoForm" (ngSubmit)="registrarProducto()" class="product-form">
+<app-componente-sin-conexion *ngIf="!online; else contenidoOnline"></app-componente-sin-conexion>
+<!-- Si hay conexión, mostrar el contenido normal -->
 
-    <!-- Nombre -->
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Nombre del producto</mat-label>
-      <input matInput formControlName="nombre" placeholder="Ej: Pollo asado">
-      <mat-error *ngIf="productoForm.get('nombre')?.hasError('required')">
-        El nombre es obligatorio
-      </mat-error>
-    </mat-form-field>
+<ng-template #contenidoOnline>
 
-    <!-- Descripcion -->
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Descripcion del producto</mat-label>
-      <input matInput formControlName="descripcion" placeholder="Ej: Pollo asado">
-      <mat-error *ngIf="productoForm.get('descripcion')?.hasError('required')">
-        El Descripcion es obligatorio
-      </mat-error>
-    </mat-form-field>
+
+  <div class="form-container">
 
 
 
- <!-- Categoría -->
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Categoría de productos</mat-label>
-      <mat-select formControlName="categoria">
-        <mat-option *ngIf="categoriasNuevas?.length === 0" [value]="'0'" disabled>
-          SIN REGISTROS
-        </mat-option>
-        <mat-option *ngFor="let cat of categoriasNuevas" [value]="cat">
-          {{ cat.nombreCategoria }}
-        </mat-option>
 
-      </mat-select>
-      <mat-error *ngIf="productoForm.get('categoria')?.hasError('required')">
-        La categoría es obligatoria
-      </mat-error>
-    </mat-form-field>
+    <h1>Crear un producto nuevo</h1>
+    <form [formGroup]="productoForm" (ngSubmit)="registrarProducto()" class="product-form">
+
+      <!-- Nombre -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre del producto</mat-label>
+        <input matInput formControlName="nombre" placeholder="Ej: Pollo asado">
+        <mat-error *ngIf="productoForm.get('nombre')?.hasError('required')">
+          El nombre es obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Descripcion -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Descripcion del producto</mat-label>
+        <input matInput formControlName="descripcion" placeholder="Ej: Pollo asado">
+        <mat-error *ngIf="productoForm.get('descripcion')?.hasError('required')">
+          El Descripcion es obligatorio
+        </mat-error>
+      </mat-form-field>
 
 
-    <!-- Precio -->
-   <!--  <mat-form-field appearance="outline" class="full-width">
+
+      <!-- Categoría -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Categoría de productos</mat-label>
+        <mat-select formControlName="categoria">
+          <mat-option *ngIf="categoriasNuevas?.length === 0" [value]="'0'" disabled>
+            SIN REGISTROS
+          </mat-option>
+          <mat-option *ngFor="let cat of categoriasNuevas" [value]="cat">
+            {{ cat.nombreCategoria }}
+          </mat-option>
+
+        </mat-select>
+        <mat-error *ngIf="productoForm.get('categoria')?.hasError('required')">
+          La categoría es obligatoria
+        </mat-error>
+      </mat-form-field>
+
+
+      <!-- Precio este input de precio lo voy a subir porque mas adelante puede que use el del precio-->
+      <!--  <mat-form-field appearance="outline" class="full-width">
       <mat-label>Precio</mat-label>
 
 
@@ -57,38 +67,31 @@
       </mat-error>
     </mat-form-field> -->
 
+      <!-- Selección de imágenes -->
+      <div class="upload-container">
+        <button class="btn btn-primary" type="button" (click)="fileInput.click()">Seleccionar imágenes</button>
+        <input type="file" #fileInput (change)="onFileSelected($event)" multiple accept="image/*" hidden />
 
-
-
-    <!-- Selección de imágenes -->
-    <div class="upload-container">
-      <button class="btn btn-primary" type="button" (click)="fileInput.click()">Seleccionar imágenes</button>
-      <input type="file" #fileInput (change)="onFileSelected($event)" multiple accept="image/*" hidden />
-
-      <!-- Previsualización -->
-      <div class="preview-container" *ngIf="selectedImages.length > 0">
-        <div class="preview" *ngFor="let img of selectedImages; let i = index">
-          <img [src]="img" alt="Previsualización" />
-          <!-- Botón de eliminar -->
-          <button type="button" class="delete-btn" (click)="removeImage(i)">
-            <i class="bi bi-trash3-fill"></i>
-          </button>
+        <!-- Previsualización -->
+        <div class="preview-container" *ngIf="selectedImages.length > 0">
+          <div class="preview" *ngFor="let img of selectedImages; let i = index">
+            <img [src]="img" alt="Previsualización" />
+            <!-- Botón de eliminar -->
+            <button type="button" class="delete-btn" (click)="removeImage(i)">
+              <i class="bi bi-trash3-fill"></i>
+            </button>
+          </div>
         </div>
+
+        <mat-error *ngIf="productoForm.get('imagenes')?.hasError('required') && productoForm.get('imagenes')?.touched">
+          Debes seleccionar al menos una imagen
+        </mat-error>
       </div>
 
-      <mat-error *ngIf="productoForm.get('imagenes')?.hasError('required') && productoForm.get('imagenes')?.touched">
-        Debes seleccionar al menos una imagen
-      </mat-error>
-    </div>
-
-
-
-
-    <!-- Botón -->
-    <button class="btn btn-primary" type="submit" [disabled]="productoForm.invalid">
-      Registrar Producto
-    </button>
-  </form>
-</div>
-
-<hr width="100%">
+      <!-- Botón -->
+      <button class="btn btn-primary" type="submit" [disabled]="productoForm.invalid">
+        Registrar Producto
+      </button>
+    </form>
+  </div>
+</ng-template>
