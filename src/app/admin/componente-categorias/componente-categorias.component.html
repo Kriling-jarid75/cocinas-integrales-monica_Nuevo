@@ -16,9 +16,16 @@
         </mat-form-field>
 
         <!-- Botón -->
-        <button class="btn btn-primary" type="submit" [disabled]="!categoriaForm.valid">
-          Registrar Categoria
-        </button>
+      <button class="btn btn-primary" type="submit" [disabled]="categoriaForm.invalid || isLoading">
+        <ng-container *ngIf="!isLoading; else loading">
+          Registrar Producto
+        </ng-container>
+
+        <ng-template #loading>
+          <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+          <span class="ms-2" role="status">Registrando...</span>
+        </ng-template>
+      </button>
       </form>
     </div>
   </ng-template>

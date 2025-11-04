@@ -26,10 +26,11 @@ export class ComponenteCategoriasComponent {
 
   categoriaForm!: FormGroup;
   online = true;
+  isLoading = false;
 
   constructor(private fb: FormBuilder,
     private service: ServicioProductosService,
-   private serviceSinConexion: OnlineServiceService) { }
+    private serviceSinConexion: OnlineServiceService) { }
 
   ngOnInit() {
     this.categoriaForm = this.fb.group({
@@ -50,6 +51,8 @@ export class ComponenteCategoriasComponent {
     if (this.categoriaForm.valid) {
 
       const nombreCategoria = this.categoriaForm.value.nombreCategoria;
+
+      this.isLoading = true; // 🚀 activa el loading
 
       this.service.crearCategoria(this.categoriaForm.value).subscribe({
         next: (data) => {
@@ -75,6 +78,9 @@ export class ComponenteCategoriasComponent {
             icon: 'error',
             title: 'Error en la conexión con el servidor',
           });
+        },
+         complete: () => {
+          this.isLoading = false; // ✅ desactiva el loading al terminar
         }
       });
 
