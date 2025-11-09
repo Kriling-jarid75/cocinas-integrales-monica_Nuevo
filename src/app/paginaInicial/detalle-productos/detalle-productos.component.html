@@ -30,15 +30,26 @@
   </p>
 
   <!-- Descripción larga -->
-  <p class="mb-3"><strong> Descripción del producto: </strong> {{ producto.descripcion }}</p>
+  <!-- <p class="mb-3"><strong> Descripción del producto: </strong> {{ producto.descripcion }}</p> -->
 
-  <!-- Características destacadas (si quieres agregar más info) -->
-  <div *ngIf="producto.caracteristicas?.length">
-    <h4>Características:</h4>
-    <ul>
-      <li *ngFor="let item of producto.caracteristicas">{{ item }}</li>
-    </ul>
-  </div>
+
+  <mat-accordion>
+    <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+      <mat-expansion-panel-header>
+        <strong> Descripción del producto: </strong>
+      </mat-expansion-panel-header>
+      <p>{{ producto.descripcion }}</p>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+
+
+
+
+
+
+
+
 
   <!-- Botones -->
   <div class="d-flex justify-content-end mt-4">

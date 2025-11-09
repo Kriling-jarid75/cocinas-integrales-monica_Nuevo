@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { CategoriasProductos } from '../../modules/productos-module/productos-module';
 import { ServicioProductosService } from '../../services/servicio-productos.service';
 import Swal from 'sweetalert2';
+import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta';
 
 
 @Component({
@@ -24,7 +25,7 @@ import Swal from 'sweetalert2';
 })
 export class ComponenteCategoriasProductosComponent {
 
-  
+
   categoriasNuevas: CategoriasProductos[] = [];
   categoriaSeleccionada: string = 'Todos los productos'; // ✅ Valor inicial
   isLoading = false;
@@ -42,7 +43,7 @@ export class ComponenteCategoriasProductosComponent {
   private obtenerCategorias(): void {
     this.service.obtenerCategorias().subscribe({
       next: (response) => {
-        if (response.code === 200) {
+        if (response.code === API_RESPONSE_CODES.SUCCESS) {
           this.categoriasNuevas = response.data as CategoriasProductos[];
         } else {
           Swal.fire({

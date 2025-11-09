@@ -4,7 +4,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { ProductosModuleCocinasNuevos } from '../../models/productos/productos.module';
 import { ServicioProductosService } from '../../services/servicio-productos.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,6 +12,7 @@ import { EditarProductoComponent } from '../componente-registro-productos/editar
 import Swal from 'sweetalert2';
 import { ComponenteSinConexionComponent } from '../../componente-sin-conexion/componente-sin-conexion.component';
 import { OnlineServiceService } from '../../services/online-service.service';
+import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta';
 
 
 @Component({
@@ -34,7 +35,8 @@ export class ComponenteDashboardComponent {
   productos: ProductosModuleCocinasNuevos[] = [];
   errorMessage: string | null = null;
 
-  displayedColumns: string[] = ['nombre', 'descripcion', 'categoria', 'precio', 'acciones'];
+  /* displayedColumns: string[] = ['nombre', 'descripcion', 'categoria', 'precio', 'acciones']; */
+    displayedColumns: string[] = ['nombre', 'descripcion', 'categoria', 'acciones'];
   dataSource = new MatTableDataSource<ProductosModuleCocinasNuevos>([]);
 
   // Config paginador
@@ -64,10 +66,12 @@ export class ComponenteDashboardComponent {
     this.service.listarProductos().subscribe({
       next: (response) => {
         // Si tu backend devuelve GenericResponse<List<Productos>>:
-        if (response.code === 200) {
+        if (response.code === API_RESPONSE_CODES.SUCCESS) {
           setTimeout(() => {
             this.productos = response.data; // 'data' viene del backend
             //this.dataSource = new MatTableDataSource(this.productos);
+
+            console.log("mostramos los datos obtenidos " + JSON.stringify(this.productos));
             this.currentPage = 0;
             this.updatePage();
             this.isLoading = false; // desactivamos cuando ya cargó

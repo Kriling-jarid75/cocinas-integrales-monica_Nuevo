@@ -77,7 +77,7 @@ export class ServicioProductosService {
   */
   /*
     getProductos() {
-  
+
       return this.productosCocinas;
     }
 
@@ -173,6 +173,9 @@ export class ServicioProductosService {
 
   // 🔹 Obtener productos por categoría
   getProductosPorCategoriaNueva(categoria: string): Observable<any> {
+
+
+    debugger
 
     return this.http.post<any>(`${this.baseUrl}/categoria/${categoria}`, {});
   }

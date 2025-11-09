@@ -1,21 +1,26 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
+import {MatExpansionModule} from '@angular/material/expansion';
+
+
 
 @Component({
   selector: 'app-detalle-productos',
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule, CommonModule, MatTabsModule],
+  imports: [MatDialogModule, MatButtonModule, CommonModule, MatTabsModule,MatExpansionModule],
   templateUrl: './detalle-productos.component.html',
   styleUrl: './detalle-productos.component.css',
    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetalleProductosComponent {
 
-   producto: any;
+  producto: any;
   categoria: string;
+
+  readonly panelOpenState = signal(false);
 
   constructor(
     public dialogRef: MatDialogRef<DetalleProductosComponent>,

@@ -50,10 +50,14 @@ export class VisualizacionProductosClienteComponent {
 
   cargarTodosLosProductos(): void {
 
+debugger
+
     this.isLoading = true;
     this.service.listarProductos().subscribe({
       next: (response) => {
         this.productos = response.data || [];
+
+           console.log("mostramos el valor " + JSON.stringify(this.productos))
         this.updatePage();
         this.isLoading = false;
 
@@ -68,10 +72,15 @@ export class VisualizacionProductosClienteComponent {
   }
 
   cargarProductosPorCategoria(categoria: string): void {
+
+    debugger
+
     this.isLoading = true;
     this.service.getProductosPorCategoriaNueva(categoria).subscribe({
       next: (response) => {
         this.productos = response.data || [];
+
+        console.log("mostramos el valor " + JSON.stringify(this.productos))
         this.updatePage();
         this.isLoading = false;
         if (this.productos.length === 0) {
