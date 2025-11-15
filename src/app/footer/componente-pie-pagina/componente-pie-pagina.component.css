@@ -4,10 +4,22 @@
   object-fit: contain;
 }
 
+
+
+
 .perfilPersonal{
-  color: rgb(177, 175, 175);
+  text-decoration: none;
+  color: #0027a5;
+  font-size: large;
+  font-weight: bold;
 }
 
+.perfilPersonal:visited{
+  text-decoration: underline;
+}
+
+
+
 .perfilPersonal:hover{
-  color: rgb(70, 69, 69);
+  color: rgb(70, 70, 70);
 }
