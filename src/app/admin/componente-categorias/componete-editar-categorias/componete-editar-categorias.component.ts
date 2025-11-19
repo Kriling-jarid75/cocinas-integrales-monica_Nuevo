@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import Swal from 'sweetalert2';
 import { ServicioProductosService } from '../../../services/servicio-productos.service';
+import { API_RESPONSE_CODES } from '../../../shared/codigosDeRespuesta';
 
 @Component({
   selector: 'app-componete-editar-categorias',
@@ -26,7 +27,7 @@ import { ServicioProductosService } from '../../../services/servicio-productos.s
 })
 export class ComponeteEditarCategoriasComponent {
 
-  categoria: any;
+  categoriaNombre: any;
   categoriaForm!: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<ComponeteEditarCategoriasComponent>,
@@ -34,13 +35,13 @@ export class ComponeteEditarCategoriasComponent {
     private service: ServicioProductosService,
     private fb: FormBuilder) {
 
-    this.categoria = data.categoria;
+    this.categoriaNombre = data.categoria;
   }
 
 
   ngOnInit() {
     this.categoriaForm = this.fb.group({
-      nombreCategoria: [this.categoria?.nombreCategoria || '', Validators.required]
+      nombreCategoria: [this.categoriaNombre?.nombreCategoria || '', Validators.required]
     });
   }
 
@@ -48,15 +49,22 @@ export class ComponeteEditarCategoriasComponent {
   editarCategoria() {
     if (this.categoriaForm.valid) {
 
-      const nombreCategoria = this.categoriaForm.value.nombreCategoria;
+
+      const dataNueva = {
+        idCategoria: this.data.categoria.idCategoria,
+        nombreCategoria : this.categoriaForm.value.nombreCategoria,
+      }
+
+
+debugger
 
       // Llamada al servicio
-      this.service.editarProducto(this.categoriaForm.value).subscribe({
+      this.service.editarCategoria(dataNueva).subscribe({
         next: (data) => {
-          if (data.code === 200) {
+          if (data.code === API_RESPONSE_CODES.SUCCESS) {
             Swal.fire({
               icon: 'success',
-              title: `Se actualizó correctamente el producto: ${nombreCategoria}`,
+              title: `Se actualizó correctamente el producto: ${dataNueva.nombreCategoria}`,
               text: data.message
             });
             this.cerrar();

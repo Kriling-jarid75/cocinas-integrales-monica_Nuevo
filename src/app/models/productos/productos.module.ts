@@ -1,13 +1,4 @@
-export class ProductosModuleCocinas {
-  "categoria":string;
-  "titulo":string;
-  "descripcion":string;
-  "url":string
-
-}
-
-
-//creacion de un producto nuevo con una categoria
+//Modelo para crear una nuevo producto
 export class ProductosModuleCocinasNuevos {
   id?: number;
   "nombre": string;
@@ -17,10 +8,23 @@ export class ProductosModuleCocinasNuevos {
 
 }
 
-//Gestion de una categoria nueva
+//Modelo para crear una nueva categoria
 export class ModeloCategorias {
   "idCategoria": number;
   "nombreCategoria": string;
 }
 
+//Modelo de Prueba
+export class ProductosModuleCocinas {
+  "categoria":string;
+  "titulo":string;
+  "descripcion":string;
+  "url":string
 
+}
+
+//Modelo de prueba
+export class ProductosModule {
+  "nombre": string;
+  "url": string
+}

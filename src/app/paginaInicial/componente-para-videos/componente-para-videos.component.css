@@ -1,0 +1,87 @@
+
+.brand-carousel {
+  display: flex;               /* Hace que los items estén en fila */
+  overflow-x: auto;            /* Permite scroll horizontal */
+  scroll-snap-type: x mandatory; /* Snap al centro del item al hacer scroll */
+  gap: 1rem;                   /* Espacio entre videos o logos */
+  padding: 1rem;
+  background: aliceblue;       /* Fondo del carrusel */
+}
+
+.single-logo {
+  flex: 0 0 auto;              /* Evita que se reduzcan los items */
+  width: 250px;                /* Tamaño del item en desktop */
+  scroll-snap-align: center;   /* Snap al centro */
+  border-radius: 1rem;         /* Bordes redondeados */
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Sombra ligera */
+  overflow: hidden;
+  text-align: center;
+}
+
+.single-logo video,
+.single-logo img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;           /* Ajusta contenido al contenedor sin deformar */
+}
+
+
+.single-logo {
+  position: relative; /* Para que el overlay se posicione sobre el video */
+}
+
+.video-wrapper {
+  position: relative;
+}
+
+.volume-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(151, 151, 151, 0.5);
+  color: #fff;
+  width: 40px;        /* ancho fijo */
+  height: 40px;       /* alto fijo igual al ancho */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* círculo perfecto */
+  cursor: pointer;
+  z-index: 10;
+}
+
+.volume-icon i {
+  font-size: 18px;
+}
+
+
+
+
+.video-info {
+  padding: 0.75rem;
+}
+
+.video-info h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.video-info p {
+  margin: 0.3rem 0 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Responsive: tablets y móviles */
+@media (max-width: 768px) {
+  .single-logo { width: 180px; }
+}
+@media (max-width: 480px) {
+  .single-logo { width: 150px; }
+}
+
+
+

@@ -29,16 +29,19 @@ import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta';
   styleUrl: './componente-registro-productos.component.css'
 })
 export class ComponenteRegistroProductosComponent {
+
+
+  isEdicion = false;
+  idProducto!:number;
+
   productoForm: FormGroup;
-  //public precio: string;
-
-
   categoriasNuevas!: Array<ModeloCategorias>;
-
   selectedImages: string[] = []; // URLs para mostrar vista previa
   imageFiles: File[] = []; // Archivos reales para enviar al backend
   online = true;
   isLoading = false;
+
+
 
   constructor(private fb: FormBuilder,
     private service: ServicioProductosService,

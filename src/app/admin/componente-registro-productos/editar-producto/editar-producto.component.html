@@ -21,7 +21,7 @@
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Categoría</mat-label>
       <mat-select formControlName="categoria">
-        <mat-option *ngIf="categoriasNuevas?.length === 0" disabled>SIN CATEGORÍAS</mat-option>
+        <mat-option *ngIf="categoriasNuevas.length === 0" disabled>SIN CATEGORÍAS</mat-option>
         <mat-option>Seleccione una categoria nueva</mat-option>
         <mat-option *ngFor="let cat of categoriasNuevas" [value]="cat.idCategoria">
           {{ cat.nombreCategoria }}

@@ -62,7 +62,7 @@ export class EditarProductoComponent {
 
   cargarCategorias() {
 
-    debugger
+
     // ✅ Si hay caché, úsala
     if (EditarProductoComponent.categoriasCache) {
       this.categoriasNuevas = [...EditarProductoComponent.categoriasCache];

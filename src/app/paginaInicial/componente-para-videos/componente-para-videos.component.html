@@ -1,0 +1,29 @@
+<div class="brand-carousel">
+  @if (videos === null) {
+  <div class="text-center p-3">
+    <div class="spinner-border"></div>
+    <p>Cargando videos...</p>
+  </div>
+  }
+  @else if (videos.length > 0) {
+    @for (video of videos; let i = $index; track i) {
+    <div class="single-logo">
+      <div class="video-wrapper">
+        <video #videoElement class="reel-video" [src]="video.src" autoplay loop playsinline [muted]="video.muted"></video>
+        <div class="volume-icon" (click)="toggleSound(video, i)">
+          <i class="bi" [ngClass]="video.muted ? 'bi-volume-mute-fill' : 'bi-volume-up-fill'"></i>
+        </div>
+      </div>
+      <div class="video-info">
+        <h3>{{ video.title }}</h3>
+        <p>{{ video.description }}</p>
+      </div>
+    </div>
+    }
+  }
+  @else {
+  <div class="alert alert-danger text-center">
+    Por el momento no hay videos disponibles
+  </div>
+  }
+</div>

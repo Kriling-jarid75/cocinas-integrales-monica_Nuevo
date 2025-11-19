@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { ProductosModule } from '../modules/productos-module/productos-module';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
-import { ModeloCategorias, ProductosModuleCocinas, ProductosModuleCocinasNuevos } from '../models/productos/productos.module';
+import { ModeloCategorias, ProductosModule, ProductosModuleCocinas, ProductosModuleCocinasNuevos } from '../models/productos/productos.module';
 import { environment } from '../../environments/environments';
 import { GenericResponse } from '../models/modeloGericoResponseEntity/modeloGenericResponse.module';
 
@@ -70,32 +69,13 @@ export class ServicioProductosService {
   constructor() { }
 
 
-  /*  getProductos() {
 
-     return this.productos;
-   }
-  */
-  /*
-    getProductos() {
-
-      return this.productosCocinas;
-    }
-
-    getProductosPorCategoria(categoria: string) {
-      return this.productosCocinas.filter(p => p.categoria === categoria);
-    }
-   */
-
-
-  /*   // Método para crear un producto
-    crearProducto(producto: ProductosModuleCocinasNuevos): Observable<GenericResponse<string>> {
-      // Aquí ya no es necesario volver a mapear las propiedades si coinciden
-      return this.http.post<GenericResponse<string>>(`${this.baseUrl}/registrar`, producto).pipe(
-        catchError(this.handleError) // 👈 Manejo centralizado
-      );
-    } */
-
-
+  listarProductos(): Observable<any> {
+    // Aquí ya no es necesario volver a mapear las propiedades si coinciden
+    return this.http.post<string>(`${this.baseUrl}/productos/listar`, {}).pipe(
+      catchError(this.handleError) // 👈 Manejo centralizado
+    );;
+  }
 
 
 
@@ -113,20 +93,6 @@ export class ServicioProductosService {
     return this.http.post<GenericResponse<string>>(`${this.baseUrl}/productos/registro`, formData);
   }
 
-
-
-
-
-
-  listarProductos(): Observable<any> {
-    // Aquí ya no es necesario volver a mapear las propiedades si coinciden
-    return this.http.post<string>(`${this.baseUrl}/productos/listar`, {}).pipe(
-      catchError(this.handleError) // 👈 Manejo centralizado
-    );;
-  }
-
-
-
   // Método para crear un producto
   editarProducto(producto: ProductosModuleCocinasNuevos): Observable<GenericResponse<string>> {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
@@ -142,13 +108,20 @@ export class ServicioProductosService {
     );
   }
 
+  /* +++++++++++++++++++++++++++ METODOS PARA OBTENER LA IFNROMACION DE LAS CATEGORIAS ++++++++++++++++++++++++++++++ */
 
+  obtenerCategorias(): Observable<any> {
+    // Aquí ya no es necesario volver a mapear las propiedades si coinciden
+    return this.http.post(`${this.baseUrl}/listar/categorias`, {}).pipe(
+      catchError(this.handleError) // 👈 Manejo centralizado
+    );
+  }
 
+  // 🔹 Obtener productos por categoría
+  getProductosPorCategoriaNueva(categoria: string): Observable<any> {
 
-
-
-  /*  METODOS PARA OBTENER LA IFNROMACION DE LAS CATEGORIAS */
-
+    return this.http.post<any>(`${this.baseUrl}/categoria/${categoria}`, {});
+  }
 
   // Método para crear una categoria nueva
   crearCategoria(categoria: ModeloCategorias): Observable<GenericResponse<string>> {
@@ -158,26 +131,13 @@ export class ServicioProductosService {
     );
   }
 
-
-
-
-  obtenerCategorias(): Observable<any> {
+   // Método para editar una categoria
+  editarCategoria(categorias: ModeloCategorias): Observable<GenericResponse<string>> {
 
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
-    return this.http.post(`${this.baseUrl}/listar/categorias`, {}).pipe(
+    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/categoria/editar`, categorias).pipe(
       catchError(this.handleError) // 👈 Manejo centralizado
     );
-  }
-
-
-
-  // 🔹 Obtener productos por categoría
-  getProductosPorCategoriaNueva(categoria: string): Observable<any> {
-
-
-    debugger
-
-    return this.http.post<any>(`${this.baseUrl}/categoria/${categoria}`, {});
   }
 
 

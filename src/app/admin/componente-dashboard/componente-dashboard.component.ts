@@ -106,9 +106,9 @@ export class ComponenteDashboardComponent {
   }
 
   //Editar Producto
-  updateProduct(prodcto: ProductosModuleCocinasNuevos) {
+  updateProduct(producto: ProductosModuleCocinasNuevos) {
     const dialogRef = this.dialog.open(EditarProductoComponent, {
-      data: prodcto, // 👈 En lugar de mandar todo el objeto, mandas solo el producto interno
+      data: producto, // 👈 En lugar de mandar todo el objeto, mandas solo el producto interno
     });
 
     // Espera a que se cierre el diálogo
@@ -138,11 +138,6 @@ export class ComponenteDashboardComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.borrado(producto);
-        Swal.fire({
-          title: "Eliminado!",
-          text: "El producto fue eliminado",
-          icon: "success"
-        });
       }
     });
   }
@@ -150,7 +145,7 @@ export class ComponenteDashboardComponent {
   borrado(producto: ProductosModuleCocinasNuevos) {
     this.service.eliminarProducto(producto).subscribe({
       next: (data) => {
-        if (data.code === 200) {
+        if (data.code === API_RESPONSE_CODES.SUCCESS) {
           Swal.fire({
             icon: 'success',
             title: `Se eliminó correctamente el producto: ${producto.nombre}`,

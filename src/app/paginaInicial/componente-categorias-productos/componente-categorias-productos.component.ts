@@ -5,10 +5,10 @@ import { CommonModule } from '@angular/common';
 import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { CategoriasProductos } from '../../modules/productos-module/productos-module';
 import { ServicioProductosService } from '../../services/servicio-productos.service';
 import Swal from 'sweetalert2';
 import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta';
+import { ModeloCategorias } from '../../models/productos/productos.module';
 
 
 @Component({
@@ -26,7 +26,7 @@ import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta';
 export class ComponenteCategoriasProductosComponent {
 
 
-  categoriasNuevas: CategoriasProductos[] = [];
+  categoriasNuevas: ModeloCategorias[] = [];
   categoriaSeleccionada: string = 'Todos los productos'; // ✅ Valor inicial
   isLoading = false;
 
@@ -44,7 +44,7 @@ export class ComponenteCategoriasProductosComponent {
     this.service.obtenerCategorias().subscribe({
       next: (response) => {
         if (response.code === API_RESPONSE_CODES.SUCCESS) {
-          this.categoriasNuevas = response.data as CategoriasProductos[];
+          this.categoriasNuevas = response.data as ModeloCategorias[];
         } else {
           Swal.fire({
             icon: 'error',

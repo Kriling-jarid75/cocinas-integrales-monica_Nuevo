@@ -2,45 +2,45 @@
   <div class="container ">
     <div class="row">
       @if (isLoading) {
-      <!-- Skeleton cards mientras carga -->
-      @for (item of [1,2,3,4,5,6]; track $index) {
-      <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-        <div class="card h-100 shadow-custom skeleton-card" aria-hidden="true">
-          <div class="skeleton skeleton-img"></div>
-          <div class="card-body">
-            <div class="skeleton skeleton-text title"></div>
-            <div class="skeleton skeleton-text"></div>
-            <div class="skeleton skeleton-text short"></div>
+        <!-- Skeleton cards mientras carga -->
+        @for (item of [1,2,3,4,5,6]; track $index) {
+          <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card h-100 shadow-custom skeleton-card" aria-hidden="true">
+              <div class="skeleton skeleton-img"></div>
+              <div class="card-body">
+                <div class="skeleton skeleton-text title"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text short"></div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      }
+        }
       }
 
       @if (!isLoading) {
-      @if (pagedProductos.length > 0) {
-      @for (producto of pagedProductos; track $index) {
-      <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-        <div class="card h-100 shadow-custom">
-          <img class="card-img-top" [src]="producto.imagen[0].urlImagen" alt="{{ producto.imagen[0].nombreImagen }}"
-            (error)="onImagenError($event)" />
-          <div class="card-body">
-           <strong> Categoria del Producto: </strong>
-          <span class="badge text-bg-info">{{ producto.categoria.nombreCategoria }}</span>
-            <h6 class="card-title"> <strong>Nombre Producto:</strong> {{ producto.nombre }}</h6>
-            <a type="button" (click)="openDialog(producto)" class="btn btn-primary">Ver detalle</a>
+        @if (pagedProductos.length > 0) {
+          @for (producto of pagedProductos; track $index) {
+            <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+              <div class="card h-100 shadow-custom">
+                <img class="card-img-top" [src]="producto.imagen[0].urlImagen" alt="{{ producto.imagen[0].nombreImagen }}"
+                  (error)="onImagenError($event)" />
+                <div class="card-body">
+                  Categoria:
+                <span class="badge text-bg-success">{{ producto.categoria.nombreCategoria }}</span>
+                  <p class="card-title"> Nombre: {{ producto.nombre }}</p>
+                  <a type="button" (click)="openDialog(producto)" class="btn btn-warning">Ver detalle</a>
+                </div>
+              </div>
+            </div>
+          }
+          <mat-paginator [length]="productos.length" [pageSize]="pageSize" [pageIndex]="currentPage"
+            [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)">
+          </mat-paginator>
+        } @else {
+          <div class="alert alert-danger text-center" role="alert">
+            Por el momento no hay {{categoria}} disponibles
           </div>
-        </div>
-      </div>
-      }
-      <mat-paginator [length]="productos.length" [pageSize]="pageSize" [pageIndex]="currentPage"
-        [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)">
-      </mat-paginator>
-      } @else {
-      <div class="alert alert-danger text-center" role="alert">
-        Por el momento no hay {{categoria}} disponibles
-      </div>
-      }
+        }
       }
     </div>
   </div>

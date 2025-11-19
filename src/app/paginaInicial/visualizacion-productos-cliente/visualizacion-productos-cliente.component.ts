@@ -7,10 +7,6 @@ import { Component, inject, Input, SimpleChanges, ViewChild } from '@angular/cor
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-import { API_RESPONSE_CODES, API_RESPONSE_MESSAGES } from '../../shared/codigosDeRespuesta';
-import { ɵEmptyOutletComponent } from "@angular/router";
-import { ComponenteSinConexionComponent } from '../../componente-sin-conexion/componente-sin-conexion.component';
-import { OnlineServiceService } from '../../services/online-service.service';
 
 
 @Component({
@@ -50,7 +46,6 @@ export class VisualizacionProductosClienteComponent {
 
   cargarTodosLosProductos(): void {
 
-debugger
 
     this.isLoading = true;
     this.service.listarProductos().subscribe({
@@ -73,7 +68,7 @@ debugger
 
   cargarProductosPorCategoria(categoria: string): void {
 
-    debugger
+
 
     this.isLoading = true;
     this.service.getProductosPorCategoriaNueva(categoria).subscribe({

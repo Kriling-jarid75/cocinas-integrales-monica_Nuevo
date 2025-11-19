@@ -3,12 +3,16 @@ import Swal from 'sweetalert2';
 import { InicioSesionService } from '../../services/inicio-sesion.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink } from '@angular/router';
+
+declare var bootstrap: any;
+
+
 
 @Component({
   selector: 'app-componente-navegacion',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink],
   templateUrl: './componente-navegacion.component.html',
   styleUrl: './componente-navegacion.component.css'
 })
@@ -17,8 +21,40 @@ export class ComponenteNavegacionComponent implements OnInit {
 
   constructor(private authService: InicioSesionService, private router: Router) {}
 
+/*  constructor(private router: Router) {}
+
+ ngOnInit(): void {
+    this.router.events.subscribe(() => {
+      const navbar = document.getElementById('navbarCollapse');
+      const bsCollapse = bootstrap.Collapse.getInstance(navbar);
+      if (bsCollapse) {
+        bsCollapse.hide();
+      }
+    });
+  } */
+
+
   ngOnInit() {
     this.nombreUsuario = localStorage.getItem('nombre') || 'Usuario';
+
+    this.router.events.subscribe(() => {
+      const navbar = document.getElementById('navbarCollapse');
+      const bsCollapse = bootstrap.Collapse.getInstance(navbar);
+      if (bsCollapse) {
+        bsCollapse.hide();
+      }
+    });
+
+
+
+
+
+
+
+
+
+
+
 
     // Bloquear botón "atrás"
     history.pushState(null, '', location.href);
