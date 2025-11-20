@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import Swal from 'sweetalert2';
 import { ServicioProductosService } from '../../../services/servicio-productos.service';
-import { API_RESPONSE_CODES } from '../../../shared/codigosDeRespuesta';
+import { API_RESPONSE_CODES } from '../../../shared/codigosDeRespuesta/codigosDeRespuesta';
 
 @Component({
   selector: 'app-componete-editar-categorias',

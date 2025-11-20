@@ -3,14 +3,14 @@
   <!-- Configuracion para el cliente o usuario que visite la pagina completa -->
 
   <ng-container *ngIf="!esAdmin">
-    <app-componente-navegacion></app-componente-navegacion>
+    <app-componente-navbar></app-componente-navbar>
     <!-- Si no hay conexión, mostrar componente de sin conexión -->
     <app-componente-sin-conexion *ngIf="!online; else contenidoOnline"></app-componente-sin-conexion>
     <!-- Si hay conexión, mostrar el contenido normal -->
     <ng-template #contenidoOnline>
       <router-outlet></router-outlet>
     </ng-template>
-    <app-componente-pie-pagina></app-componente-pie-pagina>
+    <app-pie-de-pagina></app-pie-de-pagina>
   </ng-container>
 
 

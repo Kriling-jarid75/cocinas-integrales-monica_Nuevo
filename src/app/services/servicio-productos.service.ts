@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
-import { ModeloCategorias, ProductosModule, ProductosModuleCocinas, ProductosModuleCocinasNuevos } from '../models/productos/productos.module';
+import { Email, ModeloCategorias, ProductosModule, ProductosModuleCocinas, ProductosModuleCocinasNuevos } from '../models/productos/productos.module';
 import { environment } from '../../environments/environments';
 import { GenericResponse } from '../models/modeloGericoResponseEntity/modeloGenericResponse.module';
 
@@ -131,7 +131,7 @@ export class ServicioProductosService {
     );
   }
 
-   // Método para editar una categoria
+  // Método para editar una categoria
   editarCategoria(categorias: ModeloCategorias): Observable<GenericResponse<string>> {
 
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
@@ -139,6 +139,21 @@ export class ServicioProductosService {
       catchError(this.handleError) // 👈 Manejo centralizado
     );
   }
+
+
+  /* metodo de enviar correo electronico */
+  enviarEmail(email: Email): Observable<any> {
+
+    debugger
+
+
+    return this.http.post(`${this.baseUrl}/enviar/email`, email).pipe(
+      catchError(this.handleError) // 👈 Manejo centralizado
+    );
+  }
+
+
+
 
 
   private handleError(error: any) {

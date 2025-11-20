@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { OnlineServiceService } from '../services/online-service.service';
+import { OnlineServiceService } from '../../services/online-service.service';
+
 
 @Component({
   selector: 'app-componente-barra-sin-internet',

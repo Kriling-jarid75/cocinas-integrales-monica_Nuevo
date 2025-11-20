@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ServicioProductosService } from '../../services/servicio-productos.service';
 import Swal from 'sweetalert2';
-import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta';
+import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta/codigosDeRespuesta';
 import { ModeloCategorias } from '../../models/productos/productos.module';
 
 

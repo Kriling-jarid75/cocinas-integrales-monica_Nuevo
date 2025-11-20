@@ -5,13 +5,22 @@
 }
 
 
+.numeroContacto{
+  text-decoration: none;
+  color: black;
+
+}
+
+.numeroContacto:hover{
+  color: blue;
+
+}
 
 
 .perfilPersonal{
-  text-decoration: none;
-  color: #0027a5;
+  color: #6e6f70;
   font-size: large;
-  font-weight: bold;
+  font-style: italic;
 }
 
 .perfilPersonal:visited{

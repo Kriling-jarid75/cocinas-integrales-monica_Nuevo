@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/AuthGuard';
 import { LoginGuard } from './guards/LoginGuard';
-import { PaginaNoEncontrada2Component } from './pagina-no-encontrada-2/pagina-no-encontrada-2.component';
+import { PaginaNoEncontrada2Component } from './shared/pagina-no-encontrada-2/pagina-no-encontrada-2.component';
 
 export const routes: Routes = [
   // Público
@@ -10,7 +10,7 @@ export const routes: Routes = [
   { path: 'paginaEnConstruccion', component: PaginaNoEncontrada2Component },
   {
     path: 'login',
-    loadComponent: () => import('./login/inicio-sesion/inicio-sesion.component').then(m => m.InicioSesionComponent),
+    loadComponent: () => import('./shared/inicio-sesion-admins/inicio-sesion-admins.component').then(m => m.InicioSesionAdminsComponent),
     canActivate: [LoginGuard]
   },
 
@@ -26,8 +26,8 @@ export const routes: Routes = [
       { path: 'productos/registro', loadComponent: () => import('./admin/componente-registro-productos/componente-registro-productos.component').then(m => m.ComponenteRegistroProductosComponent) },
       { path: 'categorias/registro', loadComponent: () => import('./admin/componente-categorias/componente-categorias.component').then(m => m.ComponenteCategoriasComponent) },
       { path: 'categorias/listar', loadComponent: () => import('./admin/componente-categorias/componete-tabla-categorias/componete-tabla-categorias.component').then(m => m.ComponeteTablaCategoriasComponent) },
-        { path: 'miPerfil', loadComponent: () => import('./admin/componente-mi-perfil/componente-mi-perfil.component').then(m => m.ComponenteMiPerfilComponent) },
-      ]
+      { path: 'miPerfil', loadComponent: () => import('./admin/componente-mi-perfil/componente-mi-perfil.component').then(m => m.ComponenteMiPerfilComponent) },
+    ]
   },
 
   { path: '**', redirectTo: '' }

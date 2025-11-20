@@ -1,29 +1,23 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
-import { InicioSesionService } from '../../services/inicio-sesion.service';
 import { LoginResponse } from '../../models/login-response/login-response.module';
+import { InicioSesionService } from '../../services/inicio-sesion.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-inicio-sesion',
+  selector: 'app-inicio-sesion-admins',
   standalone: true,
-  imports: [
-    MatDialogModule,
-    MatButtonModule,
-    ReactiveFormsModule // 👈 obligatorio para que [formGroup] funcione
-    ,
-    RouterLink
-],
-  templateUrl: './inicio-sesion.component.html',
-  styleUrl: './inicio-sesion.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ MatDialogModule,MatButtonModule,ReactiveFormsModule, // 👈 obligatorio para que [formGroup] funcione
+  RouterLink],
+  templateUrl: './inicio-sesion-admins.component.html',
+  styleUrl: './inicio-sesion-admins.component.css'
 })
-export class InicioSesionComponent implements OnInit {
+export class InicioSesionAdminsComponent {
 
-  public formularioLogin!: FormGroup;
+ public formularioLogin!: FormGroup;
   public ESTATUS_CORRECTO = 200;
 
   constructor(

@@ -9,9 +9,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { ServicioProductosService } from '../../services/servicio-productos.service';
 import Swal from 'sweetalert2';
 import { ModeloCategorias } from '../../models/productos/productos.module';
-import { ComponenteSinConexionComponent } from '../../componente-sin-conexion/componente-sin-conexion.component';
+import { ComponenteSinConexionComponent } from '../../shared/componente-sin-conexion/componente-sin-conexion.component';
 import { OnlineServiceService } from '../../services/online-service.service';
-import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta';
+import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta/codigosDeRespuesta';
 
 @Component({
   selector: 'app-componente-registro-productos',
@@ -29,10 +29,6 @@ import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta';
   styleUrl: './componente-registro-productos.component.css'
 })
 export class ComponenteRegistroProductosComponent {
-
-
-  isEdicion = false;
-  idProducto!:number;
 
   productoForm: FormGroup;
   categoriasNuevas!: Array<ModeloCategorias>;
@@ -68,6 +64,38 @@ export class ComponenteRegistroProductosComponent {
       if (status) this.obtenerCategorias();
     });
   }
+
+
+  obtenerCategorias() {
+
+    this.service.obtenerCategorias().subscribe({
+      next: (response) => {
+        if (response.code === 200) {
+
+          this.categoriasNuevas = response.data as ModeloCategorias[];
+
+          console.log("Mostramos todos los valores " + JSON.stringify(this.categoriasNuevas));
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Ocurrió un error al obtener las categorias',
+            text: response.message
+          });
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en la conexión con el servidor',
+        });
+      }
+    });
+
+
+  }
+
+
 
 
 
@@ -284,34 +312,6 @@ export class ComponenteRegistroProductosComponent {
 
 
 
-  obtenerCategorias() {
-
-    this.service.obtenerCategorias().subscribe({
-      next: (response) => {
-        if (response.code === 200) {
-
-          this.categoriasNuevas = response.data as ModeloCategorias[];
-
-          console.log("Mostramos todos los valores " + JSON.stringify(this.categoriasNuevas));
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Ocurrió un error al obtener las categorias',
-            text: response.message
-          });
-        }
-      },
-      error: (err) => {
-        console.error(err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error en la conexión con el servidor',
-        });
-      }
-    });
-
-
-  }
 
 
 

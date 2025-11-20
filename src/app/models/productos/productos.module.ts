@@ -4,7 +4,7 @@ export class ProductosModuleCocinasNuevos {
   "nombre": string;
   "descripcion": string;
   "categoria": ModeloCategorias;
- // "precio": string;
+  // "precio": string;
 
 }
 
@@ -14,12 +14,22 @@ export class ModeloCategorias {
   "nombreCategoria": string;
 }
 
+//Modelo para el envio de correo
+export class Email {
+  "nombre": string;
+  "correoCliente":string;
+  "asunto": string;
+  "mensaje": string;
+}
+
+
+
 //Modelo de Prueba
 export class ProductosModuleCocinas {
-  "categoria":string;
-  "titulo":string;
-  "descripcion":string;
-  "url":string
+  "categoria": string;
+  "titulo": string;
+  "descripcion": string;
+  "url": string
 
 }
 

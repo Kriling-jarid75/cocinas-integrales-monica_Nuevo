@@ -10,9 +10,9 @@ import { ServicioProductosService } from '../../services/servicio-productos.serv
 import { MatDialog } from '@angular/material/dialog';
 import { EditarProductoComponent } from '../componente-registro-productos/editar-producto/editar-producto.component';
 import Swal from 'sweetalert2';
-import { ComponenteSinConexionComponent } from '../../componente-sin-conexion/componente-sin-conexion.component';
+import { ComponenteSinConexionComponent } from '../../shared/componente-sin-conexion/componente-sin-conexion.component';
 import { OnlineServiceService } from '../../services/online-service.service';
-import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta';
+import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta/codigosDeRespuesta';
 
 
 @Component({

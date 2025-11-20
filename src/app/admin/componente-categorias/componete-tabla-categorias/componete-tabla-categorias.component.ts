@@ -6,7 +6,7 @@ import { ComponeteEditarCategoriasComponent } from '../componete-editar-categori
 import { MatDialog } from '@angular/material/dialog';
 import { ModeloCategorias } from '../../../models/productos/productos.module';
 import { ServicioProductosService } from '../../../services/servicio-productos.service';
-import { ComponenteSinConexionComponent } from '../../../componente-sin-conexion/componente-sin-conexion.component';
+import { ComponenteSinConexionComponent } from '../../../shared/componente-sin-conexion/componente-sin-conexion.component';
 import { OnlineServiceService } from '../../../services/online-service.service';
 import { CommonModule } from '@angular/common';
 

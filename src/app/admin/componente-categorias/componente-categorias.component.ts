@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ServicioProductosService } from '../../services/servicio-productos.service';
-import { ComponenteSinConexionComponent } from '../../componente-sin-conexion/componente-sin-conexion.component';
+import { ComponenteSinConexionComponent } from '../../shared/componente-sin-conexion/componente-sin-conexion.component';
 import { OnlineServiceService } from '../../services/online-service.service';
 
 @Component({

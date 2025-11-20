@@ -6,32 +6,68 @@
       <img src="icons/contactanos.png" alt="Contacto">
     </div>
     <div class="contact-card-right">
-      <form class="contact-form">
-        <mat-form-field appearance="fill">
-          <mat-label>Nombre:</mat-label>
-          <input matInput placeholder="Tu nombre">
+      <form [formGroup]="envioCorreo" (ngSubmit)="enviarCorreo()" class="contact-form">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nombre Cliente:</mat-label>
+          <input matInput placeholder="Tu nombre" formControlName="nombreCliente" placeholder="Ej: Jose Juan">
+          <mat-error *ngIf="envioCorreo.get('nombreCliente')?.hasError('required')">
+            El nombre es obligatorio
+          </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Correo:</mat-label>
-          <input matInput placeholder="Tu correo electrónico">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Correo del cliente</mat-label>
+          <input matInput formControlName="correoCliente" placeholder="correo@ejemplo.com">
+          <mat-error *ngIf="envioCorreo.get('correoCliente')?.hasError('required')">
+            El correo es obligatorio
+          </mat-error>
+          <mat-error *ngIf="envioCorreo.get('correoCliente')?.hasError('email')">
+            Correo no válido
+          </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Asunto:</mat-label>
-          <mat-select>
-            <mat-option value="consulta">Realización de presupuesto</mat-option>
-            <mat-option value="soporte">Toma de medidas (visita a domicilio)</mat-option>
-            <mat-option value="otros">Otros</mat-option>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Asunto del Cliente:</mat-label>
+          <mat-select formControlName="asuntoCliente">
+            <mat-option value="consulta" matTooltip="Solicitar presupuesto de un producto o servicio">
+              Realización de presupuesto
+            </mat-option>
+            <mat-option value="soporte" matTooltip="El costo por visita pude variar entre los $200.00 y $500.00 pesos">
+              Toma de medidas (visita a domicilio)
+            </mat-option>
+            <mat-option value="otros" matTooltip="Otro tipo de solicitud no especificada">
+              Otros
+            </mat-option>
           </mat-select>
+          <mat-error *ngIf="envioCorreo.get('asuntoCliente')?.hasError('required')">
+            El Asunto es obligatorio
+          </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Mensaje:</mat-label>
-          <textarea matInput placeholder="Escribe tu mensaje"></textarea>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Mensaje del Cliente:</mat-label>
+          <textarea matInput placeholder="Escribe tu mensaje" formControlName="mensajeCliente"
+            placeholder="Eje: Solicito de su apreciable apoyo con la cotizacion de una cocina">
+          </textarea>
+          <mat-error *ngIf="envioCorreo.get('mensajeCliente')?.hasError('required')">
+            El Mensaje es obligatorio
+          </mat-error>
         </mat-form-field>
 
-        <button type="button" class="contact-btn" (click)="enviarCorreo()">Enviar Mensaje</button>
+
+
+        <button class="contact-btn" type="button" type="submit" [disabled]="envioCorreo.invalid">
+          <ng-container *ngIf="!isLoading; else loading">
+            Enviar Correo
+          </ng-container>
+          <ng-template #loading>
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            <span class="ms-2" role="status">Enviando Correo...</span>
+          </ng-template>
+
+        </button>
       </form>
     </div>
   </div>

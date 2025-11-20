@@ -1,13 +1,13 @@
-
 import { Component } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
-import { ComponenteNavegacionComponent } from './navegacion/componente-navegacion/componente-navegacion.component';
-import { ComponentePiePaginaComponent } from './footer/componente-pie-pagina/componente-pie-pagina.component';
 import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
-import { ComponenteSinConexionComponent } from './componente-sin-conexion/componente-sin-conexion.component';
+import { ComponenteSinConexionComponent } from './shared/componente-sin-conexion/componente-sin-conexion.component';
 import { OnlineServiceService } from './services/online-service.service';
-import { ComponenteBarraSinInternetComponent } from './componente-barra-sin-internet/componente-barra-sin-internet.component';
+import { ComponenteBarraSinInternetComponent } from './shared/componente-barra-sin-internet/componente-barra-sin-internet.component';
+import { ComponenteNavbarComponent } from "./shared/componente-navbar/componente-navbar.component";
+import { PieDePaginaComponent } from "./shared/pie-de-pagina/pie-de-pagina.component";
+
 
 
 @Component({
@@ -17,10 +17,11 @@ import { ComponenteBarraSinInternetComponent } from './componente-barra-sin-inte
   imports: [
     RouterOutlet,
     CommonModule,
-    ComponenteNavegacionComponent,
-    ComponentePiePaginaComponent,
     ComponenteSinConexionComponent,
-    ComponenteBarraSinInternetComponent]
+    ComponenteBarraSinInternetComponent,
+    ComponenteNavbarComponent,
+    PieDePaginaComponent
+]
 })
 export class AppComponent {
   esAdmin = false;
