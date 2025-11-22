@@ -2,16 +2,17 @@
   <div class="container-fluid">
     <a class="navbar-brand claseNueva" type="button" routerLink="/admin/">Bienvenido: <strong> {{nombreUsuario}}
       </strong></a>
-    <button style="background-color: rgb(255, 255, 255);" class="navbar-toggler" type="button"
-    data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-      aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <button style="background-color: rgb(255, 255, 255);" class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+      aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
+
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle claseNueva" href="#" role="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
+          <a class="nav-link dropdown-toggle claseNueva" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Gestion Productos
           </a>
           <ul class="dropdown-menu">
@@ -20,8 +21,7 @@
           </ul>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle claseNueva" href="#" role="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
+          <a class="nav-link dropdown-toggle claseNueva" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Gestion Categorias
           </a>
           <ul class="dropdown-menu">
@@ -50,15 +50,36 @@
       </div> -->
 
       <!-- Example single danger button -->
+
+
+
+
+
+
       <div class="btn-group">
-        <button type="button" class="btn btn-primary d-block text-decoration-none dropdown-toggle claseBoton"
+        <button type="button" class="botonConfiguracion d-block text-decoration-none dropdown-toggle claseBoton"
         data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="icons/adminUser.png" alt="" width="32" height="32" style="border: 1px solid rgb(39, 39, 39);"
+          <img src="icons/mi-perfil.png" alt="" width="32" height="32" style="border: 1px solid rgb(39, 39, 39);"
             class="rounded-circle me-2" />Configuración
         </button>
+
+
         <ul class="dropdown-menu dropdown-menu-end text-small shadow-lg">
-          <li><a class="dropdown-item" routerLink="/admin/miPerfil">Mi Perfil</a></li>
-          <li><a class="dropdown-item" style="color: red; " type="button" (click)="questionUser()">Cerrar Sesión</a></li>
+          <li>
+            <a class="dropdown-item" routerLink="/admin/miPerfil">
+              <img src="icons/adminUser.png" alt=""  style="width: 25px; top: 0px; display: inline;"
+                class="rounded-circle me-2" />Mi Perfil
+            </a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li>
+            <a class="dropdown-item" type="button" (click)="questionUser()">
+              <img src="icons/salida.png" alt=""  style="width: 25px; top: 0px; display: inline;"
+                class="rounded-circle me-2" />Cerrar Sesión
+            </a>
+          </li>
         </ul>
       </div>
 

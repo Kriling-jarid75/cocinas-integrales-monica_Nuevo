@@ -31,7 +31,8 @@ import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta/codigosDeRes
 export class ComponenteRegistroProductosComponent {
 
   productoForm: FormGroup;
-  categoriasNuevas!: Array<ModeloCategorias>;
+  // Ahora: Inicialízalo como un array vacío
+  categoriasNuevas: Array<ModeloCategorias> = [];
   selectedImages: string[] = []; // URLs para mostrar vista previa
   imageFiles: File[] = []; // Archivos reales para enviar al backend
   online = true;

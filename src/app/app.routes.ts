@@ -2,17 +2,16 @@ import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/AuthGuard';
 import { LoginGuard } from './guards/LoginGuard';
 import { PaginaNoEncontrada2Component } from './shared/pagina-no-encontrada-2/pagina-no-encontrada-2.component';
+import { PaginaNoEncontradaComponent } from './shared/pagina-no-encontrada/pagina-no-encontrada.component';
 
 export const routes: Routes = [
   // Público
   { path: '', loadComponent: () => import('./paginaInicial/home/home.component').then(m => m.HomeComponent) },
-  /*  { path: 'productos/:categoria', component: VisualizacionProductosClienteComponent }, */
   { path: 'paginaEnConstruccion', component: PaginaNoEncontrada2Component },
-  {
-    path: 'login',
-    loadComponent: () => import('./shared/inicio-sesion-admins/inicio-sesion-admins.component').then(m => m.InicioSesionAdminsComponent),
+  { path: 'login',loadComponent: () => import('./shared/inicio-sesion-admins/inicio-sesion-admins.component').then(m => m.InicioSesionAdminsComponent),
     canActivate: [LoginGuard]
   },
+
 
   // Admin (privado)
   {
@@ -30,5 +29,5 @@ export const routes: Routes = [
     ]
   },
 
-  { path: '**', redirectTo: '' }
+  { path: '**', component: PaginaNoEncontradaComponent }
 ];

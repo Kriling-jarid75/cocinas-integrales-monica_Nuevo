@@ -1,59 +1,43 @@
-<mat-dialog-content class="mat-typography p-3">
-  <!-- Título principal -->
-  <h2 class="mb-2">{{ producto.nombre }}</h2>
+<mat-dialog-content class="mat-typography p-3 producto-detalle-dialog">
 
+  <!-- Título -->
+  <h2>{{ producto.nombre }}</h2>
 
-  <!-- Imagen del producto -->
-  <!--  <div class="text-center mb-3">
-    <img [src]="producto.url" alt="{{ producto.titulo }}" class="img-fluid rounded shadow-sm"
-      (error)="onImagenError($event)" style="max-height: 300px; object-fit: cover;" />
-  </div> -->
-
+  <!-- Galería de imágenes -->
   <mat-tab-group mat-align-tabs="center" dynamicHeight>
     @for (img of producto.imagen; track $index) {
     <mat-tab [label]="'Imagen ' + ($index + 1)">
-      <div class="flex justify-center items-center p-4 w-full h-full">
+      <div class="producto-img-container">
         <img [src]="img.urlImagen" alt="{{ producto.nombre || 'Imagen del producto' }}" (error)="onImagenError($event)"
-          class="max-w-full max-h-[400px] object-contain rounded shadow-sm" />
+          class="producto-img" />
       </div>
     </mat-tab>
     }
   </mat-tab-group>
 
+  <hr class="producto-separador">
 
-  <hr width="100%">
   <!-- Categoría -->
-  <p> <strong> Categoria del Producto: </strong>
-    <span class="badge bg-primary mb-3 text-uppercase">
+  <p>
+    <strong>Categoría del producto:</strong>
+    <span class="badge bg-primary text-uppercase px-2">
       {{ producto.categoria.nombreCategoria }}
     </span>
   </p>
 
-  <!-- Descripción larga -->
-  <!-- <p class="mb-3"><strong> Descripción del producto: </strong> {{ producto.descripcion }}</p> -->
-
-
+  <!-- Descripción -->
   <mat-accordion>
-    <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+    <mat-expansion-panel>
       <mat-expansion-panel-header>
-        <strong> Descripción del producto: </strong>
+        <strong>Descripción del producto</strong>
       </mat-expansion-panel-header>
       <p>{{ producto.descripcion }}</p>
     </mat-expansion-panel>
   </mat-accordion>
 
-
-
-
-
-
-
-
-
-
-  <!-- Botones -->
+  <!-- Botón -->
   <div class="d-flex justify-content-end mt-4">
     <button mat-raised-button color="primary" (click)="cerrar()">Cerrar</button>
-
   </div>
+
 </mat-dialog-content>

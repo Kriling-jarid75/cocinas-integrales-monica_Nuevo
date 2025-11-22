@@ -68,8 +68,6 @@ export class VisualizacionProductosClienteComponent {
 
   cargarProductosPorCategoria(categoria: string): void {
 
-
-
     this.isLoading = true;
     this.service.getProductosPorCategoriaNueva(categoria).subscribe({
       next: (response) => {

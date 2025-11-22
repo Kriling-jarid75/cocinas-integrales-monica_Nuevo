@@ -9,14 +9,6 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Descripcion del producto</mat-label>
-      <input matInput formControlName="descripcion" placeholder="Ej: Pollo asado">
-      <mat-error *ngIf="productoForm.get('descripcion')?.hasError('required')">
-        El Descripcion es obligatorio
-      </mat-error>
-    </mat-form-field>
-
     <!-- Categoría -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Categoría</mat-label>
@@ -32,7 +24,15 @@
       </mat-error>
     </mat-form-field>
 
-   <!--  <mat-form-field appearance="outline" class="full-width precio-field">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Descripcion del producto</mat-label>
+      <input matInput formControlName="descripcion" placeholder="Ej: Cocina en alto brillo estilo de">
+      <mat-error *ngIf="productoForm.get('descripcion')?.hasError('required')">
+        El Descripcion es obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <!--  <mat-form-field appearance="outline" class="full-width precio-field">
       <mat-label>Precio</mat-label>
 
 
@@ -50,10 +50,10 @@
 
     <!-- Botones -->
     <div class="d-flex justify-content-end mt-4 gap-2">
-      <button class="btn btn-warning" (click)="editarProducto()" [disabled]="productoForm.invalid">
+      <button class="botonEditar" (click)="editarProducto()" [disabled]="productoForm.invalid">
         Actualizar Producto
       </button>
-      <button class="btn btn-danger" color="primary" (click)="cerrar()">Cerrar</button>
+      <button class="botonEliminar" color="primary" (click)="cerrar()">Cerrar</button>
 
     </div>
   </form>

@@ -4,6 +4,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { Email, ModeloCategorias, ProductosModule, ProductosModuleCocinas, ProductosModuleCocinasNuevos } from '../models/productos/productos.module';
 import { environment } from '../../environments/environments';
 import { GenericResponse } from '../models/modeloGericoResponseEntity/modeloGenericResponse.module';
+import { API_RESPONSE_MESSAGES } from '../shared/codigosDeRespuesta/codigosDeRespuesta';
 
 
 
@@ -144,9 +145,6 @@ export class ServicioProductosService {
   /* metodo de enviar correo electronico */
   enviarEmail(email: Email): Observable<any> {
 
-    debugger
-
-
     return this.http.post(`${this.baseUrl}/enviar/email`, email).pipe(
       catchError(this.handleError) // 👈 Manejo centralizado
     );
@@ -162,9 +160,9 @@ export class ServicioProductosService {
     if (error.status === 0) {
       // Error de red o backend caído
       errorMessage = 'No se pudo conectar con el servidor. Verifica tu conexión o si el backend está activo.';
-    } else if (error.status >= 400 && error.status < 500) {
+    } else if (error.status >= API_RESPONSE_MESSAGES[400] && error.status < API_RESPONSE_MESSAGES[500]) {
       errorMessage = `Error del cliente (${error.status}): ${error.error?.message || error.message}`;
-    } else if (error.status >= 500) {
+    } else if (error.status >= API_RESPONSE_MESSAGES[500]) {
       errorMessage = `Error del servidor (${error.status}): Intenta más tarde.`;
     } else {
       errorMessage = 'Ocurrió un error inesperado.';

@@ -26,7 +26,7 @@ import { ModeloCategorias } from '../../models/productos/productos.module';
 export class ComponenteCategoriasProductosComponent {
 
 
-  categoriasNuevas: ModeloCategorias[] = [];
+  categoriasNuevas: Array<ModeloCategorias> = [];
   categoriaSeleccionada: string = 'Todos los productos'; // ✅ Valor inicial
   isLoading = false;
 
@@ -37,7 +37,9 @@ export class ComponenteCategoriasProductosComponent {
   }
 
   seleccionarCategoria(event: any): void {
+
     this.categoriaSeleccionada = this.formatearNombre(event.value);
+    this.categoriaSeleccionada =  this.categoriaSeleccionada.toLocaleLowerCase();
   }
 
   private obtenerCategorias(): void {

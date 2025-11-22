@@ -55,9 +55,6 @@ export class ComponeteEditarCategoriasComponent {
         nombreCategoria : this.categoriaForm.value.nombreCategoria,
       }
 
-
-debugger
-
       // Llamada al servicio
       this.service.editarCategoria(dataNueva).subscribe({
         next: (data) => {

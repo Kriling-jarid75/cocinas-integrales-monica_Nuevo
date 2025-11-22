@@ -38,9 +38,10 @@ export class EnvioCorreoComponent {
   }
 
   enviarCorreo() {
-    if (this.envioCorreo.valid) {
 
-      const asuntoNuevo = this.envioCorreo.value.asunto;
+    if (this.isLoading) return; //evita doble envio del correo
+
+    if (this.envioCorreo.valid) {
 
       this.isLoading = true; // 🚀 activa el loading
 
@@ -49,7 +50,7 @@ export class EnvioCorreoComponent {
           if (data.code === API_RESPONSE_CODES.SUCCESS) {
             Swal.fire({
               icon: 'success',
-              title: `Se envió correctamente el correo: ${asuntoNuevo}`,
+              title: `Se envió correctamente el correo`,
               text: data.message
             });
             this.limiarCampos();

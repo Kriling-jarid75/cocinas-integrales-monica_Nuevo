@@ -1,7 +1,8 @@
 .colorPrimario {
-background: #000428;
-background: -webkit-linear-gradient(to right, #004e92, #000428);
-background: linear-gradient(to right, #004e92, #000428);
+background: #56CCF2;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #2F80ED, #56CCF2);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
 
@@ -11,8 +12,33 @@ background: linear-gradient(to right, #004e92, #000428);
 
 
 .claseNueva:hover {
-  color: rgb(0, 204, 255);
+  color: rgb(19, 19, 19);
 }
+
+
+.botonConfiguracion {
+  background-color: #398cf8ea;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease; /* Suaviza la animación */
+
+}
+
+.botonConfiguracion:hover {
+  transform: translateY(-3px); /* Se eleva */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25); /* Sombra realista */
+
+}
+
+.botonConfiguracion:active {
+  transform: translateY(0px);
+  box-shadow: 0px 3px 6px rgba(0,0,0,0.20);
+
+}
+
 
 
 

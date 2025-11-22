@@ -59,3 +59,51 @@
   font-weight: 500;
   font-size: 1.1rem;
 }
+
+
+.botonEditar{
+ background-color: #ffc107;
+  color: rgb(3, 3, 3);
+  border-radius: 10px;
+  padding: 15px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease; /* Suaviza la animación */
+}
+
+.botonEditar:hover {
+  transform: translateY(-3px); /* Se eleva */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25); /* Sombra realista */
+
+}
+
+.botonEditar:active {
+  transform: translateY(0px);
+  box-shadow: 0px 3px 6px rgba(0,0,0,0.20);
+
+}
+
+
+
+
+.botonEliminar{
+ background-color: #dc3545;
+  color: white;
+ border-radius: 10px;
+  padding: 15px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease; /* Suaviza la animación */
+}
+
+.botonEliminar:hover {
+  transform: translateY(-3px); /* Se eleva */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25); /* Sombra realista */
+
+}
+
+.botonEliminar:active {
+  transform: translateY(0px);
+  box-shadow: 0px 3px 6px rgba(0,0,0,0.20);
+
+}

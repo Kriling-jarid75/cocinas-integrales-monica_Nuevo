@@ -29,8 +29,12 @@
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Asunto del Cliente:</mat-label>
+
+
           <mat-select formControlName="asuntoCliente">
-            <mat-option value="consulta" matTooltip="Solicitar presupuesto de un producto o servicio">
+
+
+            <!--  <mat-option value="consulta" matTooltip="Solicitar presupuesto de un producto o servicio">
               Realización de presupuesto
             </mat-option>
             <mat-option value="soporte" matTooltip="El costo por visita pude variar entre los $200.00 y $500.00 pesos">
@@ -38,7 +42,33 @@
             </mat-option>
             <mat-option value="otros" matTooltip="Otro tipo de solicitud no especificada">
               Otros
+            </mat-option> -->
+
+
+            <mat-option [value]="{ codigo: 'consulta', etiqueta: 'Realización de presupuesto' }"
+            matTooltip="Solicitar presupuesto de un producto o servicio">
+
+              Realización de presupuesto
+
             </mat-option>
+
+            <mat-option [value]="{ codigo: 'soporte', etiqueta: 'Toma de medidas (visita a domicilio)' }"
+            matTooltip="El costo por visita pude variar entre los $200.00 y $500.00 pesos">
+
+              Toma de medidas (visita a domicilio)
+
+            </mat-option>
+
+            <mat-option [value]="{ codigo: 'otros', etiqueta: 'Otros' }"
+            matTooltip="Otro tipo de solicitud no especificada">
+
+              Otros
+
+            </mat-option>
+
+
+
+
           </mat-select>
           <mat-error *ngIf="envioCorreo.get('asuntoCliente')?.hasError('required')">
             El Asunto es obligatorio
@@ -48,7 +78,7 @@
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Mensaje del Cliente:</mat-label>
-          <textarea matInput placeholder="Escribe tu mensaje" formControlName="mensajeCliente"
+          <textarea matInput  formControlName="mensajeCliente"
             placeholder="Eje: Solicito de su apreciable apoyo con la cotizacion de una cocina">
           </textarea>
           <mat-error *ngIf="envioCorreo.get('mensajeCliente')?.hasError('required')">
@@ -58,7 +88,7 @@
 
 
 
-        <button class="contact-btn" type="button" type="submit" [disabled]="envioCorreo.invalid">
+        <button class="contact-btn" type="button" type="submit" [disabled]="envioCorreo.invalid || isLoading">
           <ng-container *ngIf="!isLoading; else loading">
             Enviar Correo
           </ng-container>
@@ -66,7 +96,6 @@
             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
             <span class="ms-2" role="status">Enviando Correo...</span>
           </ng-template>
-
         </button>
       </form>
     </div>

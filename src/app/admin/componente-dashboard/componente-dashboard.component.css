@@ -1,26 +1,3 @@
-/* table {
-  width: 100%;
-}
-
-.mat-mdc-form-field {
-  font-size: 14px;
-  width: 100%;
-}
-
-td, th {
-  width: 25%;
-}
-
-
-.sinResultado{
-  text-align: center;
-  color: red;
-  font-size: 15px;
-  font-weight: bold;
-} */
-
-
-
 table {
   width: 100%;
 }
@@ -65,4 +42,52 @@ table {
   width: 30px;
   height: 30px;
   border-radius: 6px;
+}
+
+
+.estiloBotonTabla1{
+ background-color: #ffc107;
+  color: rgb(3, 3, 3);
+  border-radius: 10px;
+  padding: 15px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease; /* Suaviza la animación */
+}
+
+.estiloBotonTabla1:hover {
+  transform: translateY(-3px); /* Se eleva */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25); /* Sombra realista */
+
+}
+
+.estiloBotonTabla1:active {
+  transform: translateY(0px);
+  box-shadow: 0px 3px 6px rgba(0,0,0,0.20);
+
+}
+
+
+
+
+.estiloBotonTabla2{
+ background-color: #dc3545;
+  color: white;
+ border-radius: 10px;
+  padding: 15px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease; /* Suaviza la animación */
+}
+
+.estiloBotonTabla2:hover {
+  transform: translateY(-3px); /* Se eleva */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25); /* Sombra realista */
+
+}
+
+.estiloBotonTabla2:active {
+  transform: translateY(0px);
+  box-shadow: 0px 3px 6px rgba(0,0,0,0.20);
+
 }
