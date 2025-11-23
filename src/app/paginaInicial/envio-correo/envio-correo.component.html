@@ -17,13 +17,15 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Correo del cliente</mat-label>
-          <input matInput formControlName="correoCliente" placeholder="correo@ejemplo.com">
-          <mat-error *ngIf="envioCorreo.get('correoCliente')?.hasError('required')">
-            El correo es obligatorio
+          <mat-label>Correo o Teléfono</mat-label>
+          <input matInput formControlName="correo_telefono_Cliente" placeholder="correo@ejemplo.com o 5512345678">
+
+          <mat-error *ngIf="envioCorreo.get('correo_telefono_Cliente')?.hasError('required')">
+            Este campo es obligatorio.
           </mat-error>
-          <mat-error *ngIf="envioCorreo.get('correoCliente')?.hasError('email')">
-            Correo no válido
+
+          <mat-error *ngIf="envioCorreo.get('correo_telefono_Cliente')?.hasError('formatoInvalido')">
+            Ingresa un correo válido o un teléfono de 10 dígitos.
           </mat-error>
         </mat-form-field>
 
@@ -46,29 +48,18 @@
 
 
             <mat-option [value]="{ codigo: 'consulta', etiqueta: 'Realización de presupuesto' }"
-            matTooltip="Solicitar presupuesto de un producto o servicio">
-
+              matTooltip="Solicitar presupuesto de un producto o servicio">
               Realización de presupuesto
-
             </mat-option>
 
             <mat-option [value]="{ codigo: 'soporte', etiqueta: 'Toma de medidas (visita a domicilio)' }"
-            matTooltip="El costo por visita pude variar entre los $200.00 y $500.00 pesos">
-
+              matTooltip="El costo por visita pude variar entre los $200.00 y $500.00 pesos">
               Toma de medidas (visita a domicilio)
-
             </mat-option>
-
             <mat-option [value]="{ codigo: 'otros', etiqueta: 'Otros' }"
-            matTooltip="Otro tipo de solicitud no especificada">
-
+              matTooltip="Otro tipo de solicitud no especificada">
               Otros
-
             </mat-option>
-
-
-
-
           </mat-select>
           <mat-error *ngIf="envioCorreo.get('asuntoCliente')?.hasError('required')">
             El Asunto es obligatorio
@@ -78,7 +69,7 @@
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Mensaje del Cliente:</mat-label>
-          <textarea matInput  formControlName="mensajeCliente"
+          <textarea matInput formControlName="mensajeCliente"
             placeholder="Eje: Solicito de su apreciable apoyo con la cotizacion de una cocina">
           </textarea>
           <mat-error *ngIf="envioCorreo.get('mensajeCliente')?.hasError('required')">

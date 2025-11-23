@@ -39,6 +39,9 @@ background: linear-gradient(to right, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, F
 
 }
 
-
-
-
+.capitalize {
+    text-transform: capitalize;
+}
+.font-weight-bold {
+    font-weight: 150 !important;
+}

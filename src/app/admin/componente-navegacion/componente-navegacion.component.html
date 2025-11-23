@@ -7,8 +7,6 @@
       aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
-
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item dropdown">
@@ -30,45 +28,28 @@
           </ul>
         </li>
       </ul>
-      <!-- <div class="dropdown">
-
-        <a class="d-block link-dark text-decoration-none dropdown-toggle" style="background-color: #FF0000;"
-          data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="icons/adminUser.png" alt="" width="32" height="32" style="border: 1px solid rgb(39, 39, 39);"
-            class="rounded-circle me-2" />
-        </a>
-
-        <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-          <li><a class="dropdown-item" href="#">Perfil</a></li>
-          <li><a class="dropdown-item" href="#">Settings</a></li>
-          <li><a class="dropdown-item" href="#">Profile</a></li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
-          <li><a type="button" class="dropdown-item" (click)="questionUser()">Cerrar Sesión</a></li>
-        </ul>
-      </div> -->
 
       <!-- Example single danger button -->
-
-
-
-
-
-
       <div class="btn-group">
-        <button type="button" class="botonConfiguracion d-block text-decoration-none dropdown-toggle claseBoton"
-        data-bs-toggle="dropdown" aria-expanded="false">
+        <button type="button" class="botonConfiguracion d-block text-decoration-none dropdown-toggle claseBoton "
+          data-bs-toggle="dropdown" aria-expanded="false">
           <img src="icons/mi-perfil.png" alt="" width="32" height="32" style="border: 1px solid rgb(39, 39, 39);"
             class="rounded-circle me-2" />Configuración
         </button>
-
-
-        <ul class="dropdown-menu dropdown-menu-end text-small shadow-lg">
+        <ul class="dropdown-menu dropdown-menu-end text-small shadow-lg ">
+          <div class="text-center perfil">
+            <img src="icons/mi-perfil.png" alt="" width="32" height="32" style="border: 1px solid rgb(39, 39, 39);"
+              class="rounded-circle me-2" />
+          </div>
+          <div class="dropdown-item text-center">
+            <h2 class="font-weight-bold capitalize" id="userName">
+              <strong>{{nombreUsuario}}</strong>
+            </h2>
+            <br>
+          </div>
           <li>
-            <a class="dropdown-item" routerLink="/admin/miPerfil">
-              <img src="icons/adminUser.png" alt=""  style="width: 25px; top: 0px; display: inline;"
-                class="rounded-circle me-2" />Mi Perfil
+            <a class="dropdown-item text-center" routerLink="/admin/miPerfil">
+              <button class="btn btn-primary">Mi cuenta</button>
             </a>
           </li>
           <li>
@@ -76,75 +57,11 @@
           </li>
           <li>
             <a class="dropdown-item" type="button" (click)="questionUser()">
-              <img src="icons/salida.png" alt=""  style="width: 25px; top: 0px; display: inline;"
-                class="rounded-circle me-2" />Cerrar Sesión
+              <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
             </a>
           </li>
         </ul>
       </div>
-
-
     </div>
   </div>
 </nav>
-
-<!-- <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px; height: 100vh;">
-  <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-    <img src="icons/admin.png" style="border-radius: 30px; width: 50px; height: 40px;" alt="">
-    <a class="navbar-brand" routerLink="/admin/" routerLinkActive="active">Bienvenido: <strong> {{nombreUsuario}}
-      </strong></a>
-  </a>
-
-  <hr />
-
-  <ul class="nav nav-pills flex-column mb-auto">
-    <li>
-      <div class="d-flex gap-2">
-        <img src="icons/nuevo-producto.png" style="border-radius: 30px; width: 50px; height: 40px;" alt="">
-        <a class="dropdown-item" routerLink="/admin/dashboard">Listado de Productos</a>
-      </div>
-
-    </li>
-    <hr />
-    <li>
-      <div class="d-flex gap-2">
-        <img src="icons/nuevo-producto.png" style="border-radius: 30px; width: 50px; height: 40px;" alt="">
-        <a class="dropdown-item" routerLink="/admin/productos/registro">Registro de Productos</a>
-      </div>
-    </li>
-
-    <hr />
-    <li>
-      <div class="d-flex gap-2">
-        <img src="icons/nuevo-producto.png" style="border-radius: 30px; width: 50px; height: 40px;" alt="">
-        <a class="dropdown-item" routerLink="/admin/categorias/listar">Listado de Categorias</a>
-      </div>
-    </li>
-    <hr />
-    <li>
-
-      <div class="d-flex gap-2">
-        <img src="icons/nuevo-producto.png" style="border-radius: 30px; width: 50px; height: 40px;" alt="">
-        <a class="dropdown-item" routerLink="/admin/categorias/registro">Registro de categorias</a>
-      </div>
-
-    </li>
-
-  </ul>
-
-  <div class="dropdown mt-auto">
-    <hr />
-    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-      data-bs-toggle="dropdown" aria-expanded="false">
-      <img src="icons/user.png" alt="" width="32" height="32" class="rounded-circle me-2" />
-      <strong>Configuración</strong>
-    </a>
-    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-      <li><a class="dropdown-item">Perfil</a></li>
-      <li>
-        <hr class="dropdown-divider" />
-      </li>
-      <li><a class="dropdown-item" type="button" (click)="questionUser()">Cerrar Sesión</a></li>
-    </ul>
-  </div>
-</div> -->

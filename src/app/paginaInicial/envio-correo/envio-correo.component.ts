@@ -31,10 +31,26 @@ export class EnvioCorreoComponent {
   ) {
     this.envioCorreo = this.fb.group({
       nombreCliente: ['', Validators.required],
-      correoCliente: ['', [Validators.required, Validators.email]],
+      correo_telefono_Cliente: ['', [Validators.required, this.validarCorreoTelefono.bind(this)]],
       asuntoCliente: ['', Validators.required],
       mensajeCliente: ['', Validators.required],
     });
+  }
+
+
+
+  validarCorreoTelefono(control: any) {
+    const valor = control.value;
+
+    if (!valor) return { required: true };
+
+    const regexCorreo = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    const regexTelefono = /^[0-9]{10}$/;
+
+    const esCorreo = regexCorreo.test(valor);
+    const esTelefono = regexTelefono.test(valor);
+
+    return esCorreo || esTelefono ? null : { formatoInvalido: true };
   }
 
   enviarCorreo() {
@@ -83,10 +99,14 @@ export class EnvioCorreoComponent {
 
   limiarCampos() {
     this.envioCorreo.controls['nombreCliente'].setValue('');
-    this.envioCorreo.controls['correoCliente'].setValue('')
+    this.envioCorreo.controls['correo_telefono_Cliente'].setValue('')
     this.envioCorreo.controls['asuntoCliente'].setValue([0]);
     this.envioCorreo.controls['mensajeCliente'].setValue('');
 
   }
+
+
+
+
 
 }
