@@ -95,11 +95,10 @@ export class ServicioProductosService {
   }
 
   // Método para crear un producto
-  editarProducto(producto: ProductosModuleCocinasNuevos): Observable<GenericResponse<string>> {
-    // Aquí ya no es necesario volver a mapear las propiedades si coinciden
-    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/productos/editar`, producto).pipe(
-      catchError(this.handleError) // 👈 Manejo centralizado
-    );
+  editarProducto(formData: FormData): Observable<GenericResponse<string>> {
+
+    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/productos/editar`, formData)
+      .pipe(catchError(this.handleError));
   }
 
   eliminarProducto(producto: ProductosModuleCocinasNuevos) {
@@ -137,6 +136,13 @@ export class ServicioProductosService {
 
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.post<GenericResponse<string>>(`${this.baseUrl}/categoria/editar`, categorias).pipe(
+      catchError(this.handleError) // 👈 Manejo centralizado
+    );
+  }
+
+   eliminarCategoria(categoria: ModeloCategorias) {
+    // Aquí ya no es necesario volver a mapear las propiedades si coinciden
+    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/categoria/eliminar`, categoria).pipe(
       catchError(this.handleError) // 👈 Manejo centralizado
     );
   }

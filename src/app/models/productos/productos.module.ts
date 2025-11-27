@@ -5,6 +5,8 @@ export class ProductosModuleCocinasNuevos {
   "descripcion": string;
   "categoria": ModeloCategorias;
   // "precio": string;
+  "imagen":Imagen[];
+  "public_id":string;
 
 }
 
@@ -12,7 +14,17 @@ export class ProductosModuleCocinasNuevos {
 export class ModeloCategorias {
   "idCategoria": number;
   "nombreCategoria": string;
+  descripcionCategoria?:string
 }
+
+export class Imagen{
+  idImagen?:number;
+  "nombre_imagen":string;
+  "url_imagen":string;
+}
+
+
+
 
 //Modelo para el envio de correo
 export class Email {
@@ -21,6 +33,23 @@ export class Email {
   "asunto": string;
   "mensaje": string;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

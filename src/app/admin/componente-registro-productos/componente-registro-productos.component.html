@@ -9,7 +9,7 @@
       <!-- Nombre -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Nombre del producto</mat-label>
-        <input matInput formControlName="nombre" placeholder="Ej: Juan Perez">
+        <input matInput formControlName="nombre" placeholder="Ej: Pollo asado">
         <mat-error *ngIf="productoForm.get('nombre')?.hasError('required')">
           El nombre es obligatorio
         </mat-error>
@@ -19,13 +19,15 @@
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Categoría de productos</mat-label>
         <mat-select formControlName="categoria">
-
-
-          <!-- Reemplaza categoriasNuevas.length por categoriasNuevas?.length -->
           <mat-option *ngIf="categoriasNuevas.length === 0" [value]="'0'" disabled>
             SIN REGISTROS
           </mat-option>
-          <!-- También aquí para seguridad, aunque con la inicialización ya no es estrictamente necesario -->
+
+
+          <!-- Placeholder REAL -->
+        <mat-option value="" disabled>Seleccion un producto</mat-option>
+
+
           <mat-option *ngFor="let cat of categoriasNuevas" [value]="cat">
             {{ cat.nombreCategoria }}
           </mat-option>
@@ -37,14 +39,15 @@
       </mat-form-field>
 
 
-      <!-- Descripcion -->
+       <!-- Descripcion -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Descripcion del producto</mat-label>
-        <textarea matInput formControlName="descripcion" placeholder="Ej: Puertas de recamaras"></textarea>
+        <textarea matInput formControlName="descripcion" placeholder="Ej: Pollo asado"></textarea>
         <mat-error *ngIf="productoForm.get('descripcion')?.hasError('required')">
           El Descripcion es obligatorio
         </mat-error>
       </mat-form-field>
+
 
       <!-- Precio este input de precio lo voy a subir porque mas adelante puede que use el del precio-->
       <!--  <mat-form-field appearance="outline" class="full-width">
@@ -79,7 +82,7 @@
           </div>
         </div>
 
-        <mat-error *ngIf="productoForm.get('imagenes')?.hasError('required') && productoForm.get('imagenes')?.touched">
+        <mat-error *ngIf="productoForm.get('imagenes')?.hasError('required')">
           Debes seleccionar al menos una imagen
         </mat-error>
       </div>

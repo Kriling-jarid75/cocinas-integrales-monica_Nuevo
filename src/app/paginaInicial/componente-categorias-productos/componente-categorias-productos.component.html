@@ -8,8 +8,8 @@
 
     <mat-option value="Todos los productos">Mostrar Todos los Productos</mat-option>
 
-    <mat-option *ngIf="categoriasNuevas.length === 0" value="0" disabled>
-      SIN REGISTROS
+    <mat-option *ngIf="categoriasNuevas.length === 0" value="0" disabled  >
+      Por el momento no hay categorias registradas
     </mat-option>
 
     <mat-option *ngFor="let cat of categoriasNuevas" [value]="cat.nombreCategoria.toLocaleLowerCase()">

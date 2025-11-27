@@ -1,99 +1,112 @@
 <div class="container mt-3">
-
   <app-componente-sin-conexion *ngIf="!online; else contenidoOnline"></app-componente-sin-conexion>
-  <!-- Si hay conexión, mostrar el contenido normal -->
+
+
+
   <ng-template #contenidoOnline>
+
     <div class="card shadow">
       <div class="card-body">
-        <h1>Listado de Categorias Nuevas</h1>
-        <!-- Si hay error -->
-        @if (errorMessage) {
-          <div class="alert alert-danger text-center mt-3" role="alert">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>
-            {{ errorMessage }}
-          </div>
-        }
+        <h5 class="card-title mb-3">Listado de Categorías</h5>
+
+        <!-- FILTRO -->
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Buscar categoría</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Buscar por ID o nombre" #input>
+        </mat-form-field>
 
         <!-- Skeleton Loader -->
-        @if (isLoading) {
-          <div class="table-responsive">
-            <table class="table table-hover w-100">
-              <thead>
-                <tr>
-                  <th>No. Registro</th>
-                  <th>Nombre categoria</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (item of [1,2,3,4,5,6]; track $index) {
-                <tr>
-                  <td>
-                    <div class="skeleton skeleton-text short"></div>
-                  </td>
-                  <td>
-                    <div class="skeleton skeleton-text"></div>
-                  </td>
-                  <td>
-                    <div class="d-flex gap-2">
-                      <div class="skeleton skeleton-btn"></div>
-                      <div class="skeleton skeleton-btn"></div>
-                    </div>
-                  </td>
-                </tr>
-                }
-              </tbody>
-            </table>
-          </div>
-        }
+        <div *ngIf="isLoading" class="table-responsive">
+          <table class="table table-hover w-100">
+            <thead>
+              <tr>
+                <th>No. Registro</th>
+                <th>Nombre categoría</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of [1,2,3,4,5,6]">
+                <td>
+                  <div class="skeleton skeleton-text short"></div>
+                </td>
+                <td>
+                  <div class="skeleton skeleton-text"></div>
+                </td>
+                <td>
+                  <div class="d-flex gap-2">
+                    <div class="skeleton skeleton-btn"></div>
+                    <div class="skeleton skeleton-btn"></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-        <!-- Tabla real -->
-        @if (!isLoading) {
-          @if (pagedProductos.length > 0) {
-            <div class="table-responsive">
-              <table mat-table [dataSource]="pagedProductos" class="table table-striped">
+        <!--  <div *ngIf="!isLoading && dataSource.data.length > 0" class="table-responsive"> -->
 
-                <!-- Position Column -->
-                <ng-container matColumnDef="idRegistro">
-                  <th mat-header-cell *matHeaderCellDef class="header-black"> No. </th>
-                  <td mat-cell *matCellDef="let element"> {{element.idCategoria}} </td>
-                </ng-container>
+        <table mat-table [dataSource]="dataSource" class="table table-striped">
 
-                <!-- Name Column -->
-                <ng-container matColumnDef="nombreCategoria">
-                  <th mat-header-cell *matHeaderCellDef class="header-black"> Nombre Categoria </th>
-                  <td mat-cell *matCellDef="let element"> {{element.nombreCategoria}} </td>
-                </ng-container>
+          <!-- Position Column -->
+          <ng-container matColumnDef="idRegistro">
+            <th mat-header-cell *matHeaderCellDef> No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.idCategoria}} </td>
+          </ng-container>
 
-                <!-- Symbol Column -->
-                <ng-container matColumnDef="Acciones">
-                  <th mat-header-cell *matHeaderCellDef class="header-black"> Acciones </th>
-                  <td mat-cell *matCellDef="let element">
-                    <div class="d-flex gap-2">
-                      <button class="botonEditar" (click)="updateCategoria(element)"><i class="bi bi-pen"></i></button>
-                      <button class="botonEliminar" (click)="deleteCategoria(element)"><i
-                          class="bi bi-trash-fill"></i></button>
-                    </div>
-                  </td>
-                </ng-container>
+          <!-- Name Column -->
+          <ng-container matColumnDef="nombreCategoria">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.nombreCategoria}} </td>
+          </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-              </table>
+          <!-- Weight Column -->
+          <ng-container matColumnDef="Acciones">
+            <th mat-header-cell *matHeaderCellDef> Acciones </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="d-flex gap-2">
 
-              <!-- Paginador -->
-              <mat-paginator [length]="productos.length" [pageSize]="pageSize" [pageIndex]="currentPage"
-                [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)">
-              </mat-paginator>
+                <!-- Botón Editar -->
+                <button class="botonEditar" (click)="updateCategoria(element)">
+                  <i class="bi bi-pen"></i>
+                </button>
 
-            </div>
-          } @else {
-            <div class="alert alert-danger text-center mt-3" role="alert">
-              Por el momento no hay Categorias disponibles, por favor registre algunas.
-            </div>
-          }
-        }
-      </div> <!-- end card-body -->
-    </div> <!-- end card -->
-  </ng-template><!-- end  ng-template -->
-</div> <!-- end container -->
+                <!-- Botón Eliminar -->
+                <button class="botonEliminar" [disabled]="element.enUso"
+                  [matTooltip]="element.enUso ? 'Esta categoría está asignada a un producto. Elimine los productos primero.' : ''"
+                  (click)="deleteCategoria(element)">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+
+              </div>
+            </td>
+          </ng-container>
+
+
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          <!-- No data -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell text-center" colspan="4">
+              No se encontró ningún producto con el término: <b> "{{ input.value }}"</b>
+            </td>
+          </tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+          aria-label="Select page of periodic elements">
+        </mat-paginator>
+      </div>
+
+      <!-- Sin productos -->
+      <!--  <div *ngIf="!isLoading && !(dataSource.data.length > 0)" class="alert alert-danger text-center mt-3">
+          Por el momento no hay categorías disponibles.
+        </div> -->
+
+
+      <!-- </div> -->
+    </div>
+  </ng-template>
+</div>

@@ -1,10 +1,10 @@
-import { Component, inject, ViewChild } from '@angular/core';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
+import { Component, inject, signal, ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { CommonModule, JsonPipe } from '@angular/common';
+import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
 import { ProductosModuleCocinasNuevos } from '../../models/productos/productos.module';
 import { ServicioProductosService } from '../../services/servicio-productos.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,45 +13,57 @@ import Swal from 'sweetalert2';
 import { ComponenteSinConexionComponent } from '../../shared/componente-sin-conexion/componente-sin-conexion.component';
 import { OnlineServiceService } from '../../services/online-service.service';
 import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta/codigosDeRespuesta';
-
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-componente-dashboard',
   standalone: true,
-  imports: [MatFormFieldModule,
+  imports: [
+    MatFormFieldModule,
     MatInputModule,
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    MatIconModule,
     CommonModule,
-    ComponenteSinConexionComponent],
+    MatFormField,
+    MatLabel,
+    ComponenteSinConexionComponent
+  ],
   templateUrl: './componente-dashboard.component.html',
   styleUrl: './componente-dashboard.component.css'
 })
 export class ComponenteDashboardComponent {
 
+  // Referencias para paginador y sort
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
   readonly dialog = inject(MatDialog);
-  isLoading = true; // Inicializa el spinner visible
+
+
+  isLoading = true;
   productos: ProductosModuleCocinasNuevos[] = [];
-  errorMessage: string | null = null;
-
-  /* displayedColumns: string[] = ['nombre', 'descripcion', 'categoria', 'precio', 'acciones']; */
-    displayedColumns: string[] = ['nombre', 'descripcion', 'categoria', 'acciones'];
   dataSource = new MatTableDataSource<ProductosModuleCocinasNuevos>([]);
+  displayedColumns: string[] = ['nombre', 'descripcion', 'categoria', 'acciones'];
 
-  // Config paginador
-  pageSize = 6;               // productos por página
-  currentPage = 0;            // página inicial
-  pageSizeOptions = [6, 12, 18];
-  pagedProductos: any[] = [];
+  errorMessage: string | null = null;
   online = true;
 
-  constructor(private service: ServicioProductosService,
-    private serviceSinConexion: OnlineServiceService) { }
+  constructor(
+    private service: ServicioProductosService,
+    private serviceSinConexion: OnlineServiceService
+  ) { }
 
   ngOnInit() {
     this.cargarProductos();
     this.validarInternet();
+  }
+
+  ngAfterViewInit() {
+    // Asignar paginator y sort cuando ya existen las vistas
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   validarInternet() {
@@ -62,27 +74,52 @@ export class ComponenteDashboardComponent {
   }
 
   cargarProductos() {
-    this.isLoading = true; // activamos loading cada vez que vamos a buscar
+    this.isLoading = true;
+
     this.service.listarProductos().subscribe({
       next: (response) => {
-        // Si tu backend devuelve GenericResponse<List<Productos>>:
+
         if (response.code === API_RESPONSE_CODES.SUCCESS) {
           setTimeout(() => {
-            this.productos = response.data; // 'data' viene del backend
-            //this.dataSource = new MatTableDataSource(this.productos);
+            this.productos = response.data;
 
-            console.log("mostramos los datos obtenidos " + JSON.stringify(this.productos));
-            this.currentPage = 0;
-            this.updatePage();
-            this.isLoading = false; // desactivamos cuando ya cargó
-          }, 3000);
+            console.log("Mostramos todos los registros " + JSON.stringify(this.productos));
+
+            // MatTableDataSource
+            this.dataSource = new MatTableDataSource(this.productos);
+
+            // Activar pagination y sort
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+
+            // 👇 AÑADE ESTO
+            this.dataSource.filterPredicate = (data: ProductosModuleCocinasNuevos, filter: string) => {
+              const term = filter.trim().toLowerCase();
+
+              return (
+                data.nombre?.toLowerCase().includes(term) ||
+                data.descripcion?.toLowerCase().includes(term) ||
+                data.categoria?.nombreCategoria?.toLowerCase().includes(term)
+              );
+            };
+            this.isLoading = false;
+          }, 1200);
+        }
+
+        if (response.code === API_RESPONSE_CODES.NO_CONTENT) {
+          Swal.fire({
+            icon: 'info',
+            title: 'No hay productos registrados',
+          });
+
+          this.productos = [];
+          this.dataSource = new MatTableDataSource<ProductosModuleCocinasNuevos>([]);
+          this.isLoading = false;
         }
       },
-      error: (err) => {
-        this.isLoading = false;
-        this.errorMessage = err.message || 'Error al cargar productos.';
 
-        // 👇 Opcional: también mostrar SweetAlert
+      error: () => {
+        this.isLoading = false;
         Swal.fire({
           icon: 'error',
           title: 'Error en la conexión con el servidor',
@@ -91,44 +128,29 @@ export class ComponenteDashboardComponent {
     });
   }
 
-  updatePage() {
-    const start = this.currentPage * this.pageSize;
-    const end = start + this.pageSize;
-
-    // ✅ Cortamos la lista de acuerdo al paginador
-    this.pagedProductos = this.productos.slice(start, end);
+  // FILTRO REAL
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.dataSource.filter = filterValue;
   }
 
-  handlePageEvent(event: PageEvent) {
-    this.pageSize = event.pageSize;
-    this.currentPage = event.pageIndex;
-    this.updatePage();
-  }
-
-  //Editar Producto
+  // Editar
   updateProduct(producto: ProductosModuleCocinasNuevos) {
     const dialogRef = this.dialog.open(EditarProductoComponent, {
-      data: producto, // 👈 En lugar de mandar todo el objeto, mandas solo el producto interno
+      data: producto,
     });
 
-    // Espera a que se cierre el diálogo
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'updated') {
-        // 👇 Refresca la tabla
         this.cargarProductos();
       }
     });
   }
 
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
+  // Eliminar
   deleteProduct(producto: ProductosModuleCocinasNuevos) {
     Swal.fire({
-      title: "Estas seguro de querer borrarlo?",
+      title: "¿Deseas borrar este registro?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -151,8 +173,9 @@ export class ComponenteDashboardComponent {
             title: `Se eliminó correctamente el producto: ${producto.nombre}`,
             text: data.message
           });
-          this.pagedProductos = this.pagedProductos.filter(item => item.id !== producto.id);
+
           this.cargarProductos();
+
         } else {
           Swal.fire({
             icon: 'error',
@@ -161,14 +184,12 @@ export class ComponenteDashboardComponent {
           });
         }
       },
-      error: (err) => {
-        console.error(err);
+      error: () => {
         Swal.fire({
           icon: 'error',
           title: 'Error en la conexión con el servidor',
         });
       }
     });
-
   }
 }

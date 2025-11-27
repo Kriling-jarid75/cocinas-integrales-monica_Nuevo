@@ -14,7 +14,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-envio-correo',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatSelectModule, FormsModule, ReactiveFormsModule, CommonModule,
+  imports: [MatFormFieldModule, MatInputModule,
+    MatSelectModule, FormsModule, ReactiveFormsModule, CommonModule,
     MatTooltipModule
   ],
   templateUrl: './envio-correo.component.html',

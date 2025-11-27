@@ -6,6 +6,7 @@ import { LoginResponse } from '../../models/login-response/login-response.module
 import { InicioSesionService } from '../../services/inicio-sesion.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { API_RESPONSE_CODES } from '../codigosDeRespuesta/codigosDeRespuesta';
 
 @Component({
   selector: 'app-inicio-sesion-admins',
@@ -18,7 +19,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 export class InicioSesionAdminsComponent {
 
  public formularioLogin!: FormGroup;
-  public ESTATUS_CORRECTO = 200;
 
   constructor(
     public readonly authService: InicioSesionService,
@@ -56,7 +56,7 @@ export class InicioSesionAdminsComponent {
 
     this.authService.login(username, password).subscribe({
       next: (response: LoginResponse) => {
-        if (response.code === this.ESTATUS_CORRECTO) {
+        if (response.code === API_RESPONSE_CODES.SUCCESS) {
           localStorage.setItem('token', response.data.token);
           Swal.fire('Éxito', response.message, 'success');
           this.router.navigate(['/admin']);

@@ -9,6 +9,14 @@ import { MatSelectModule } from '@angular/material/select';
 import Swal from 'sweetalert2';
 import { ServicioProductosService } from '../../../services/servicio-productos.service';
 import { ModeloCategorias, ProductosModuleCocinasNuevos } from '../../../models/productos/productos.module';
+import { API_RESPONSE_CODES } from '../../../shared/codigosDeRespuesta/codigosDeRespuesta';
+
+type SelectedImage = {
+  preview: string;    // dataURL o url del servidor
+  file?: File;        // si es imagen nueva
+  url?: string;       // si es imagen existente (url en servidor)
+};
+
 
 
 @Component({
@@ -28,41 +36,47 @@ import { ModeloCategorias, ProductosModuleCocinasNuevos } from '../../../models/
 })
 export class EditarProductoComponent {
 
-
   productoForm!: FormGroup;
-  categoriasNuevas!: Array<ModeloCategorias>;
+  categoriasNuevas: Array<ModeloCategorias> = [];
+
   // 🧠 Caché para evitar llamadas repetidas
   static categoriasCache: Array<ModeloCategorias> | null = null;
 
+  // selectedImages contiene tanto imagenes existentes (url) como nuevas (file+preview)
+  selectedImages: SelectedImage[] = [];
+  imageFiles: File[] = [];               // archivos nuevos que se enviarán
+  imagenesEliminadas: string[] = [];     // urls (o nombres) marcadas para eliminar
+  isLoading = false;
 
-
-  constructor(public dialogRef: MatDialogRef<EditarProductoComponent>,
+  constructor(
+    public dialogRef: MatDialogRef<EditarProductoComponent>,
     @Inject(MAT_DIALOG_DATA) public producto: ProductosModuleCocinasNuevos,
     private service: ServicioProductosService,
-    private fb: FormBuilder) {  }
+    private fb: FormBuilder
+  ) { }
 
   ngOnInit() {
-
     console.log("Mostramos los productos " + JSON.stringify(this.producto));
-
     this.productoForm = this.fb.group({
       nombre: [this.producto?.nombre || '', Validators.required],
       descripcion: [this.producto?.descripcion || '', Validators.required],
-      // Si categoria es string:
-      categoria: [this.producto?.categoria?.nombreCategoria || '', Validators.required],
-      // Si fuera arreglo, cámbialo por: this.producto?.categoria[0] || ''
-      //precio: [this.formatCurrencyVal(this.producto?.precio || null),
-      //[Validators.required, Validators.pattern(/^[\$\d,]+(\.\d{1,2})?$/)]],
+      // guardamos el idCategoria en el control (no el nombre)
+      categoria: [this.producto?.categoria?.idCategoria || null, Validators.required],
+      imagenes: [null]
     });
 
-    this.cargarCategorias();
+    // Inicializar selectedImages con las imágenes que vienen del backend
+    if (this.producto?.imagen?.length > 0) {
+      this.selectedImages = this.producto.imagen.map(img => ({
+        preview: img.url_imagen,
+        url: img.url_imagen
+      }));
+    }
 
+    this.cargarCategorias();
   }
 
-
   cargarCategorias() {
-
-
     // ✅ Si hay caché, úsala
     if (EditarProductoComponent.categoriasCache) {
       this.categoriasNuevas = [...EditarProductoComponent.categoriasCache];
@@ -72,16 +86,12 @@ export class EditarProductoComponent {
 
     this.service.obtenerCategorias().subscribe({
       next: (response) => {
-        if (response.code === 200 && response.data?.length > 0) {
+        if (response.code === API_RESPONSE_CODES.SUCCESS && response.data?.length > 0) {
           this.categoriasNuevas = response.data;
           EditarProductoComponent.categoriasCache = [...response.data];
           this.reaplicarCategoria();
         } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al cargar categorías',
-            text: response.message
-          });
+          this.categoriasNuevas = [];
         }
       },
       error: (err) => {
@@ -100,169 +110,158 @@ export class EditarProductoComponent {
     }
   }
 
-  formatCurrencyVal(value: string): string {
-    if (value.includes('$')) {
-      value = value.replace('$', '');
-    }
-    if (value.includes(',')) {
-      value = value.replace(/,/g, '');
+  // ---------------------------
+  // Manejo de selección de archivos
+  // ---------------------------
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files) return;
+
+    const archivos = Array.from(input.files) as File[];
+    const tamañoMaximoMB = 2;
+    const tamañoMaximoBytes = tamañoMaximoMB * 1024 * 1024;
+    const archivosInvalidos: string[] = [];
+
+    archivos.forEach(file => {
+      if (file.size > tamañoMaximoBytes) {
+        archivosInvalidos.push(file.name);
+        return;
+      }
+
+      // Agregar a lista de archivos a enviar
+      this.imageFiles.push(file);
+
+      // Crear preview y agregar a selectedImages (sin borrar lo anterior)
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.selectedImages.push({
+          preview: e.target.result,
+          file
+        });
+      };
+      reader.readAsDataURL(file);
+    });
+
+    if (archivosInvalidos.length > 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Imágenes demasiado grandes',
+        html: `
+          Las siguientes imágenes superan el tamaño máximo permitido (${tamañoMaximoMB} MB):<br>
+          <ul style="text-align:left; margin-top:10px;">
+            ${archivosInvalidos.map(n => `<li>${n}</li>`).join('')}
+          </ul>
+        `,
+        confirmButtonColor: '#d33'
+      });
     }
 
-    let val;
-    if (value === '' || value === undefined) {
-      val = 0;
-    } else {
-      val = parseFloat(value);
-    }
+    // Actualiza el control del formulario (si quieres forzar validación)
+    this.productoForm.patchValue({ imagenes: this.imageFiles.length ? this.imageFiles : null });
+    this.productoForm.get('imagenes')?.markAsTouched();
 
-    return formatCurrency(val, 'en-USD', getCurrencySymbol('USD', 'wide'));
+    // limpia input para permitir volver a subir el mismo archivo
+    input.value = '';
   }
 
 
+  // ---------------------------
+  // Eliminar imagen (existente o nueva)
+  // ---------------------------
+  removeImage(index: number): void {
+    const img = this.selectedImages[index];
+
+    if (!img) return;
+
+    if (img.url) {
+      // imagen existente: marcar para eliminar (backend debe procesar)
+      this.imagenesEliminadas.push(img.url);
+    } else if (img.file) {
+      // imagen nueva: quitar del array de archivos a enviar
+      const fileIndex = this.imageFiles.findIndex(f => f === img.file);
+      if (fileIndex >= 0) this.imageFiles.splice(fileIndex, 1);
+    }
+
+    // quitar de la vista
+    this.selectedImages.splice(index, 1);
+
+    // actualizar formulario
+    if (this.selectedImages.length === 0) {
+      this.productoForm.patchValue({ imagenes: null });
+      // si quieres forzar que tenga al menos una imagen, descomenta la línea siguiente:
+      this.productoForm.get('imagenes')?.setErrors({ required: true });
+    } else {
+      this.productoForm.patchValue({ imagenes: this.imageFiles.length ? this.imageFiles : null });
+    }
+  }
 
 
+  // ---------------------------
+  // Envío: armar FormData y llamar servicio
+  // ---------------------------
   editarProducto() {
-    if (this.productoForm.valid) {
-      const precioLimpio = this.precioFormateado(this.productoForm.value.precio);
-      const productoActualizado = {
-        ...this.productoForm.value,
-        precio: precioLimpio,
-        idProducto: this.producto.id
-      };
+    // Si deseas permitir actualizar sin imágenes, no fuerces validación de imagenes aquí.
+    if (!this.productoForm.valid) {
+      return this.productoForm.markAllAsTouched();
+    }
 
+    this.isLoading = true;
 
-      // Llamada al servicio
-      this.service.editarProducto(productoActualizado).subscribe({
-        next: (data) => {
-          if (data.code === 200) {
-            Swal.fire({
-              icon: 'success',
-              title: `Se actualizó correctamente el producto: ${productoActualizado.nombre}`,
-              text: data.message
-            });
-            this.limiarCampos();
-            this.cerrar();
-            // Cierra el diálogo y notifica al padre
-            this.dialogRef.close('updated');
+    const valorFormulario = this.productoForm.value;
 
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Ocurrió un error al actualizar el producto',
-              text: data.message
-            });
-          }
-        },
-        error: (err) => {
-          console.error(err);
+    // Construir objeto producto que envías en el FormData
+    const productoAEnviar = {
+      ...this.producto,
+      nombre: valorFormulario.nombre,
+      descripcion: valorFormulario.descripcion,
+      categoria: {
+        idCategoria: valorFormulario.categoria,
+        nombreCategoria: this.categoriasNuevas.find(cat => cat.idCategoria === valorFormulario.categoria)?.nombreCategoria || ''
+      }
+      // No es necesario incluir imagenes aquí (las manejamos por separado)
+    };
+
+    // Armar FormData
+    const formData = new FormData();
+    formData.append('producto', new Blob([JSON.stringify(productoAEnviar)], { type: 'application/json' }));
+
+    // Archivos nuevos
+    this.imageFiles.forEach(file => formData.append('imagenes', file));
+
+    // Imágenes a eliminar (enviamos las URLs que marcamos)
+    formData.append('imagenesEliminadas', new Blob([JSON.stringify(this.imagenesEliminadas)], { type: 'application/json' }));
+
+    // Llamada al servicio — recomienda implementar editarProductoFormData en tu service
+    this.service.editarProducto(formData).subscribe({
+      next: (data) => {
+        this.isLoading = false;
+        if (data.code === API_RESPONSE_CODES.SUCCESS) {
+          Swal.fire({
+            icon: 'success',
+            title: `Se actualizó correctamente el producto: ${productoAEnviar.nombre}`,
+            text: data.message
+          });
+          this.dialogRef.close('updated');
+        } else {
           Swal.fire({
             icon: 'error',
-            title: 'Error en la conexión con el servidor',
+            title: 'Ocurrió un error al actualizar el producto',
+            text: data.message
           });
         }
-      });
-    } else {
-      // Muestra los errores solo después de intentar enviar
-      this.productoForm.markAllAsTouched();
-    }
+      },
+      error: (err) => {
+        console.error(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en la conexión con el servidor',
+        });
+      }
+    });
   }
-
-
-  limiarCampos() {
-    this.productoForm.controls['nombre'].setValue('');
-    this.productoForm.controls['descripcion'].setValue('')
-    this.productoForm.controls['categoria'].setValue([0]);
-    this.productoForm.controls['precio'].setValue('');
-  }
-
 
   cerrar(): void {
     this.dialogRef.close(); // 👈 puedes devolver algo si quieres
   }
-
-
-
-  validateFormat(event: KeyboardEvent) {
-    const CATORCE = 14;
-    const DOS = 2;
-
-    const input = event.target as HTMLInputElement;
-    const valorActual = input.value || '';
-    const key = event.key;
-
-    // ✅ Permitir borrar y moverse
-    if (
-      key === 'Backspace' ||
-      key === 'Delete' ||
-      key === 'ArrowLeft' ||
-      key === 'ArrowRight' ||
-      key === 'Tab'
-    ) {
-      return;
-    }
-
-    // ✅ Solo números o punto decimal
-    const regex = /^[0-9.]$/;
-    if (!regex.test(key)) {
-      event.preventDefault();
-      return;
-    }
-
-    // ✅ Solo un punto decimal
-    if (valorActual.includes('.') && key === '.') {
-      event.preventDefault();
-      return;
-    }
-
-    // ✅ Máximo 14 enteros
-    const partes = valorActual.split('.');
-    if (!valorActual.includes('.') && partes[0].length >= CATORCE && key !== '.') {
-      event.preventDefault();
-      return;
-    }
-
-    // ✅ Máximo 2 decimales
-    if (valorActual.includes('.') && partes[1]?.length >= DOS) {
-      event.preventDefault();
-      return;
-    }
-  }
-
-  updateValue(value: string) {
-    if (!value) return;
-
-    // 🔹 Eliminar todo excepto números y punto
-    const limpio = value.replace(/[^0-9.]/g, '');
-    const numero = parseFloat(limpio);
-
-    if (isNaN(numero)) {
-      this.productoForm.get('precio')?.setValue('', { emitEvent: false });
-      return;
-    }
-
-    // 🔹 Formatear a tipo moneda con 2 decimales
-    const formateado = numero.toLocaleString('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-
-    // 🔹 Asignar al formulario con símbolo de pesos
-    this.productoForm.get('precio')?.setValue(`$${formateado}`, { emitEvent: false });
-  }
-
-
-
-  //formateamos el precio
-  precioFormateado(precio: string): number {
-    if (!precio) return 0;
-
-    // Elimina el signo de pesos y las comas
-    const valorLimpio = precio.replace(/\$/g, '').replace(/,/g, '');
-
-    // Convierte a número flotante
-    return parseFloat(valorLimpio);
-  }
-
-
 
 }

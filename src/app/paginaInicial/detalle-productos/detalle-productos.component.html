@@ -1,19 +1,24 @@
 <mat-dialog-content class="mat-typography p-3 producto-detalle-dialog">
-
   <!-- Título -->
-  <h2>{{ producto.nombre }}</h2>
+  <h2>Nombre Producto:</h2> <h3>{{ producto.nombre }}</h3>
 
   <!-- Galería de imágenes -->
+  @if (producto.imagen?.length > 0) {
   <mat-tab-group mat-align-tabs="center" dynamicHeight>
     @for (img of producto.imagen; track $index) {
     <mat-tab [label]="'Imagen ' + ($index + 1)">
-      <div class="producto-img-container">
-        <img [src]="img.urlImagen" alt="{{ producto.nombre || 'Imagen del producto' }}" (error)="onImagenError($event)"
-          class="producto-img" />
+      <div class="producto-img-container text-center">
+        <img class="card-img-top" [src]="img.url_imagen" [alt]="img.nombre_imagen" (error)="onImagenError($event)" />
       </div>
     </mat-tab>
     }
   </mat-tab-group>
+  } @else {
+  <div class="text-center">
+    <img class="card-img-top" src="icons/no-disponible.png" alt="Imagen no disponible" />
+    <p class="mt-2">No hay imágenes disponibles para este producto</p>
+  </div>
+  }
 
   <hr class="producto-separador">
 

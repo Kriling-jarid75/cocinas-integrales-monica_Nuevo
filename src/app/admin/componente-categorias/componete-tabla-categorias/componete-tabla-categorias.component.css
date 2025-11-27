@@ -22,7 +22,7 @@ table {
   100% { background-position: 200% 0; }
 }
 
-/* Variantes de tamaños */
+
 .skeleton-text {
   height: 14px;
   width: 80%;
@@ -54,12 +54,12 @@ table {
   padding: 15px;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease; /* Suaviza la animación */
+  transition: all 0.2s ease;
 }
 
 .botonEditar:hover {
-  transform: translateY(-3px); /* Se eleva */
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25); /* Sombra realista */
+  transform: translateY(-3px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
 
 }
 
@@ -79,12 +79,12 @@ table {
   padding: 15px;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease; /* Suaviza la animación */
+  transition: all 0.2s ease;
 }
 
 .botonEliminar:hover {
-  transform: translateY(-3px); /* Se eleva */
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25); /* Sombra realista */
+  transform: translateY(-3px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
 
 }
 
@@ -93,3 +93,23 @@ table {
   box-shadow: 0px 3px 6px rgba(0,0,0,0.20);
 
 }
+
+
+.botonEliminar:disabled {
+  background-color: #e0e0e0 !important;
+  color: #8a8a8a !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.botonEliminar:disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+
+
+/* table {
+  width: 100%;
+} */

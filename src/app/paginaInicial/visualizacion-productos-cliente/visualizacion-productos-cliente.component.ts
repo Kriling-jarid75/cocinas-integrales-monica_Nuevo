@@ -7,6 +7,7 @@ import { Component, inject, Input, SimpleChanges, ViewChild } from '@angular/cor
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta/codigosDeRespuesta';
 
 
 @Component({
@@ -24,6 +25,9 @@ import Swal from 'sweetalert2';
 export class VisualizacionProductosClienteComponent {
   @Input() categoria: string = '';
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+
+  errorMessage: string | null = null;
 
   readonly dialog = inject(MatDialog);
   isLoading = true;
@@ -44,30 +48,62 @@ export class VisualizacionProductosClienteComponent {
     }
   }
 
-  cargarTodosLosProductos(): void {
+  /*  cargarTodosLosProductos(): void {
+     this.isLoading = true;
+     this.service.listarProductos().subscribe({
+       next: (response) => {
+         this.productos = response.data || [];
 
+         console.log("mostramos el valor " + JSON.stringify(this.productos))
+         this.updatePage();
+         this.isLoading = false;
 
-    this.isLoading = true;
+         console.log("Mostramos los productos " + JSON.stringify(this.productos));
+
+       },
+       error: (err) => {
+         this.isLoading = false;
+         Swal.fire({ icon: 'error', title: 'Error al obtener productos' });
+       }
+     });
+   } */
+
+  cargarTodosLosProductos() {
+    this.isLoading = true; // activamos loading cada vez que vamos a buscar
     this.service.listarProductos().subscribe({
       next: (response) => {
-        this.productos = response.data || [];
+        // Si tu backend devuelve GenericResponse<List<Productos>>:
+        if (response.code === API_RESPONSE_CODES.SUCCESS) {
+          setTimeout(() => {
+            this.productos = response.data || [];// 'data' viene del backend
+            //this.dataSource = new MatTableDataSource(this.productos);
 
-           console.log("mostramos el valor " + JSON.stringify(this.productos))
-        this.updatePage();
-        this.isLoading = false;
-
-        console.log("Mostramos los productos " + JSON.stringify(this.productos));
+            console.log("Mostramos la data de la tabla " + JSON.stringify(this.productos));
+            this.updatePage();
+            this.isLoading = false; // desactivamos cuando ya cargó
+          }, 1500);
+        } else {
+          this.productos = []; // si no hay productos, carga 1 segundo y medio sino encontro nada el arreglo esta vacio y desactiva el skeleton
+          this.isLoading = false;
+        }
 
       },
       error: (err) => {
         this.isLoading = false;
-        Swal.fire({ icon: 'error', title: 'Error al obtener productos' });
+        this.errorMessage = err.message || 'Error al cargar productos.';
+
+        // 👇 Opcional: también mostrar SweetAlert
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en la conexión con el servidor',
+        });
       }
     });
   }
 
-  cargarProductosPorCategoria(categoria: string): void {
 
+
+  cargarProductosPorCategoria(categoria: string): void {
     this.isLoading = true;
     this.service.getProductosPorCategoriaNueva(categoria).subscribe({
       next: (response) => {

@@ -83,10 +83,23 @@
 
 }
 
+.botonEditar:disabled {
+  background-color: #e0e0e0 !important; /* gris */
+  color: #8a8a8a !important;            /* texto gris */
+  cursor: not-allowed !important;       /* cursor de bloqueado */
+  transform: none !important;           /* sin animación */
+  box-shadow: none !important;          /* sin sombra */
+}
+
+.botonEditar:disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
 
 
 
-.botonEliminar{
+
+.botonRojo{
  background-color: #dc3545;
   color: white;
  border-radius: 10px;
@@ -96,14 +109,70 @@
   transition: all 0.2s ease; /* Suaviza la animación */
 }
 
-.botonEliminar:hover {
+.botonRojo:hover {
   transform: translateY(-3px); /* Se eleva */
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25); /* Sombra realista */
 
 }
 
-.botonEliminar:active {
+.botonRojo:active {
   transform: translateY(0px);
   box-shadow: 0px 3px 6px rgba(0,0,0,0.20);
 
+}
+
+
+
+
+/* para las imagenes */
+.upload-container {
+  margin-top: 1rem;
+}
+
+.preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.preview {
+  position: relative;
+  display: inline-block;
+}
+
+.preview img {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease-in-out;
+}
+
+.preview img:hover {
+  transform: scale(1.05);
+}
+
+.delete-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(220, 53, 69, 0.9); /* rojo Bootstrap danger */
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.delete-btn:hover {
+  background-color: #bb2d3b; /* tono más oscuro */
+  transform: scale(1.1);
 }

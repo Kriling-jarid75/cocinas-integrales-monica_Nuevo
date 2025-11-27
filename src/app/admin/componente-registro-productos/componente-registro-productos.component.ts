@@ -9,8 +9,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { ServicioProductosService } from '../../services/servicio-productos.service';
 import Swal from 'sweetalert2';
 import { ModeloCategorias } from '../../models/productos/productos.module';
-import { ComponenteSinConexionComponent } from '../../shared/componente-sin-conexion/componente-sin-conexion.component';
 import { OnlineServiceService } from '../../services/online-service.service';
+import { ComponenteSinConexionComponent } from '../../shared/componente-sin-conexion/componente-sin-conexion.component';
 import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta/codigosDeRespuesta';
 
 @Component({
@@ -29,16 +29,16 @@ import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta/codigosDeRes
   styleUrl: './componente-registro-productos.component.css'
 })
 export class ComponenteRegistroProductosComponent {
-
   productoForm: FormGroup;
-  // Ahora: Inicialízalo como un array vacío
+  //public precio: string;
+
+
   categoriasNuevas: Array<ModeloCategorias> = [];
+
   selectedImages: string[] = []; // URLs para mostrar vista previa
   imageFiles: File[] = []; // Archivos reales para enviar al backend
   online = true;
   isLoading = false;
-
-
 
   constructor(private fb: FormBuilder,
     private service: ServicioProductosService,
@@ -48,6 +48,7 @@ export class ComponenteRegistroProductosComponent {
       descripcion: ['', Validators.required],
       categoria: ['', Validators.required],
       // precio: ['', [Validators.required, Validators.pattern(/^[\$\d,]+(\.\d{1,2})?$/)]]
+      imagenes: ['', Validators.required],
     });
 
     // this.precio = '';
@@ -66,22 +67,17 @@ export class ComponenteRegistroProductosComponent {
     });
   }
 
-
   obtenerCategorias() {
 
     this.service.obtenerCategorias().subscribe({
       next: (response) => {
-        if (response.code === 200) {
+        if (response.code === API_RESPONSE_CODES.SUCCESS) {
 
           this.categoriasNuevas = response.data as ModeloCategorias[];
 
           console.log("Mostramos todos los valores " + JSON.stringify(this.categoriasNuevas));
         } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Ocurrió un error al obtener las categorias',
-            text: response.message
-          });
+          this.categoriasNuevas = []; // aseguramos que las categoriasNuevas esten vacias
         }
       },
       error: (err) => {
@@ -92,13 +88,7 @@ export class ComponenteRegistroProductosComponent {
         });
       }
     });
-
-
   }
-
-
-
-
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -152,8 +142,6 @@ export class ComponenteRegistroProductosComponent {
     input.value = '';
   }
 
-
-
   removeImage(index: number): void {
     this.selectedImages.splice(index, 1);
     this.imageFiles.splice(index, 1);
@@ -167,20 +155,13 @@ export class ComponenteRegistroProductosComponent {
     }
   }
 
-
-
   registrarProducto() {
     if (this.productoForm.valid) {
-      const precioLimpio = this.precioFormateado(this.productoForm.value.precio);
       const productoNuevo = {
         ...this.productoForm.value,
-        precio: precioLimpio,
 
       };
-
-
       this.isLoading = true; // 🚀 activa el loading
-
       this.service.crearProductoNuevo(productoNuevo, this.imageFiles).subscribe({
         next: (data) => {
           if (data.code === API_RESPONSE_CODES.SUCCESS) {
@@ -230,86 +211,6 @@ export class ComponenteRegistroProductosComponent {
     // this.productoForm.controls['precio'].setValue('');
   }
 
-
-  validateFormat(event: KeyboardEvent) {
-    const CATORCE = 14;
-    const DOS = 2;
-
-    const input = event.target as HTMLInputElement;
-    const valorActual = input.value || '';
-    const key = event.key;
-
-    // ✅ Permitir borrar y moverse
-    if (
-      key === 'Backspace' ||
-      key === 'Delete' ||
-      key === 'ArrowLeft' ||
-      key === 'ArrowRight' ||
-      key === 'Tab'
-    ) {
-      return;
-    }
-
-    // ✅ Solo números o punto decimal
-    const regex = /^[0-9.]$/;
-    if (!regex.test(key)) {
-      event.preventDefault();
-      return;
-    }
-
-    // ✅ Solo un punto decimal
-    if (valorActual.includes('.') && key === '.') {
-      event.preventDefault();
-      return;
-    }
-
-    // ✅ Máximo 14 enteros
-    const partes = valorActual.split('.');
-    if (!valorActual.includes('.') && partes[0].length >= CATORCE && key !== '.') {
-      event.preventDefault();
-      return;
-    }
-
-    // ✅ Máximo 2 decimales
-    if (valorActual.includes('.') && partes[1]?.length >= DOS) {
-      event.preventDefault();
-      return;
-    }
-  }
-
-  updateValue(value: string) {
-    if (!value) return;
-
-    // 🔹 Eliminar todo excepto números y punto
-    const limpio = value.replace(/[^0-9.]/g, '');
-    const numero = parseFloat(limpio);
-
-    if (isNaN(numero)) {
-      this.productoForm.get('precio')?.setValue('', { emitEvent: false });
-      return;
-    }
-
-    // 🔹 Formatear a tipo moneda con 2 decimales
-    const formateado = numero.toLocaleString('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-
-    // 🔹 Asignar al formulario con símbolo de pesos
-    this.productoForm.get('precio')?.setValue(`$${formateado}`, { emitEvent: false });
-  }
-
-
-
-  precioFormateado(precio: string): number {
-    if (!precio) return 0;
-
-    // Elimina el signo de pesos y las comas
-    const valorLimpio = precio.replace(/\$/g, '').replace(/,/g, '');
-
-    // Convierte a número flotante
-    return parseFloat(valorLimpio);
-  }
 
 
 

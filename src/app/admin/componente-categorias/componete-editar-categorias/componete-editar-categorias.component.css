@@ -80,8 +80,21 @@
 .botonEditar:active {
   transform: translateY(0px);
   box-shadow: 0px 3px 6px rgba(0,0,0,0.20);
-
 }
+
+.botonEditar:disabled {
+  background-color: #e0e0e0 !important; /* gris */
+  color: #8a8a8a !important;            /* texto gris */
+  cursor: not-allowed !important;       /* cursor de bloqueado */
+  transform: none !important;           /* sin animación */
+  box-shadow: none !important;          /* sin sombra */
+}
+
+.botonEditar:disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
 
 
 

@@ -22,20 +22,24 @@
           @for (producto of pagedProductos; track $index) {
             <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
               <div class="card h-100 shadow-custom">
-                <img class="card-img-top" [src]="producto.imagen[0].urlImagen" alt="{{ producto.imagen[0].nombreImagen }}"
-                  (error)="onImagenError($event)" />
+                @if (producto.imagen?.length > 0) {
+                  <img class="card-img-top" [src]="producto.imagen[0].url_imagen" alt="{{ producto.imagen[0].nombre_imagen }}"
+                    (error)="onImagenError($event)" />
+                } @else {
+                  <img class="card-img-top" src="icons/no-disponible.png" alt="Imagen no disponible" />
+                }
                 <div class="card-body">
                   Categoria:
-                <span class="badge text-bg-success">{{ producto.categoria.nombreCategoria }}</span>
+                  <span class="badge text-bg-success">{{ producto.categoria.nombreCategoria }}</span>
                   <p class="card-title"> Nombre: {{ producto.nombre }}</p>
-                  <a type="button" (click)="openDialog(producto)" class="btn btn-warning">Ver detalle</a>
+                  <a type="button" (click)="openDialog(producto)" class="botonVerDetalle">Ver detalle</a>
                 </div>
               </div>
             </div>
           }
-          <mat-paginator [length]="productos.length" [pageSize]="pageSize" [pageIndex]="currentPage"
-            [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)">
-          </mat-paginator>
+            <mat-paginator [length]="productos.length" [pageSize]="pageSize" [pageIndex]="currentPage"
+              [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)">
+            </mat-paginator>
         } @else {
           <div class="alert alert-danger text-center" role="alert">
             Por el momento no hay {{categoria}} disponibles
@@ -44,5 +48,4 @@
       }
     </div>
   </div>
-
 </div>

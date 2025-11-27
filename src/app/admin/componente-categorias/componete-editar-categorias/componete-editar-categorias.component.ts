@@ -29,7 +29,7 @@ export class ComponeteEditarCategoriasComponent {
 
   categoriaNombre: any;
   categoriaForm!: FormGroup;
-
+  isLoading = false;
   constructor(public dialogRef: MatDialogRef<ComponeteEditarCategoriasComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private service: ServicioProductosService,
@@ -48,13 +48,10 @@ export class ComponeteEditarCategoriasComponent {
 
   editarCategoria() {
     if (this.categoriaForm.valid) {
-
-
       const dataNueva = {
         idCategoria: this.data.categoria.idCategoria,
         nombreCategoria : this.categoriaForm.value.nombreCategoria,
       }
-
       // Llamada al servicio
       this.service.editarCategoria(dataNueva).subscribe({
         next: (data) => {

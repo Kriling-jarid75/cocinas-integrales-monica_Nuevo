@@ -38,8 +38,12 @@ export class ComponenteCategoriasProductosComponent {
 
   seleccionarCategoria(event: any): void {
 
-    this.categoriaSeleccionada = this.formatearNombre(event.value);
-    this.categoriaSeleccionada =  this.categoriaSeleccionada.toLocaleLowerCase();
+    this.categoriaSeleccionada = event.value;
+   // this.categoriaSeleccionada = this.categoriaSeleccionada.toLocaleLowerCase();
+
+    console.log("Mostramos la categoria seleccionada " + this.categoriaSeleccionada);
+
+
   }
 
   private obtenerCategorias(): void {
@@ -48,11 +52,7 @@ export class ComponenteCategoriasProductosComponent {
         if (response.code === API_RESPONSE_CODES.SUCCESS) {
           this.categoriasNuevas = response.data as ModeloCategorias[];
         } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al obtener categorías',
-            text: response.message
-          });
+          this.categoriasNuevas = []; // aseguramos que las categoriasNuevas esten vacias
         }
       },
       error: () => {

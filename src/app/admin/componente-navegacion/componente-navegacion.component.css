@@ -21,9 +21,11 @@ background: linear-gradient(to right, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, F
   color: white;
   border-radius: 10px;
   padding: 10px;
-  border: none;
+  border-color: black;
   cursor: pointer;
   transition: all 0.2s ease; /* Suaviza la animación */
+  border-bottom-left-radius: 25px;
+  border-top-right-radius: 25px;
 
 }
 
@@ -44,4 +46,12 @@ background: linear-gradient(to right, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, F
 }
 .font-weight-bold {
     font-weight: 150 !important;
+}
+
+
+.menuHamburguesa{
+  background-color: rgb(255, 255, 255);
+  border-color: black;
+
+
 }

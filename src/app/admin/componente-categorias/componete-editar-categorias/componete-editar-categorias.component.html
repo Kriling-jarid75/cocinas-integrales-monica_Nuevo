@@ -11,12 +11,26 @@
 
 
     <!-- Botones -->
-    <div class="d-flex justify-content-end mt-4 gap-2">
+   <!--  <div class="d-flex justify-content-end mt-4 gap-2">
       <button class="botonEditar" (click)="editarCategoria()" [disabled]="categoriaForm.invalid">
         Actualizar Categoria
       </button>
       <button class="botonEliminar" color="primary" (click)="cerrar()">Cerrar</button>
 
+    </div> -->
+
+    <div class="d-flex justify-content-end mt-4 gap-2">
+      <button class="botonEditar" (click)="editarCategoria()" type="submit"
+        [disabled]="categoriaForm.invalid || isLoading">
+        <ng-container *ngIf="!isLoading; else loading">
+          Actualizar Producto
+        </ng-container>
+        <ng-template #loading>
+          <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+          <span class="ms-2" role="status">Actualizando...</span>
+        </ng-template>
+      </button>
+      <button class="botonEliminar" (click)="cerrar()">Cerrar</button>
     </div>
   </form>
 </mat-dialog-content>
