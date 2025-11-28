@@ -19,13 +19,14 @@
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Categoría de productos</mat-label>
         <mat-select formControlName="categoria">
+
           <mat-option *ngIf="categoriasNuevas.length === 0" [value]="'0'" disabled>
             SIN REGISTROS
           </mat-option>
 
 
           <!-- Placeholder REAL -->
-        <mat-option value="" disabled>Seleccion un producto</mat-option>
+        <mat-option value="" >Selecciona una categoria</mat-option>
 
 
           <mat-option *ngFor="let cat of categoriasNuevas" [value]="cat">

@@ -24,8 +24,9 @@ export const routes: Routes = [
       { path: 'dashboard', loadComponent: () => import('./admin/componente-dashboard/componente-dashboard.component').then(m => m.ComponenteDashboardComponent) },
       { path: 'productos/registro', loadComponent: () => import('./admin/componente-registro-productos/componente-registro-productos.component').then(m => m.ComponenteRegistroProductosComponent) },
       { path: 'categorias/registro', loadComponent: () => import('./admin/componente-categorias/componente-categorias.component').then(m => m.ComponenteCategoriasComponent) },
-      { path: 'categorias/listar', loadComponent: () => import('./admin/componente-categorias/componete-tabla-categorias/componete-tabla-categorias.component').then(m => m.ComponeteTablaCategoriasComponent) },
+      { path: 'categorias/listar', loadComponent: () => import('./admin/componente-categorias/componente-tabla-categorias/componente-tabla-categorias.component').then(m => m.ComponenteTablaCategoriasComponent) },
       { path: 'miPerfil', loadComponent: () => import('./admin/componente-mi-perfil/componente-mi-perfil.component').then(m => m.ComponenteMiPerfilComponent) },
+
     ]
   },
 

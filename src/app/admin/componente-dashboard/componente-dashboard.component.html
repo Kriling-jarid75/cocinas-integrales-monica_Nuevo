@@ -59,13 +59,13 @@
 
             <!-- Nombre -->
             <ng-container matColumnDef="nombre">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+              <th mat-header-cell *matHeaderCellDef class="header-black" mat-sort-header>Nombre</th>
               <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
             </ng-container>
 
             <!-- Descripción -->
             <ng-container matColumnDef="descripcion">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
+              <th mat-header-cell *matHeaderCellDef class="header-black" mat-sort-header>Descripción</th>
               <td mat-cell *matCellDef="let element" style="text-align: justify;">
                 {{ element.descripcion }}
               </td>
@@ -73,7 +73,7 @@
 
             <!-- Categoría -->
             <ng-container matColumnDef="categoria">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Categoría</th>
+              <th mat-header-cell *matHeaderCellDef class="header-black" mat-sort-header>Categoría</th>
               <td mat-cell *matCellDef="let element">
                 {{ element.categoria?.nombreCategoria || 'Sin categoría' }}
               </td>
@@ -81,7 +81,7 @@
 
             <!-- Acciones -->
             <ng-container matColumnDef="acciones">
-              <th mat-header-cell *matHeaderCellDef>Acciones</th>
+              <th mat-header-cell *matHeaderCellDef class="header-black">Acciones</th>
               <td mat-cell *matCellDef="let element">
                 <div class="d-flex gap-2">
                   <button class="estiloBotonTabla1" (click)="updateProduct(element)">
@@ -106,14 +106,11 @@
             </tr>
 
           </table>
-
-          <!-- Paginador -->
-          <!-- <mat-paginator [pageSize]="6" [pageSizeOptions]="[6,12,18]">
-          </mat-paginator> -->
-          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-            aria-label="Select page of periodic elements">
-          </mat-paginator>
         </div>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+          aria-label="Select page of periodic elements">
+        </mat-paginator>
 
         <!-- Sin productos -->
         <div *ngIf="!isLoading && dataSource.data.length === 0" class="alert alert-danger text-center mt-3">

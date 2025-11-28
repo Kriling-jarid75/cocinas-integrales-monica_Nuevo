@@ -14,7 +14,8 @@ export class ProductosModuleCocinasNuevos {
 export class ModeloCategorias {
   "idCategoria": number;
   "nombreCategoria": string;
-  descripcionCategoria?:string
+  descripcionCategoria?:string;
+  enUso?:boolean
 }
 
 export class Imagen{

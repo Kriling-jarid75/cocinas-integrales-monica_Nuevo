@@ -1,13 +1,24 @@
-table {
+/* table {
   width: 100%;
 }
 
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td, th {
+  width: 25%;
+} */
+
+table {
+  width: 100%;
+}
 
 .header-black {
   color: #000000;
   font-weight: bold;
 }
-
 
 .skeleton {
   background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
@@ -18,10 +29,13 @@ table {
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
-
 
 .skeleton-text {
   height: 14px;
@@ -45,10 +59,8 @@ table {
   border-radius: 6px;
 }
 
-
-
-.botonEditar{
- background-color: #ffc107;
+.botonEditar {
+  background-color: #ffc107;
   color: rgb(3, 3, 3);
   border-radius: 10px;
   padding: 15px;
@@ -60,22 +72,17 @@ table {
 .botonEditar:hover {
   transform: translateY(-3px);
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
-
 }
 
 .botonEditar:active {
   transform: translateY(0px);
-  box-shadow: 0px 3px 6px rgba(0,0,0,0.20);
-
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
 }
 
-
-
-
-.botonEliminar{
- background-color: #dc3545;
+.botonEliminar {
+  background-color: #dc3545;
   color: white;
- border-radius: 10px;
+  border-radius: 10px;
   padding: 15px;
   border: none;
   cursor: pointer;
@@ -85,15 +92,12 @@ table {
 .botonEliminar:hover {
   transform: translateY(-3px);
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
-
 }
 
 .botonEliminar:active {
   transform: translateY(0px);
-  box-shadow: 0px 3px 6px rgba(0,0,0,0.20);
-
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
 }
-
 
 .botonEliminar:disabled {
   background-color: #e0e0e0 !important;
@@ -109,7 +113,38 @@ table {
 }
 
 
+/*BOTON DE EDITAR*/
+.botonEditar:disabled {
+  background-color: #e0e0e0 !important;
+  color: #8a8a8a !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
 
-/* table {
-  width: 100%;
-} */
+.botonEditar:disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+
+
+.botonElimarTodos {
+  background-color: #009100;
+  color: white;
+  border-radius: 10px;
+  padding: 15px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.botonElimarTodos:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.botonElimarTodos:active {
+  transform: translateY(0px);
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+}

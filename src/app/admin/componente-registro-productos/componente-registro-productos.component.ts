@@ -48,7 +48,7 @@ export class ComponenteRegistroProductosComponent {
       descripcion: ['', Validators.required],
       categoria: ['', Validators.required],
       // precio: ['', [Validators.required, Validators.pattern(/^[\$\d,]+(\.\d{1,2})?$/)]]
-      imagenes: ['', Validators.required],
+      imagenes: [null, Validators.required]
     });
 
     // this.precio = '';
@@ -68,13 +68,10 @@ export class ComponenteRegistroProductosComponent {
   }
 
   obtenerCategorias() {
-
     this.service.obtenerCategorias().subscribe({
       next: (response) => {
         if (response.code === API_RESPONSE_CODES.SUCCESS) {
-
           this.categoriasNuevas = response.data as ModeloCategorias[];
-
           console.log("Mostramos todos los valores " + JSON.stringify(this.categoriasNuevas));
         } else {
           this.categoriasNuevas = []; // aseguramos que las categoriasNuevas esten vacias
@@ -136,7 +133,7 @@ export class ComponenteRegistroProductosComponent {
 
     // ✅ Actualiza el control del formulario
     this.productoForm.patchValue({ imagenes: this.imageFiles });
-    this.productoForm.get('imagenes')?.markAsTouched();
+    this.productoForm.get('imagenes')?.updateValueAndValidity();
 
     // 🔹 Limpia el input para permitir volver a subir las mismas si el usuario quiere
     input.value = '';
@@ -153,54 +150,56 @@ export class ComponenteRegistroProductosComponent {
     } else {
       this.productoForm.patchValue({ imagenes: this.imageFiles });
     }
+
+    this.productoForm.get('imagenes')?.updateValueAndValidity();
   }
 
   registrarProducto() {
-    if (this.productoForm.valid) {
-      const productoNuevo = {
-        ...this.productoForm.value,
+    // Si deseas permitir actualizar sin imágenes, no fuerces validación de imagenes aquí.
+    if (!this.productoForm.valid) {
+      return this.productoForm.markAllAsTouched();
+    }
 
-      };
-      this.isLoading = true; // 🚀 activa el loading
-      this.service.crearProductoNuevo(productoNuevo, this.imageFiles).subscribe({
-        next: (data) => {
-          if (data.code === API_RESPONSE_CODES.SUCCESS) {
-            Swal.fire({
-              icon: 'success',
-              title: `Se registró correctamente el producto: ${productoNuevo.nombre}`,
-              text: data.message
-            });
-            this.limiarCampos();
-            this.selectedImages = [];
-            this.imageFiles = [];
+    const productoNuevo = {
+      ...this.productoForm.value,
 
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Ocurrió un error al registrar el producto',
-              text: data.message
-            });
-          }
-        },
-        error: (err) => {
-          console.error(err);
+    };
+    this.isLoading = true; // 🚀 activa el loading
+    this.service.crearProductoNuevo(productoNuevo, this.imageFiles).subscribe({
+      next: (data) => {
+        if (data.code === API_RESPONSE_CODES.SUCCESS) {
+          Swal.fire({
+            icon: 'success',
+            title: `Se registró correctamente el producto: ${productoNuevo.nombre}`,
+            text: data.message
+          });
+          this.limiarCampos();
+          this.selectedImages = [];
+          this.imageFiles = [];
+
+        } else {
           Swal.fire({
             icon: 'error',
-            title: 'Error en la conexión con el servidor',
+            title: 'Ocurrió un error al registrar el producto',
+            text: data.message
           });
-        },
-
-        complete: () => {
-          this.isLoading = false; // ✅ desactiva el loading al terminar
         }
-      });
+      },
+      error: (err) => {
+        console.error(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en la conexión con el servidor',
+        });
+      },
 
-      console.log('Producto registrado:', productoNuevo);
+      complete: () => {
+        this.isLoading = false; // ✅ desactiva el loading al terminar
+      }
+    });
 
-    } else {
+    console.log('Producto registrado:', productoNuevo);
 
-      this.productoForm.markAllAsTouched();
-    }
   }
 
 
