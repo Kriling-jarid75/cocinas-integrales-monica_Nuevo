@@ -37,63 +37,55 @@
       </mat-error>
     </mat-form-field>
 
-    <!--  <mat-form-field appearance="outline" class="full-width precio-field">
-      <mat-label>Precio</mat-label>
-
-
-      <input matInput autocomplete="off" #monto name="precio" formControlName="precio" placeholder="$0.00"
-        (change)="updateValue(monto.value)" (keypress)="validateFormat($event)" />
-
-
-      <mat-error *ngIf="productoForm.get('precio')?.hasError('required')">
-        El precio es obligatorio
-      </mat-error>
-      <mat-error *ngIf="productoForm.get('precio')?.hasError('min')">
-        El precio debe ser mayor a 0
-      </mat-error>
-    </mat-form-field> -->
-
-
     <!-- Imágenes -->
     <div class="mb-3">
+      <label class="mat-label">Imágenes del producto</label>
       <!-- Si el producto tiene imágenes -->
-      <div *ngIf="producto.imagen.length > 0; else sinImagenes" class="d-flex flex-wrap gap-2">
+      <div *ngIf="selectedImages.length > 0; else sinImagenes" class="d-flex flex-wrap gap-2">
 
-        <div class="upload-container">
-          <div class="preview-container" *ngIf="selectedImages.length > 0">
-            <div class="preview" *ngFor="let img of selectedImages; let i = index">
-              <img [src]="img.preview" alt="Previsualización" />
+        <div class="upload-container" *ngFor="let img of selectedImages; let i = index">
+          <div class="preview-container preview">
+            <img [src]="img.preview" alt="Previsualización" />
 
+            <!-- botón para borrar -->
+            <button type="button" class="delete-btn" (click)="removeImage(i)">
+              <i class="bi bi-trash3-fill"></i>
+            </button>
 
-              <button type="button" class="delete-btn" (click)="removeImage(i)">
-                <i class="bi bi-trash3-fill"></i>
-              </button>
-            </div>
           </div>
         </div>
+
       </div>
 
-      <!-- Botón para agregar nuevas imágenes -->
-      <div class="d-flex align-items-center mt-2">
-        <button class="btn btn-primary" type="button" (click)="fileInput.click()">Seleccionar imágenes</button>
-        <input type="file" #fileInput (change)="onFileSelected($event)" multiple accept="image/*" hidden />
-        <mat-error *ngIf="productoForm.get('imagenes')?.hasError('required')">
-          Debes seleccionar al menos una imagen
-        </mat-error>
-      </div>
+
+      <hr width="100%">
 
       <!-- Plantilla si no hay imágenes -->
       <ng-template #sinImagenes>
-        <div class="alert alert-warning" role="alert">
-          Este producto no cuenta con imágenes.
+        <div class="alert alert-warning mt-2" role="alert">
+          Este producto no cuenta con imágenes. Agregue algunas
         </div>
       </ng-template>
+
+
+      <!-- Botón e Input para agregar nuevas imágenes -->
+      <div class="d-flex align-items-center mt-3">
+        <button class="btn btn-primary" type="button" (click)="fileInput.click()">
+          {{ (producto.imagen.length > 0 || selectedImages.length > 0) ? 'Añadir más imágenes' : 'Seleccionar imágenes'}}
+        </button>
+        <input type="file" #fileInput (change)="onFileSelected($event)" multiple accept="image/*" hidden />
+      </div>
+
+      <!-- Manejo de errores del FormControl (si es necesario) -->
+      <mat-error *ngIf="productoForm.get('imagenes')?.hasError('required')">
+        Debes seleccionar al menos una imagen
+      </mat-error>
     </div>
 
     <!-- Botones -->
     <div class="d-flex justify-content-end mt-4 gap-2">
       <button class="botonEditar" (click)="editarProducto()" type="submit"
-        [disabled]="productoForm.invalid || isLoading">
+        [disabled]="productoForm.invalid || isLoading || selectedImages.length === 0">
         <ng-container *ngIf="!isLoading; else loading">
           Actualizar Producto
         </ng-container>

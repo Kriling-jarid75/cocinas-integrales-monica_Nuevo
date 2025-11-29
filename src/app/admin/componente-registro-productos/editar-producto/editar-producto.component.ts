@@ -36,13 +36,12 @@ type SelectedImage = {
 })
 export class EditarProductoComponent {
 
-  productoForm!: FormGroup;
-  categoriasNuevas: Array<ModeloCategorias> = [];
-
   // 🧠 Caché para evitar llamadas repetidas
   static categoriasCache: Array<ModeloCategorias> | null = null;
 
-  // selectedImages contiene tanto imagenes existentes (url) como nuevas (file+preview)
+
+  productoForm!: FormGroup;
+  categoriasNuevas: Array<ModeloCategorias> = [];
   selectedImages: SelectedImage[] = [];
   imageFiles: File[] = [];               // archivos nuevos que se enviarán
   imagenesEliminadas: string[] = [];     // urls (o nombres) marcadas para eliminar
@@ -55,25 +54,34 @@ export class EditarProductoComponent {
     private fb: FormBuilder
   ) { }
 
+
+
   ngOnInit() {
     console.log("Mostramos los productos " + JSON.stringify(this.producto));
     this.productoForm = this.fb.group({
       nombre: [this.producto?.nombre || '', Validators.required],
       descripcion: [this.producto?.descripcion || '', Validators.required],
-      // guardamos el idCategoria en el control (no el nombre)
       categoria: [this.producto?.categoria?.idCategoria || null, Validators.required],
-      imagenes: [null]
+     
+
     });
 
-    // Inicializar selectedImages con las imágenes que vienen del backend
-    if (this.producto?.imagen?.length > 0) {
-      this.selectedImages = this.producto.imagen.map(img => ({
-        preview: img.url_imagen,
-        url: img.url_imagen
-      }));
-    }
+    this.resetImagenes();
 
     this.cargarCategorias();
+  }
+
+
+  resetImagenes() {
+
+    this.selectedImages = this.producto?.imagen?.map(img => ({
+      preview: img.url_imagen,
+      url: img.url_imagen
+    })) || [];
+
+    this.imageFiles = [];
+    this.imagenesEliminadas = [];
+
   }
 
   cargarCategorias() {
@@ -187,7 +195,6 @@ export class EditarProductoComponent {
 
     // actualizar formulario
     if (this.selectedImages.length === 0) {
-      this.productoForm.patchValue({ imagenes: null });
       // si quieres forzar que tenga al menos una imagen, descomenta la línea siguiente:
       this.productoForm.get('imagenes')?.setErrors({ required: true });
     } else {
