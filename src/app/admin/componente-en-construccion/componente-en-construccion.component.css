@@ -1,0 +1,29 @@
+body {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    font-family: 'Lato', sans-serif;
+}
+
+/* Imagen con animación suave */
+.construction-img {
+    max-width: 300px;
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Efecto de flotación suave */
+@keyframes float {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Card personalizada */
+.card-construction {
+    max-width: 500px;
+    background: white;
+    border-radius: 20px;
+}
+
+/* Textos */
+.card-construction h3 {
+    letter-spacing: 0.5px;
+}

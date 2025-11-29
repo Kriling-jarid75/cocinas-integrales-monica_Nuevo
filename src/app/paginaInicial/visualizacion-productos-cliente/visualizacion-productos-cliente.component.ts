@@ -49,61 +49,61 @@ export class VisualizacionProductosClienteComponent {
   }
 
 
- cargarTodosLosProductos() {
-  this.isLoading = true;
+  cargarTodosLosProductos() {
+    this.isLoading = true;
 
-  this.service.listarProductos().subscribe({
-    next: (response) => {
-      if (response.code === API_RESPONSE_CODES.SUCCESS) {
-        setTimeout(() => {
-          this.productos = response.data || [];
-          this.updatePage();
+    this.service.listarProductos().subscribe({
+      next: (response) => {
+        if (response.code === API_RESPONSE_CODES.SUCCESS) {
+          setTimeout(() => {
+            this.productos = response.data || [];
+            this.updatePage();
+            this.isLoading = false;
+          }, 1500);
+        } else {
+          this.productos = [];
           this.isLoading = false;
-        }, 1500);
-      } else {
-        this.productos = [];
+
+          Swal.fire({
+            icon: 'warning',
+            title: 'No se encontraron productos',
+            text: response.message || 'La lista está vacía.'
+          });
+        }
+      },
+
+      error: (err) => {
         this.isLoading = false;
 
-        Swal.fire({
-          icon: 'warning',
-          title: 'No se encontraron productos',
-          text: response.message || 'La lista está vacía.'
-        });
-      }
-    },
+        // 👉 Detectar si el backend está apagado
+        if (err.status === 0) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Sin conexión con el servidor',
+            text: 'No fue posible conectarse al servidor. Verifica que esté activo.'
+          });
+          return;
+        }
 
-    error: (err) => {
-      this.isLoading = false;
+        // 👉 Error interno del servidor
+        if (err.status === API_RESPONSE_MESSAGES[500]) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error interno del servidor (500)',
+            text: 'Ocurrió un problema en el backend.'
+          });
+          return;
+        }
 
-      // 👉 Detectar si el backend está apagado
-      if (err.status === 0) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Sin conexión con el servidor',
-          text: 'No fue posible conectarse al servidor. Verifica que esté activo.'
-        });
-        return;
-      }
-
-      // 👉 Error interno del servidor
-      if (err.status === API_RESPONSE_MESSAGES[500]) {
+        // 👉 Otros tipos de errores (400, 404, etc.)
         Swal.fire({
           icon: 'error',
-          title: 'Error interno del servidor (500)',
-          text: 'Ocurrió un problema en el backend.'
+          title: 'Error inesperado',
+          text: err.message || 'Ocurrió un error no identificado.'
         });
-        return;
       }
-
-      // 👉 Otros tipos de errores (400, 404, etc.)
-      Swal.fire({
-        icon: 'error',
-        title: 'Error inesperado',
-        text: err.message || 'Ocurrió un error no identificado.'
-      });
-    }
-  });
-}
+    });
+  }
 
 
 
@@ -129,9 +129,35 @@ export class VisualizacionProductosClienteComponent {
           });
         }
       },
-      error: () => {
+      error: (err) => {
         this.isLoading = false;
-        Swal.fire({ icon: 'error', title: 'Error al conectar con el servidor' });
+
+        // 👉 Detectar si el backend está apagado
+        if (err.status === 0) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Sin conexión con el servidor',
+            text: 'No fue posible conectarse al servidor. Verifica que esté activo.'
+          });
+          return;
+        }
+
+        // 👉 Error interno del servidor
+        if (err.status === API_RESPONSE_MESSAGES[500]) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error interno del servidor (500)',
+            text: 'Ocurrió un problema en el backend.'
+          });
+          return;
+        }
+
+        // 👉 Otros tipos de errores (400, 404, etc.)
+        Swal.fire({
+          icon: 'error',
+          title: 'Error inesperado',
+          text: err.message || 'Ocurrió un error no identificado.'
+        });
       }
     });
   }

@@ -14,7 +14,7 @@
 
 
 .error-container {
-    max-width: 500px;
+    width: 600px;
     background: white;
     padding: 40px 30px;
     border-radius: 20px;
@@ -28,7 +28,7 @@
     font-size: 6rem;
     font-weight: 700;
     color: var(--primary-color);
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     animation: bounce 1s infinite;
     justify-content: center;
 }

@@ -29,9 +29,9 @@ export class InicioSesionAdminsComponent {
   ngOnInit(): void {
 
     // Solo redirige si hay token y no estamos en modo desarrollo/testing
-    if (this.authService.isLoggedIn()) {
+   /*  if (this.authService.isLoggedIn()) {
       this.router.navigate(['/admin']);
-    }
+    } */
 
 
     this.formularioLogin = this.fb.group({
