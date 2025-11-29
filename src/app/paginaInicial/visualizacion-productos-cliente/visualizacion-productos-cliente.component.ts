@@ -7,7 +7,7 @@ import { Component, inject, Input, SimpleChanges, ViewChild } from '@angular/cor
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta/codigosDeRespuesta';
+import { API_RESPONSE_CODES, API_RESPONSE_MESSAGES } from '../../shared/codigosDeRespuesta/codigosDeRespuesta';
 
 
 @Component({
@@ -48,58 +48,63 @@ export class VisualizacionProductosClienteComponent {
     }
   }
 
-  /*  cargarTodosLosProductos(): void {
-     this.isLoading = true;
-     this.service.listarProductos().subscribe({
-       next: (response) => {
-         this.productos = response.data || [];
 
-         console.log("mostramos el valor " + JSON.stringify(this.productos))
-         this.updatePage();
-         this.isLoading = false;
+ cargarTodosLosProductos() {
+  this.isLoading = true;
 
-         console.log("Mostramos los productos " + JSON.stringify(this.productos));
-
-       },
-       error: (err) => {
-         this.isLoading = false;
-         Swal.fire({ icon: 'error', title: 'Error al obtener productos' });
-       }
-     });
-   } */
-
-  cargarTodosLosProductos() {
-    this.isLoading = true; // activamos loading cada vez que vamos a buscar
-    this.service.listarProductos().subscribe({
-      next: (response) => {
-        // Si tu backend devuelve GenericResponse<List<Productos>>:
-        if (response.code === API_RESPONSE_CODES.SUCCESS) {
-          setTimeout(() => {
-            this.productos = response.data || [];// 'data' viene del backend
-            //this.dataSource = new MatTableDataSource(this.productos);
-
-            console.log("Mostramos la data de la tabla " + JSON.stringify(this.productos));
-            this.updatePage();
-            this.isLoading = false; // desactivamos cuando ya cargó
-          }, 1500);
-        } else {
-          this.productos = []; // si no hay productos, carga 1 segundo y medio sino encontro nada el arreglo esta vacio y desactiva el skeleton
+  this.service.listarProductos().subscribe({
+    next: (response) => {
+      if (response.code === API_RESPONSE_CODES.SUCCESS) {
+        setTimeout(() => {
+          this.productos = response.data || [];
+          this.updatePage();
           this.isLoading = false;
-        }
-
-      },
-      error: (err) => {
+        }, 1500);
+      } else {
+        this.productos = [];
         this.isLoading = false;
-        this.errorMessage = err.message || 'Error al cargar productos.';
 
-        // 👇 Opcional: también mostrar SweetAlert
         Swal.fire({
-          icon: 'error',
-          title: 'Error en la conexión con el servidor',
+          icon: 'warning',
+          title: 'No se encontraron productos',
+          text: response.message || 'La lista está vacía.'
         });
       }
-    });
-  }
+    },
+
+    error: (err) => {
+      this.isLoading = false;
+
+      // 👉 Detectar si el backend está apagado
+      if (err.status === 0) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Sin conexión con el servidor',
+          text: 'No fue posible conectarse al servidor. Verifica que esté activo.'
+        });
+        return;
+      }
+
+      // 👉 Error interno del servidor
+      if (err.status === API_RESPONSE_MESSAGES[500]) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error interno del servidor (500)',
+          text: 'Ocurrió un problema en el backend.'
+        });
+        return;
+      }
+
+      // 👉 Otros tipos de errores (400, 404, etc.)
+      Swal.fire({
+        icon: 'error',
+        title: 'Error inesperado',
+        text: err.message || 'Ocurrió un error no identificado.'
+      });
+    }
+  });
+}
+
 
 
 
