@@ -149,9 +149,6 @@ export class ServicioProductosService {
 
    eliminarVariasCategorias(idCategorias: ModeloCategorias[]) {
 
-    debugger
-
-
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.post<GenericResponse<string>>(`${this.baseUrl}/categoria/eliminar/todas`, idCategorias).pipe(
       catchError(this.handleError) // 👈 Manejo centralizado

@@ -230,12 +230,12 @@ export class ComponenteTablaCategoriasComponent {
     console.log("Eliminando categorías:", categoriasSeleccionadas);
 
    Swal.fire({
-      title: "¿Estás seguro de querer borrarlo?",
+      title: "¿Estás seguro de eliminar todas las categorias?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Sí, borrar registro!",
+      confirmButtonText: "Sí, eliminarlas !",
       cancelButtonText: "Cancelar"
     }).then((result) => {
       if (result.isConfirmed) this.eliminarTodas(categoriasSeleccionadas);
