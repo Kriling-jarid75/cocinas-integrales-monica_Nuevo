@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { NuestrosProvedoresComponent } from '../nuestros-provedores/nuestros-provedores.component';
 import { EnvioCorreoComponent } from '../envio-correo/envio-correo.component';
 import { ComponenteCategoriasProductosComponent } from '../componente-categorias-productos/componente-categorias-productos.component';
-import { ComponenteParaVideosComponent } from "../componente-para-videos/componente-para-videos.component";
-
 
 @Component({
   selector: 'app-home',
@@ -12,7 +10,6 @@ import { ComponenteParaVideosComponent } from "../componente-para-videos/compone
     NuestrosProvedoresComponent,
     EnvioCorreoComponent,
     ComponenteCategoriasProductosComponent,
-    ComponenteParaVideosComponent
 ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

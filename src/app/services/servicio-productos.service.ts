@@ -65,7 +65,7 @@ export class ServicioProductosService {
 
   private http = inject(HttpClient);
   // Servicio de productos
-  private baseUrl = environment.apiUrl + '/gestion';
+  private baseUrl = environment.apiUrl;
 
   constructor() { }
 
@@ -112,7 +112,7 @@ export class ServicioProductosService {
 
   obtenerCategorias(): Observable<any> {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
-    return this.http.post(`${this.baseUrl}/listar/categorias`, {}).pipe(
+    return this.http.post(`${this.baseUrl}/categoria/listar`, {}).pipe(
       catchError(this.handleError) // 👈 Manejo centralizado
     );
   }
@@ -162,7 +162,7 @@ export class ServicioProductosService {
   /* metodo de enviar correo electronico */
   enviarEmail(email: Email): Observable<any> {
 
-    return this.http.post(`${this.baseUrl}/enviar/email`, email).pipe(
+    return this.http.post(`${this.baseUrl}/correo/enviar/email`, email).pipe(
       catchError(this.handleError) // 👈 Manejo centralizado
     );
   }
