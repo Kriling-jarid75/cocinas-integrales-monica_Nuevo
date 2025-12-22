@@ -15,7 +15,7 @@ export class PieDePaginaComponent {
 
   readonly dialog = inject(MatDialog);
 
-  
+
 
 
   openPdfDialog(): void {
@@ -34,9 +34,6 @@ export class PieDePaginaComponent {
 
   get obtenerFechaDelSistema() {
     let fecha = formatDate(new Date(), 'dd-MM-yyyy', 'en-MX')
-
-    console.log(fecha);
-
     return fecha;
   }
 
