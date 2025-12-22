@@ -7,6 +7,20 @@
   cursor: pointer !important;
 }
 
+nav {
+  /* Fondo: De azul noche a azul marino oscuro */
+  background: #0f1c2e;
+  background: -webkit-linear-gradient(to right, #0f1c2e, #1a2a3a);
+  background: linear-gradient(to right, #0f1c2e, #1a2a3a);
+
+  box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.7);
+}
+
+
+
+
+
+
 .enlacesPrincipales:hover {
   color: rgb(0, 153, 255);
   text-decoration: underline;
@@ -30,6 +44,17 @@
 }
 
 .botonConfiguracion:active {
+  transform: translateY(0px);
+  box-shadow: 0px 3px 6px rgba(0,0,0,0.20);
+
+}
+
+
+.logo:hover{
+ transform: translateY(-3px); /* Se eleva */
+  box-shadow: 0px 7px 8px rgba(0, 0, 0, 0.25); /* Sombra realista */
+}
+.logo:active {
   transform: translateY(0px);
   box-shadow: 0px 3px 6px rgba(0,0,0,0.20);
 

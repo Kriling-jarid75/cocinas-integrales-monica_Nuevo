@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+
+<mat-dialog-content>
+  <!--  Usamos un iframe para embeber el PDF. Asegúrate de darle un tamaño adecuado -->
+  <iframe [src]="pdfUrl" width="100%" height="500px" frameborder="0">
+    Este navegador no soporta iframes. Puedes descargar el PDF [aquí](link-al-pdf).
+  </iframe>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onClose()">Cerrar</button>
+</mat-dialog-actions>
+

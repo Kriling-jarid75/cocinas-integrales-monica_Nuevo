@@ -64,11 +64,11 @@ export class VisualizacionProductosClienteComponent {
           this.productos = [];
           this.isLoading = false;
 
-          Swal.fire({
+         /*  Swal.fire({
             icon: 'warning',
             title: 'No se encontraron productos',
             text: response.message || 'La lista está vacía.'
-          });
+          }); */
         }
       },
 

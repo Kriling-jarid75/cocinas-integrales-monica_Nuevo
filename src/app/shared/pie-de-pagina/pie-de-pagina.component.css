@@ -31,4 +31,5 @@
 
 .perfilPersonal:hover{
   color: rgb(70, 70, 70);
+  cursor: pointer;
 }

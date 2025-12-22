@@ -46,12 +46,17 @@
       <div class="col mb-3">
         <img src="icons/Cocinas_Integrales_Monica.png" alt="Logo" width="60%" height="30%"
           class="figura d-inline-block">
-        <p class="text-body-secondary">&copy; 2025 Cocinas Integrales Mónica — Todos los derechos reservados.</p>
+        <p class="text-body-secondary">&copy; {{this.obtenerFechaDelSistema}} Cocinas Integrales Mónica — Todos los derechos reservados.</p>
       </div>
     </div>
   </footer>
   <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
-    <p> <a class="perfilPersonal" href="https://krilingjaridcvprofesional.netlify.app/" target="_blank"> Desarrollado por: Ing. Kriling Jarid G.E</a></p>
+    <p>
+      <a class="perfilPersonal" href="documents/CV_Profesional_KrilingJarid.pdf" target="_blank">
+        Desarrollado por: Ing. Kriling Jarid G.E
+      </a>
+     <!--  <a  class="perfilPersonal" matButton (click)="openPdfDialog()">Desarrollado por: Ing. Kriling Jarid G.E</a> -->
+    </p>
     <ul class="list-unstyled d-flex">
       <li class="ms-3"><a class="link-body-emphasis" href="https://www.instagram.com/cocintra_monica/"
           aria-label="Instagram"><i class="bi bi-instagram"></i></a>

@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://mi-backend-produccion.com/api'  // 🔹 tu dominio real
+  apiUrl: 'https://https://cocintramonica-dd75b9b89a77.herokuapp.com/api'  // 🔹 tu dominio real
 };

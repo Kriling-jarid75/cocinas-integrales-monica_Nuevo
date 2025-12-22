@@ -67,7 +67,12 @@ export class InicioSesionService {
 
   /** Obtiene el rol del usuario */
   getRol(): string | null {
-    return localStorage.getItem(this.rolKey);
+
+    const valoresLocales = localStorage.getItem(this.rolKey);
+
+    console.log("Mostramos valores del local storage ", valoresLocales);
+
+    return valoresLocales;
   }
 
   /** Alerta personalizada al expirar sesión */
