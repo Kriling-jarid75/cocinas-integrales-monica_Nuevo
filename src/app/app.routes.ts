@@ -6,9 +6,17 @@ import { PaginaNoEncontradaComponent } from './shared/pagina-no-encontrada/pagin
 
 export const routes: Routes = [
   // Público
-  { path: '', loadComponent: () => import('./paginaInicial/home/home.component').then(m => m.HomeComponent) },
+  {
+    path: '', loadComponent: () =>
+      import('./paginaInicial/home/home.component').then(m => m.HomeComponent),
+    canActivate: [LoginGuard]
+
+  },
   { path: 'paginaEnConstruccion', component: PaginaNoEncontrada2Component },
-  { path: 'login',loadComponent: () => import('./shared/inicio-sesion-admins/inicio-sesion-admins.component').then(m => m.InicioSesionAdminsComponent),
+  {
+    path: 'login', loadComponent: () =>
+      import('./shared/inicio-sesion-admins/inicio-sesion-admins.component').
+        then(m => m.InicioSesionAdminsComponent),
     canActivate: [LoginGuard]
   },
 
