@@ -1,7 +1,7 @@
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
-import { ServicioProductosService } from '../../services/servicio-productos.service';
+import { ServicioProductosService } from '../../services/servicio-general.service';
 import { DetalleProductosComponent } from '../detalle-productos/detalle-productos.component';
 import { Component, inject, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';

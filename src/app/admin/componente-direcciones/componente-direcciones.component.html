@@ -1,0 +1,53 @@
+<div class="container">
+  <div *ngIf="isMobile(); else desktop">
+    <!-- UI repartidor -->
+  </div>
+
+  <ng-template #desktop>
+    <p>Esta función solo está disponible en dispositivos móviles 📱</p>
+
+    <div class="container" style="padding: 15px; font-family: sans-serif;">
+      <h2>Rutas de Entrega</h2>
+
+      <div *ngFor="let pedido of pedidos" class="card"
+        style="border: 1px solid #ccc; margin-bottom: 10px; padding: 15px; border-radius: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 style="margin: 0;">{{ pedido.id }}</h3>
+            <p style="margin: 5px 0; color: #666;">{{ pedido.cliente }}</p>
+            <small>{{ pedido.direccion }}</small>
+          </div>
+
+
+          <button (click)="irADestino(pedido)"
+            style="background-color: #06d6a0; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+            INICIAR RUTA
+          </button>
+        </div>
+
+
+
+        <button class="btn btn-primary" (click)="mostrarPreview(pedido)">
+          Ver mapa
+        </button>
+      </div>
+    </div>
+
+    <hr width="100%">
+
+
+
+    <div *ngIf="mapPreviewUrl" class="map-preview">
+      <iframe width="100%" height="200" [src]="mapPreviewUrl" style="border:0;" loading="lazy">
+      </iframe>
+    </div>
+  </ng-template>
+
+
+
+
+
+
+
+
+</div>

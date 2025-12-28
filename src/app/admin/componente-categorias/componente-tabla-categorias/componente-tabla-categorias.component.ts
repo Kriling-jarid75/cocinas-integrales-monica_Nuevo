@@ -7,7 +7,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ModeloCategorias } from '../../../models/productos/productos.module';
 import { MatDialog } from '@angular/material/dialog';
 import { OnlineServiceService } from '../../../services/online-service.service';
-import { ServicioProductosService } from '../../../services/servicio-productos.service';
+import { ServicioProductosService } from '../../../services/servicio-general.service';
 import { API_RESPONSE_CODES } from '../../../shared/codigosDeRespuesta/codigosDeRespuesta';
 import Swal from 'sweetalert2';
 import { ComponeteEditarCategoriasComponent } from '../componete-editar-categorias/componete-editar-categorias.component';

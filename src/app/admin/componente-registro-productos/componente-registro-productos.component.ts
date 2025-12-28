@@ -6,7 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { ServicioProductosService } from '../../services/servicio-productos.service';
+import { ServicioProductosService } from '../../services/servicio-general.service';
 import Swal from 'sweetalert2';
 import { ModeloCategorias } from '../../models/productos/productos.module';
 import { OnlineServiceService } from '../../services/online-service.service';

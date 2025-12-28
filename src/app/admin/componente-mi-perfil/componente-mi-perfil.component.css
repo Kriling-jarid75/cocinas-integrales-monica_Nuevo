@@ -1,0 +1,112 @@
+* {
+  box-sizing: border-box;
+}
+
+
+.account-container {
+  max-width: 420px;
+  width: 100%;
+  margin: auto;
+  padding: 16px;
+}
+
+
+.photo-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.avatar-wrapper {
+  position: relative; /*Permite posicionar el botón ✏️ encima de la imagen*/
+  width: 120px;
+  height: 120px;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;/* Hace el botón redondo (estilo GitHub) */
+  object-fit: cover;
+  border: 1px solid #d0d7de;
+
+}
+
+/* Botón lápiz */
+.edit-avatar-btn {/* Coloca el lápiz: Abajo, A la derecha y Encima de la foto */
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #d0d7de;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-avatar-btn:hover {
+  background: #f6f8fa;
+}
+
+.edit-avatar-btn:active {
+  transform: scale(0.95);
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .avatar-wrapper {
+    width: 90px;
+    height: 90px;
+  }
+
+  .edit-avatar-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px; /* evita zoom en iOS */
+}
+
+
+small {
+  color: red;
+}
+
+.button {
+  width: 100%;
+  padding: 12px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+

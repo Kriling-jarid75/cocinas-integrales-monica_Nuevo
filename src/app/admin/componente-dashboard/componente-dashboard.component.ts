@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { ProductosModuleCocinasNuevos } from '../../models/productos/productos.module';
-import { ServicioProductosService } from '../../services/servicio-productos.service';
+import { ServicioProductosService } from '../../services/servicio-general.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditarProductoComponent } from '../componente-registro-productos/editar-producto/editar-producto.component';
 import Swal from 'sweetalert2';

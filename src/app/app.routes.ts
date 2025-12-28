@@ -3,6 +3,7 @@ import { AuthGuard } from './guards/AuthGuard';
 import { LoginGuard } from './guards/LoginGuard';
 import { PaginaNoEncontrada2Component } from './shared/pagina-no-encontrada-2/pagina-no-encontrada-2.component';
 import { PaginaNoEncontradaComponent } from './shared/pagina-no-encontrada/pagina-no-encontrada.component';
+import { ComponenteDireccionesComponent } from './admin/componente-direcciones/componente-direcciones.component';
 
 export const routes: Routes = [
   // Público
@@ -34,6 +35,7 @@ export const routes: Routes = [
       { path: 'categorias/registro', loadComponent: () => import('./admin/componente-categorias/componente-categorias.component').then(m => m.ComponenteCategoriasComponent) },
       { path: 'categorias/listar', loadComponent: () => import('./admin/componente-categorias/componente-tabla-categorias/componente-tabla-categorias.component').then(m => m.ComponenteTablaCategoriasComponent) },
       { path: 'miPerfil', loadComponent: () => import('./admin/componente-mi-perfil/componente-mi-perfil.component').then(m => m.ComponenteMiPerfilComponent) },
+      { path: 'pedidos', loadComponent: () => import('./admin/componente-direcciones/componente-direcciones.component').then(m => m.ComponenteDireccionesComponent) },
 
     ]
   },

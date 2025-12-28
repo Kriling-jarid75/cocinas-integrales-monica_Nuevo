@@ -86,7 +86,7 @@ export class ServicioProductosService {
         }
         return throwError(() => error);
       })
-    );;
+    );
   }
 
 
@@ -103,7 +103,7 @@ export class ServicioProductosService {
     });
 
     return this.http.post<GenericResponse<string>>(`${this.baseUrl}/productos/registro`, formData)
-    .pipe(catchError(this.handleError));
+      .pipe(catchError(this.handleError));
   }
 
   // Método para crear un producto
@@ -121,7 +121,7 @@ export class ServicioProductosService {
         if (error.status === 0 || error.status === 504) {
           Swal.fire({
             title: "El backend está pausado. Por favor, avísame para encenderlo.",
-           icon: 'warning',
+            icon: 'warning',
           });
         }
         return throwError(() => error);
@@ -140,7 +140,7 @@ export class ServicioProductosService {
 
           Swal.fire({
             title: "El backend está pausado. Por favor, avísame para encenderlo.",
-           icon: 'warning',
+            icon: 'warning',
           });
         }
         return throwError(() => error);
@@ -181,7 +181,7 @@ export class ServicioProductosService {
         if (error.status === 0 || error.status === 504) {
           Swal.fire({
             title: "El backend está pausado. Por favor, avísame para encenderlo.",
-           icon: 'warning',
+            icon: 'warning',
 
           });
         }
@@ -198,7 +198,7 @@ export class ServicioProductosService {
         if (error.status === 0 || error.status === 504) {
           Swal.fire({
             title: "El backend está pausado. Por favor, avísame para encenderlo.",
-           icon: 'warning',
+            icon: 'warning',
           });
         }
         return throwError(() => error);
@@ -215,7 +215,7 @@ export class ServicioProductosService {
         if (error.status === 0 || error.status === 504) {
           Swal.fire({
             title: "El backend está pausado. Por favor, avísame para encenderlo.",
-          icon: 'warning',
+            icon: 'warning',
 
           });
         }
@@ -236,7 +236,7 @@ export class ServicioProductosService {
 
           Swal.fire({
             title: "El backend está pausado. Por favor, avísame para encenderlo.",
-           icon: 'warning',
+            icon: 'warning',
           });
 
         }
@@ -244,6 +244,31 @@ export class ServicioProductosService {
       })
     );
   }
+
+  /* MOSTRAR INFORMACION USUARIO */
+
+
+  mostrarinformacionUser(): Observable<any> {
+    // Aquí ya no es necesario volver a mapear las propiedades si coinciden
+    return this.http.post<string>(`${this.baseUrl}/usuarios/mostrar`, {}).pipe(
+      catchError((error: HttpErrorResponse) => {
+        // Si el servidor está apagado (dynos=0), el status será 0 o 504
+        if (error.status === 0 || error.status === 504) {
+
+          Swal.fire({
+            icon: 'warning',
+            title: "El backend está pausado. Por favor, avísame para encenderlo.",
+          });
+        }
+        return throwError(() => error);
+      })
+    );;
+
+  }
+
+
+
+
 
 
   private handleError(error: any) {

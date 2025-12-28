@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { CommonModule } from '@angular/common';
-import { ServicioProductosService } from '../../services/servicio-productos.service';
+import { ServicioProductosService } from '../../services/servicio-general.service';
 import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta/codigosDeRespuesta';
 import { MatTooltipModule } from '@angular/material/tooltip';
 

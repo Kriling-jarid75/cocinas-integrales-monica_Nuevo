@@ -1,9 +1,82 @@
 <div class="container">
-  <app-componente-en-construccion/>
-  <!--  <h1>Mi cuenta</h1>
+  <div class="account-container">
+    <div class="card ">
+      <div class="card-header">
+        <h1>Mi Cuenta</h1>
+      </div>
 
-   <form action="">
-    <label for="nombreAdmin">Nombre:</label>
-    <input type="text" >
-   </form> -->
+      <div class="card-body">
+        <form [formGroup]="accountForm" (ngSubmit)="saveChanges()">
+
+          <div class="photo-section">
+
+
+            <!-- <div class="avatar-wrapper" (click)="fileInput.click()"> -->
+            <div class="avatar-wrapper" (click)="fileInput.click()">
+
+              <!-- Qué hace
+                Si el usuario ya eligió una imagen, muestra el preview
+                Si no, muestra la imagen por defecto -->
+              <img [src]="photoPreview || defaultAvatar" alt="Avatar" class="avatar-img" />
+
+
+
+              <!-- Botón lápiz
+               Esta es la parte más importante
+                Botón flotante ✏️
+                También abre el selector
+                $event.stopPropagation() evita:
+                Que el click suba al div padre
+                Que se dispare dos veces el selector
+                💥 Sin eso, se abriría doble el diálogo-->
+              <button type="button" class="edit-avatar-btn" (click)="fileInput.click(); $event.stopPropagation()"
+                aria-label="Editar foto">✏️
+              </button>
+            </div>
+
+
+
+            <!-- Input oculto
+             Qué hace
+              #fileInput → referencia local de Angular
+              hidden → no se ve
+              accept="image/*" → solo imágenes
+              (change) → se ejecuta cuando el usuario elige una imagen-->
+            <input #fileInput type="file" hidden accept="image/*" (change)="onFileSelected($event)" />
+          </div>
+
+
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre Cliente:</mat-label>
+            <input matInput placeholder="Tu nombre" formControlName="name" placeholder="Ej: Jose Juan">
+            <mat-error *ngIf="accountForm.get('name')?.hasError('required')">
+              El nombre es obligatorio
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Correo:</mat-label>
+            <input matInput formControlName="email" placeholder="Ej: ejemplo@gmail.com" type="email">
+            <mat-error *ngIf="accountForm.get('email')?.hasError('required')">
+              El email es obligatorio
+            </mat-error>
+          </mat-form-field>
+
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nueva Contraseña:</mat-label>
+            <input matInput formControlName="password" placeholder="*****" type="password">
+            <mat-error *ngIf="accountForm.get('password')?.invalid && accountForm.get('password')?.touched">
+              Mínimo 6 caracteres
+            </mat-error>
+          </mat-form-field>
+
+
+          <button type="submit" class="btn btn-outline-primary"> Guardar cambios</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
 </div>

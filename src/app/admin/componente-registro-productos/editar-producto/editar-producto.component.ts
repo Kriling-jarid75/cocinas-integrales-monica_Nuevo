@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import Swal from 'sweetalert2';
-import { ServicioProductosService } from '../../../services/servicio-productos.service';
+import { ServicioProductosService } from '../../../services/servicio-general.service';
 import { ModeloCategorias, ProductosModuleCocinasNuevos } from '../../../models/productos/productos.module';
 import { API_RESPONSE_CODES } from '../../../shared/codigosDeRespuesta/codigosDeRespuesta';
 
@@ -62,7 +62,7 @@ export class EditarProductoComponent {
       nombre: [this.producto?.nombre || '', Validators.required],
       descripcion: [this.producto?.descripcion || '', Validators.required],
       categoria: [this.producto?.categoria?.idCategoria || null, Validators.required],
-     
+
 
     });
 

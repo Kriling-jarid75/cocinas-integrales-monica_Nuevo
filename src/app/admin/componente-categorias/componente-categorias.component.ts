@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ServicioProductosService } from '../../services/servicio-productos.service';
+import { ServicioProductosService } from '../../services/servicio-general.service';
 import { ComponenteSinConexionComponent } from '../../shared/componente-sin-conexion/componente-sin-conexion.component';
 import { OnlineServiceService } from '../../services/online-service.service';
 import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta/codigosDeRespuesta';
@@ -97,5 +97,5 @@ export class ComponenteCategoriasComponent {
     this.categoriaForm.controls['nombreCategoria'].setValue('');
   }
 
-  
+
 }
