@@ -5,6 +5,7 @@ import { Email, ModeloCategorias, ProductosModule, ProductosModuleCocinas, Produ
 import { environment } from '../../environments/environments';
 import { GenericResponse } from '../models/modeloGericoResponseEntity/modeloGenericResponse.module';
 import { API_RESPONSE_MESSAGES } from '../shared/codigosDeRespuesta/codigosDeRespuesta';
+import Swal from 'sweetalert2';
 
 
 
@@ -75,12 +76,17 @@ export class ServicioProductosService {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.post<string>(`${this.baseUrl}/productos/listar`, {}).pipe(
       catchError((error: HttpErrorResponse) => {
-      // Si el servidor está apagado (dynos=0), el status será 0 o 504
-      if (error.status === 0 || error.status === 504) {
-        alert("El backend está pausado. Por favor, avísame para encenderlo.");
-      }
-      return throwError(() => error);
-    })
+        // Si el servidor está apagado (dynos=0), el status será 0 o 504
+        if (error.status === 0 || error.status === 504) {
+          alert("El backend está pausado. Por favor, avísame para encenderlo.");
+
+          Swal.fire({
+            icon: 'warning',
+            title: "El backend está pausado. Por favor, avísame para encenderlo.",
+          });
+        }
+        return throwError(() => error);
+      })
     );;
   }
 
@@ -111,12 +117,15 @@ export class ServicioProductosService {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.post<GenericResponse<string>>(`${this.baseUrl}/productos/eliminar`, producto).pipe(
       catchError((error: HttpErrorResponse) => {
-      // Si el servidor está apagado (dynos=0), el status será 0 o 504
-      if (error.status === 0 || error.status === 504) {
-        alert("El backend está pausado. Por favor, avísame para encenderlo.");
-      }
-      return throwError(() => error);
-    })
+        // Si el servidor está apagado (dynos=0), el status será 0 o 504
+        if (error.status === 0 || error.status === 504) {
+          Swal.fire({
+            title: "El backend está pausado. Por favor, avísame para encenderlo.",
+           icon: 'warning',
+          });
+        }
+        return throwError(() => error);
+      })
     );
   }
 
@@ -126,12 +135,16 @@ export class ServicioProductosService {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.post(`${this.baseUrl}/categoria/listar`, {}).pipe(
       catchError((error: HttpErrorResponse) => {
-      // Si el servidor está apagado (dynos=0), el status será 0 o 504
-      if (error.status === 0 || error.status === 504) {
-        alert("El backend está pausado. Por favor, avísame para encenderlo.");
-      }
-      return throwError(() => error);
-    })
+        // Si el servidor está apagado (dynos=0), el status será 0 o 504
+        if (error.status === 0 || error.status === 504) {
+
+          Swal.fire({
+            title: "El backend está pausado. Por favor, avísame para encenderlo.",
+           icon: 'warning',
+          });
+        }
+        return throwError(() => error);
+      })
     );
   }
 
@@ -146,12 +159,15 @@ export class ServicioProductosService {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.post<GenericResponse<string>>(`${this.baseUrl}/categoria/registro`, categoria).pipe(
       catchError((error: HttpErrorResponse) => {
-      // Si el servidor está apagado (dynos=0), el status será 0 o 504
-      if (error.status === 0 || error.status === 504) {
-        alert("El backend está pausado. Por favor, avísame para encenderlo.");
-      }
-      return throwError(() => error);
-    })
+        // Si el servidor está apagado (dynos=0), el status será 0 o 504
+        if (error.status === 0 || error.status === 504) {
+          Swal.fire({
+            title: "El backend está pausado. Por favor, avísame para encenderlo.",
+            icon: 'warning',
+          });
+        }
+        return throwError(() => error);
+      })
     );
   }
 
@@ -161,39 +177,50 @@ export class ServicioProductosService {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.post<GenericResponse<string>>(`${this.baseUrl}/categoria/editar`, categorias).pipe(
       catchError((error: HttpErrorResponse) => {
-      // Si el servidor está apagado (dynos=0), el status será 0 o 504
-      if (error.status === 0 || error.status === 504) {
-        alert("El backend está pausado. Por favor, avísame para encenderlo.");
-      }
-      return throwError(() => error);
-    })
+        // Si el servidor está apagado (dynos=0), el status será 0 o 504
+        if (error.status === 0 || error.status === 504) {
+          Swal.fire({
+            title: "El backend está pausado. Por favor, avísame para encenderlo.",
+           icon: 'warning',
+
+          });
+        }
+        return throwError(() => error);
+      })
     );
   }
 
-   eliminarCategoria(categoria: ModeloCategorias) {
+  eliminarCategoria(categoria: ModeloCategorias) {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.post<GenericResponse<string>>(`${this.baseUrl}/categoria/eliminar`, categoria).pipe(
       catchError((error: HttpErrorResponse) => {
-      // Si el servidor está apagado (dynos=0), el status será 0 o 504
-      if (error.status === 0 || error.status === 504) {
-        alert("El backend está pausado. Por favor, avísame para encenderlo.");
-      }
-      return throwError(() => error);
-    })
+        // Si el servidor está apagado (dynos=0), el status será 0 o 504
+        if (error.status === 0 || error.status === 504) {
+          Swal.fire({
+            title: "El backend está pausado. Por favor, avísame para encenderlo.",
+           icon: 'warning',
+          });
+        }
+        return throwError(() => error);
+      })
     );
   }
 
-   eliminarVariasCategorias(idCategorias: ModeloCategorias[]) {
+  eliminarVariasCategorias(idCategorias: ModeloCategorias[]) {
 
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.post<GenericResponse<string>>(`${this.baseUrl}/categoria/eliminar/todas`, idCategorias).pipe(
       catchError((error: HttpErrorResponse) => {
-      // Si el servidor está apagado (dynos=0), el status será 0 o 504
-      if (error.status === 0 || error.status === 504) {
-        alert("El backend está pausado. Por favor, avísame para encenderlo.");
-      }
-      return throwError(() => error);
-    })
+        // Si el servidor está apagado (dynos=0), el status será 0 o 504
+        if (error.status === 0 || error.status === 504) {
+          Swal.fire({
+            title: "El backend está pausado. Por favor, avísame para encenderlo.",
+          icon: 'warning',
+
+          });
+        }
+        return throwError(() => error);
+      })
     );
   }
 
@@ -203,17 +230,20 @@ export class ServicioProductosService {
 
     return this.http.post(`${this.baseUrl}/correo/enviar/email`, email).pipe(
       catchError((error: HttpErrorResponse) => {
-      // Si el servidor está apagado (dynos=0), el status será 0 o 504
-      if (error.status === 0 || error.status === 504) {
-        alert("El backend está pausado. Por favor, avísame para encenderlo.");
-      }
-      return throwError(() => error);
-    })
+        // Si el servidor está apagado (dynos=0), el status será 0 o 504
+        if (error.status === 0 || error.status === 504) {
+
+
+          Swal.fire({
+            title: "El backend está pausado. Por favor, avísame para encenderlo.",
+           icon: 'warning',
+          });
+
+        }
+        return throwError(() => error);
+      })
     );
   }
-
-
-
 
 
   private handleError(error: any) {
