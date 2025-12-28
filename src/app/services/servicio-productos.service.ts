@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Email, ModeloCategorias, ProductosModule, ProductosModuleCocinas, ProductosModuleCocinasNuevos } from '../models/productos/productos.module';
 import { environment } from '../../environments/environments';
@@ -74,7 +74,13 @@ export class ServicioProductosService {
   listarProductos(): Observable<any> {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.post<string>(`${this.baseUrl}/productos/listar`, {}).pipe(
-      catchError(this.handleError) // 👈 Manejo centralizado
+      catchError((error: HttpErrorResponse) => {
+      // Si el servidor está apagado (dynos=0), el status será 0 o 504
+      if (error.status === 0 || error.status === 504) {
+        alert("El backend está pausado. Por favor, avísame para encenderlo.");
+      }
+      return throwError(() => error);
+    })
     );;
   }
 
@@ -104,7 +110,13 @@ export class ServicioProductosService {
   eliminarProducto(producto: ProductosModuleCocinasNuevos) {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.post<GenericResponse<string>>(`${this.baseUrl}/productos/eliminar`, producto).pipe(
-      catchError(this.handleError) // 👈 Manejo centralizado
+      catchError((error: HttpErrorResponse) => {
+      // Si el servidor está apagado (dynos=0), el status será 0 o 504
+      if (error.status === 0 || error.status === 504) {
+        alert("El backend está pausado. Por favor, avísame para encenderlo.");
+      }
+      return throwError(() => error);
+    })
     );
   }
 
@@ -113,7 +125,13 @@ export class ServicioProductosService {
   obtenerCategorias(): Observable<any> {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.post(`${this.baseUrl}/categoria/listar`, {}).pipe(
-      catchError(this.handleError) // 👈 Manejo centralizado
+      catchError((error: HttpErrorResponse) => {
+      // Si el servidor está apagado (dynos=0), el status será 0 o 504
+      if (error.status === 0 || error.status === 504) {
+        alert("El backend está pausado. Por favor, avísame para encenderlo.");
+      }
+      return throwError(() => error);
+    })
     );
   }
 
@@ -127,7 +145,13 @@ export class ServicioProductosService {
   crearCategoria(categoria: ModeloCategorias): Observable<GenericResponse<string>> {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.post<GenericResponse<string>>(`${this.baseUrl}/categoria/registro`, categoria).pipe(
-      catchError(this.handleError) // 👈 Manejo centralizado
+      catchError((error: HttpErrorResponse) => {
+      // Si el servidor está apagado (dynos=0), el status será 0 o 504
+      if (error.status === 0 || error.status === 504) {
+        alert("El backend está pausado. Por favor, avísame para encenderlo.");
+      }
+      return throwError(() => error);
+    })
     );
   }
 
@@ -136,14 +160,26 @@ export class ServicioProductosService {
 
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.post<GenericResponse<string>>(`${this.baseUrl}/categoria/editar`, categorias).pipe(
-      catchError(this.handleError) // 👈 Manejo centralizado
+      catchError((error: HttpErrorResponse) => {
+      // Si el servidor está apagado (dynos=0), el status será 0 o 504
+      if (error.status === 0 || error.status === 504) {
+        alert("El backend está pausado. Por favor, avísame para encenderlo.");
+      }
+      return throwError(() => error);
+    })
     );
   }
 
    eliminarCategoria(categoria: ModeloCategorias) {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.post<GenericResponse<string>>(`${this.baseUrl}/categoria/eliminar`, categoria).pipe(
-      catchError(this.handleError) // 👈 Manejo centralizado
+      catchError((error: HttpErrorResponse) => {
+      // Si el servidor está apagado (dynos=0), el status será 0 o 504
+      if (error.status === 0 || error.status === 504) {
+        alert("El backend está pausado. Por favor, avísame para encenderlo.");
+      }
+      return throwError(() => error);
+    })
     );
   }
 
@@ -151,7 +187,13 @@ export class ServicioProductosService {
 
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.post<GenericResponse<string>>(`${this.baseUrl}/categoria/eliminar/todas`, idCategorias).pipe(
-      catchError(this.handleError) // 👈 Manejo centralizado
+      catchError((error: HttpErrorResponse) => {
+      // Si el servidor está apagado (dynos=0), el status será 0 o 504
+      if (error.status === 0 || error.status === 504) {
+        alert("El backend está pausado. Por favor, avísame para encenderlo.");
+      }
+      return throwError(() => error);
+    })
     );
   }
 
@@ -160,7 +202,13 @@ export class ServicioProductosService {
   enviarEmail(email: Email): Observable<any> {
 
     return this.http.post(`${this.baseUrl}/correo/enviar/email`, email).pipe(
-      catchError(this.handleError) // 👈 Manejo centralizado
+      catchError((error: HttpErrorResponse) => {
+      // Si el servidor está apagado (dynos=0), el status será 0 o 504
+      if (error.status === 0 || error.status === 504) {
+        alert("El backend está pausado. Por favor, avísame para encenderlo.");
+      }
+      return throwError(() => error);
+    })
     );
   }
 
@@ -185,6 +233,10 @@ export class ServicioProductosService {
     console.error('Error HTTP detectado:', error);
     return throwError(() => new Error(errorMessage));
   }
+
+
+
+
 
 
 
