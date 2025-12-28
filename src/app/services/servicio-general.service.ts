@@ -6,6 +6,7 @@ import { environment } from '../../environments/environments';
 import { GenericResponse } from '../models/modeloGericoResponseEntity/modeloGenericResponse.module';
 import { API_RESPONSE_MESSAGES } from '../shared/codigosDeRespuesta/codigosDeRespuesta';
 import Swal from 'sweetalert2';
+import { Usuario } from '../models/user/informationUser.module';
 
 
 
