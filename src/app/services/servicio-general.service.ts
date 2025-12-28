@@ -262,14 +262,9 @@ export class ServicioProductosService {
         }
         return throwError(() => error);
       })
-    );;
+    );
 
   }
-
-
-
-
-
 
   private handleError(error: any) {
     let errorMessage = '';
