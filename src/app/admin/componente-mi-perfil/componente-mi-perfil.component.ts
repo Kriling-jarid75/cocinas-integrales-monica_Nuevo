@@ -108,7 +108,14 @@ export class ComponenteMiPerfilComponent {
             name: response.data.nombre_usuarios,
             email: response.data.email_usuarios
           });
-         
+
+        }
+        
+        if (response.code === API_RESPONSE_CODES.NO_CONTENT) {
+          Swal.fire({
+            icon: 'info',
+            title: 'No hay información del usuario',
+          });
         }
       },
       error: () => {

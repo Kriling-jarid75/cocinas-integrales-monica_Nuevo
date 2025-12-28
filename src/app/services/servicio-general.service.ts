@@ -248,9 +248,9 @@ export class ServicioProductosService {
   /* MOSTRAR INFORMACION USUARIO */
 
 
-  mostrarinformacionUser(): Observable<any> {
+  mostrarinformacionUser(): Observable<GenericResponse<Usuario>> {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
-    return this.http.post<string>(`${this.baseUrl}/usuarios/mostrar`, {}).pipe(
+    return this.http.post<GenericResponse<Usuario>>(`${this.baseUrl}/usuarios/mostrar`, {}).pipe(
       catchError((error: HttpErrorResponse) => {
         // Si el servidor está apagado (dynos=0), el status será 0 o 504
         if (error.status === 0 || error.status === 504) {
