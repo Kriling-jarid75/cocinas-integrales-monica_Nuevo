@@ -78,7 +78,6 @@ export class ServicioProductosService {
       catchError((error: HttpErrorResponse) => {
         // Si el servidor está apagado (dynos=0), el status será 0 o 504
         if (error.status === 0 || error.status === 504) {
-          alert("El backend está pausado. Por favor, avísame para encenderlo.");
 
           Swal.fire({
             icon: 'warning',
@@ -103,7 +102,8 @@ export class ServicioProductosService {
       formData.append('imagenes', file); // el nombre "imagenes" debe coincidir con el del backend
     });
 
-    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/productos/registro`, formData);
+    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/productos/registro`, formData)
+    .pipe(catchError(this.handleError));
   }
 
   // Método para crear un producto
