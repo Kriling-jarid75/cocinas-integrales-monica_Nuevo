@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Email, ModeloCategorias, ProductosModule, ProductosModuleCocinas, ProductosModuleCocinasNuevos } from '../models/productos/productos.module';
 import { environment } from '../../environments/environments';
@@ -134,7 +134,7 @@ export class ServicioProductosService {
 
   obtenerCategorias(): Observable<any> {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
-    return this.http.post(`${this.baseUrl}/categoria/listar`, {}).pipe(
+    return this.http.get(`${this.baseUrl}/categoria/listar`, {}).pipe(
       catchError((error: HttpErrorResponse) => {
         // Si el servidor está apagado (dynos=0), el status será 0 o 504
         if (error.status === 0 || error.status === 504) {
@@ -173,10 +173,13 @@ export class ServicioProductosService {
   }
 
   // Método para editar una categoria
-  editarCategoria(categorias: ModeloCategorias): Observable<GenericResponse<string>> {
+  editarCategoria(id_categoria:number,categorias: ModeloCategorias): Observable<GenericResponse<string>> {
 
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
-    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/categoria/editar`, categorias).pipe(
+    // Forzamos explícitamente el Content-Type a JSON
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.put<GenericResponse<string>>(`${this.baseUrl}/categoria/editar/${id_categoria}`,categorias,{ headers }).pipe(
       catchError((error: HttpErrorResponse) => {
         // Si el servidor está apagado (dynos=0), el status será 0 o 504
         if (error.status === 0 || error.status === 504) {
@@ -191,9 +194,9 @@ export class ServicioProductosService {
     );
   }
 
-  eliminarCategoria(categoria: ModeloCategorias) {
+  eliminarCategoria(id_categoria:number) {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
-    return this.http.post<GenericResponse<string>>(`${this.baseUrl}/categoria/eliminar`, categoria).pipe(
+    return this.http.delete<GenericResponse<string>>(`${this.baseUrl}/categoria/eliminar/${id_categoria}`,).pipe(
       catchError((error: HttpErrorResponse) => {
         // Si el servidor está apagado (dynos=0), el status será 0 o 504
         if (error.status === 0 || error.status === 504) {

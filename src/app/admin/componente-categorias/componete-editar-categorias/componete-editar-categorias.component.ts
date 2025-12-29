@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import Swal from 'sweetalert2';
 import { ServicioProductosService } from '../../../services/servicio-general.service';
 import { API_RESPONSE_CODES } from '../../../shared/codigosDeRespuesta/codigosDeRespuesta';
+import { ModeloCategorias } from '../../../models/productos/productos.module';
 
 @Component({
   selector: 'app-componete-editar-categorias',
@@ -48,12 +49,12 @@ export class ComponeteEditarCategoriasComponent {
 
   editarCategoria() {
     if (this.categoriaForm.valid) {
-      const dataNueva = {
+      const dataNueva: ModeloCategorias = {
         idCategoria: this.data.categoria.idCategoria,
         nombreCategoria : this.categoriaForm.value.nombreCategoria,
       }
       // Llamada al servicio
-      this.service.editarCategoria(dataNueva).subscribe({
+      this.service.editarCategoria(dataNueva.idCategoria, dataNueva).subscribe({
         next: (data) => {
           if (data.code === API_RESPONSE_CODES.SUCCESS) {
             Swal.fire({

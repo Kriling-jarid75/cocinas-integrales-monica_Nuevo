@@ -170,7 +170,7 @@ export class ComponenteTablaCategoriasComponent {
 
   borrado(categoria: ModeloCategorias) {
     this.isLoading = true;
-    this.service.eliminarCategoria(categoria).subscribe({
+    this.service.eliminarCategoria(categoria.idCategoria).subscribe({
       next: (data) => {
         if (data.code === API_RESPONSE_CODES.SUCCESS) {
           Swal.fire({
