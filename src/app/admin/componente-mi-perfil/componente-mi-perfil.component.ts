@@ -110,7 +110,7 @@ export class ComponenteMiPerfilComponent {
           });
 
         }
-        
+
         if (response.code === API_RESPONSE_CODES.NO_CONTENT) {
           Swal.fire({
             icon: 'info',
