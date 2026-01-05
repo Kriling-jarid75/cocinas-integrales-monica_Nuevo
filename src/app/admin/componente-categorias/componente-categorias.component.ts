@@ -85,7 +85,7 @@ export class ComponenteCategoriasComponent {
         }
       });
 
-      console.log('Categoria registrada:', nombreCategoria);
+     /*  console.log('Categoria registrada:', nombreCategoria); */
 
     } else {
 

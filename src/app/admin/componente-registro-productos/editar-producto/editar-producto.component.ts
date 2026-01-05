@@ -57,7 +57,7 @@ export class EditarProductoComponent {
 
 
   ngOnInit() {
-    console.log("Mostramos los productos " + JSON.stringify(this.producto));
+  
     this.productoForm = this.fb.group({
       nombre: [this.producto?.nombre || '', Validators.required],
       descripcion: [this.producto?.descripcion || '', Validators.required],

@@ -83,7 +83,7 @@ export class ComponenteDashboardComponent {
           setTimeout(() => {
             this.productos = response.data;
 
-            console.log("Mostramos todos los registros " + JSON.stringify(this.productos));
+           
 
             // MatTableDataSource
             this.dataSource = new MatTableDataSource(this.productos);

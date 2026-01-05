@@ -102,7 +102,7 @@ export class ComponenteTablaCategoriasComponent {
         if (response.code === API_RESPONSE_CODES.SUCCESS) {
           setTimeout(() => {
             this.showRecords(response.data);
-            console.log("Mostramos la data " + JSON.stringify(response.data));
+
 
             this.isLoading = false;
           }, 1200);
@@ -248,7 +248,7 @@ export class ComponenteTablaCategoriasComponent {
     //const idsSeleccionados = categoriasSeleccionadas.map(c => c.idCategoria);
 
 
-    console.log("Eliminando categorías:", categoriasSeleccionadas);
+
     // Aquí puedes añadir tu lógica de Swal y llamada al servicio para la eliminación masiva.
     // Por ejemplo:
     this.service.eliminarVariasCategorias(categoriasSeleccionadas).subscribe({
@@ -288,14 +288,4 @@ export class ComponenteTablaCategoriasComponent {
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.idCategoria}`;
   }
-
-  // Puedes usar this.selection.selected para ver los elementos elegidos.
-  obtenerSeleccionados() {
-    console.log(this.selection.selected);
-  }
-
-
-  /*  */
-
-
 }

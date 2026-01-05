@@ -114,7 +114,7 @@ export class VisualizacionProductosClienteComponent {
       next: (response) => {
         this.productos = response.data || [];
 
-        console.log("mostramos el valor " + JSON.stringify(this.productos))
+       
         this.updatePage();
         this.isLoading = false;
         if (this.productos.length === 0) {
