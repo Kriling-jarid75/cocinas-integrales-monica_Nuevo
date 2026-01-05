@@ -13,6 +13,9 @@ import { OnlineServiceService } from '../../services/online-service.service';
 import { ComponenteSinConexionComponent } from '../../shared/componente-sin-conexion/componente-sin-conexion.component';
 import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta/codigosDeRespuesta';
 
+import imageCompression from 'browser-image-compression';
+
+
 @Component({
   selector: 'app-componente-registro-productos',
   standalone: true,
@@ -87,57 +90,51 @@ export class ComponenteRegistroProductosComponent {
     });
   }
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (!input.files) return;
+ async onFileSelected(event: Event): Promise<void> {
+  const input = event.target as HTMLInputElement;
+  if (!input.files || input.files.length === 0) return;
 
-    this.selectedImages = [];
-    this.imageFiles = [];
+  // 1. Configuración de compresión para Cloudinary
+  const opciones = {
+    maxSizeMB: 1,           // Cloudinary acepta hasta 10MB, pero 1MB es ideal para móviles
+    maxWidthOrHeight: 1920, // Resolución Full HD
+    useWebWorker: true,     // Evita que la app se trabe durante el proceso
+    initialQuality: 0.8     // Buena relación calidad/peso
+  };
 
-    const tamañoMaximoMB = 2; // 🔹 máximo 2MB por imagen
-    const tamañoMaximoBytes = tamañoMaximoMB * 1024 * 1024;
+  this.selectedImages = [];
+  this.imageFiles = [];
+  const archivos = Array.from(input.files);
 
-    const archivos = Array.from(input.files);
-    let archivosInvalidos: string[] = [];
+  for (let file of archivos) {
+    try {
+      // 2. Comprimir la imagen antes de procesarla
+      // Esto convierte fotos de 10MB en archivos de ~800KB automáticamente
+      const archivoComprimido = await imageCompression(file, opciones);
 
-    for (let file of archivos) {
-      if (file.size > tamañoMaximoBytes) {
-        archivosInvalidos.push(file.name);
-        continue; // ❌ No procesamos esta imagen
-      }
+      // 3. Guardar el archivo comprimido (tipo File) para el envío al servidor
+      this.imageFiles.push(archivoComprimido);
 
-      // ✅ Si pasa la validación, la guardamos
-      this.imageFiles.push(file);
-
+      // 4. Generar la previsualización para el usuario
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.selectedImages.push(e.target.result);
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(archivoComprimido);
+
+    } catch (error) {
+      console.error("Error al comprimir la imagen:", error);
+      // Opcional: mostrar una alerta si algo falla
     }
-
-    // ✅ Mostrar alerta si hubo imágenes demasiado grandes
-    if (archivosInvalidos.length > 0) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Imágenes demasiado grandes',
-        html: `
-        Las siguientes imágenes superan el tamaño máximo permitido (${tamañoMaximoMB} MB):<br>
-        <ul style="text-align:left; margin-top:10px;">
-          ${archivosInvalidos.map(n => `<li>${n}</li>`).join('')}
-        </ul>
-      `,
-        confirmButtonColor: '#d33'
-      });
-    }
-
-    // ✅ Actualiza el control del formulario
-    this.productoForm.patchValue({ imagenes: this.imageFiles });
-    this.productoForm.get('imagenes')?.updateValueAndValidity();
-
-    // 🔹 Limpia el input para permitir volver a subir las mismas si el usuario quiere
-    input.value = '';
   }
+
+  // Actualizar el formulario con los archivos ya comprimidos
+  this.productoForm.patchValue({ imagenes: this.imageFiles });
+  this.productoForm.get('imagenes')?.updateValueAndValidity();
+
+  input.value = ''; // Limpiar input
+}
+
 
   removeImage(index: number): void {
     this.selectedImages.splice(index, 1);

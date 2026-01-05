@@ -23,6 +23,7 @@
     "@angular/service-worker": "^18.2.0",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
+    "browser-image-compression": "^2.0.2",
     "mapbox-gl": "^3.17.0",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.23.0",
