@@ -173,13 +173,13 @@ export class ServicioProductosService {
   }
 
   // Método para editar una categoria
-  editarCategoria(id_categoria:number,categorias: ModeloCategorias): Observable<GenericResponse<string>> {
+  editarCategoria(id_categoria: number, categorias: ModeloCategorias): Observable<GenericResponse<string>> {
 
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     // Forzamos explícitamente el Content-Type a JSON
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    return this.http.put<GenericResponse<string>>(`${this.baseUrl}/categoria/editar/${id_categoria}`,categorias,{ headers }).pipe(
+    return this.http.put<GenericResponse<string>>(`${this.baseUrl}/categoria/editar/${id_categoria}`, categorias, { headers }).pipe(
       catchError((error: HttpErrorResponse) => {
         // Si el servidor está apagado (dynos=0), el status será 0 o 504
         if (error.status === 0 || error.status === 504) {
@@ -194,7 +194,7 @@ export class ServicioProductosService {
     );
   }
 
-  eliminarCategoria(id_categoria:number) {
+  eliminarCategoria(id_categoria: number) {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
     return this.http.delete<GenericResponse<string>>(`${this.baseUrl}/categoria/eliminar/${id_categoria}`,).pipe(
       catchError((error: HttpErrorResponse) => {
@@ -252,9 +252,27 @@ export class ServicioProductosService {
   /* MOSTRAR INFORMACION USUARIO */
 
 
-  mostrarinformacionUser(): Observable<GenericResponse<Usuario>> {
+  mostrarinformacionUser(nombre_user: any): Observable<GenericResponse<Usuario>> {
     // Aquí ya no es necesario volver a mapear las propiedades si coinciden
-    return this.http.post<GenericResponse<Usuario>>(`${this.baseUrl}/usuarios/mostrar`, {}).pipe(
+    return this.http.post<GenericResponse<Usuario>>(`${this.baseUrl}/usuarios/mostrar/${nombre_user}`, {}).pipe(
+      catchError((error: HttpErrorResponse) => {
+        // Si el servidor está apagado (dynos=0), el status será 0 o 504
+        if (error.status === 0 || error.status === 504) {
+
+          Swal.fire({
+            icon: 'warning',
+            title: "El backend está pausado. Por favor, avísame para encenderlo.",
+          });
+        }
+        return throwError(() => error);
+      })
+    );
+
+  }
+
+  actualizarInformacionUser(datosUser: any): Observable<GenericResponse<any>> {
+    // Aquí ya no es necesario volver a mapear las propiedades si coinciden
+    return this.http.put<GenericResponse<any>>(`${this.baseUrl}/usuarios/actualizar/informacion`, datosUser).pipe(
       catchError((error: HttpErrorResponse) => {
         // Si el servidor está apagado (dynos=0), el status será 0 o 504
         if (error.status === 0 || error.status === 504) {

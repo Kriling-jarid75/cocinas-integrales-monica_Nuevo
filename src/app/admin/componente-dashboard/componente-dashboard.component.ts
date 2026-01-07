@@ -82,9 +82,6 @@ export class ComponenteDashboardComponent {
         if (response.code === API_RESPONSE_CODES.SUCCESS) {
           setTimeout(() => {
             this.productos = response.data;
-
-           
-
             // MatTableDataSource
             this.dataSource = new MatTableDataSource(this.productos);
 

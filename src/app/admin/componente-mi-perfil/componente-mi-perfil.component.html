@@ -61,6 +61,9 @@
             <mat-error *ngIf="accountForm.get('email')?.hasError('required')">
               El email es obligatorio
             </mat-error>
+             <mat-error *ngIf="accountForm.get('email')?.hasError('formatoInvalido')">
+            Ingresa un correo válido.
+          </mat-error>
           </mat-form-field>
 
 

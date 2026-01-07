@@ -7,6 +7,8 @@ import { LoginRequest } from '../models/login-request/login-request.module';
 import Swal from 'sweetalert2';
 import { environment } from '../../environments/environments';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,6 +20,7 @@ export class InicioSesionService {
   private expiryKey = 'token_expiry';
   private nombreKey = 'nombre';
   private rolKey = 'rol_usuario'; // 👈 nueva clave para el rol
+
 
   constructor(private router: Router) { }
 
@@ -31,7 +34,6 @@ export class InicioSesionService {
           localStorage.setItem(this.tokenKey, response.data.token);
           localStorage.setItem(this.nombreKey, response.data.administrador);
           localStorage.setItem(this.expiryKey, expiry.toISOString());
-
           // 👇 Asignamos el rol: como es login exitoso, es ADMIN
           localStorage.setItem(this.rolKey, 'ADMIN');
         }
@@ -39,12 +41,15 @@ export class InicioSesionService {
     );
   }
 
+
+
   /** Cierre de sesión manual o automático */
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.expiryKey);
     localStorage.removeItem(this.nombreKey);
     localStorage.removeItem(this.rolKey); // 👈 limpiar el rol
+
   }
 
   /** Verifica si hay sesión activa */
@@ -90,6 +95,10 @@ export class InicioSesionService {
 
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
+  }
+
+   getNombreAdmin(): string | null {
+    return localStorage.getItem(this.nombreKey);
   }
 
 }

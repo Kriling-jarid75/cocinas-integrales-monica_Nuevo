@@ -1,17 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 
-interface Reel {
-  id: number;
-  usuario: string;
-  descripcion: string;
-  video: string;
-  likes: string;
-  comentarios: number;
-  compartidos: number;
-}
-
-
 
 
 @Component({

@@ -11,6 +11,8 @@ import { ServicioProductosService } from '../../services/servicio-general.servic
 import { OnlineServiceService } from '../../services/online-service.service';
 import Swal from 'sweetalert2';
 import { API_RESPONSE_CODES } from '../../shared/codigosDeRespuesta/codigosDeRespuesta';
+import { InicioSesionService } from '../../services/inicio-sesion.service';
+import { Usuario } from '../../models/user/informationUser.module';
 
 @Component({
   selector: 'app-componente-mi-perfil',
@@ -29,6 +31,7 @@ export class ComponenteMiPerfilComponent {
   selectedFile!: File;
   online = true;
   isLoading = true;
+  data!: Usuario;
 
 
 
@@ -36,13 +39,15 @@ export class ComponenteMiPerfilComponent {
   constructor(private fb: FormBuilder,
     private service: ServicioProductosService,
     private serviceSinConexion: OnlineServiceService,
+    private incioSesion: InicioSesionService
 
   ) { }
 
   ngOnInit(): void {
+
     this.accountForm = this.fb.group({
       name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, this.validarCorreo.bind(this)]],
       password: ['', Validators.minLength(6)],
       photo: [null]
     });
@@ -71,42 +76,23 @@ export class ComponenteMiPerfilComponent {
   }
 
 
-  saveChanges() {
-    if (this.accountForm.invalid) {
-      this.accountForm.markAllAsTouched();
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('name', this.accountForm.get('name')?.value);
-    formData.append('email', this.accountForm.get('email')?.value);
-    formData.append('password', this.accountForm.get('password')?.value || '');
-
-    if (this.accountForm.get('photo')?.value) {
-      formData.append('photo', this.accountForm.get('photo')?.value);
-    }
-
-    console.log('Datos enviados:', formData);
-
-    // 🔥 Aquí llamas a tu backend
-    // this.userService.updateProfile(formData).subscribe(...)
-  }
-
-
-
   cargarInformacionUser() {
     this.isLoading = true;
-    this.service.mostrarinformacionUser().subscribe({
+
+    const nombre_user = this.incioSesion.getNombreAdmin();
+    this.service.mostrarinformacionUser(nombre_user).subscribe({
       next: (response) => {
         if (response.code === API_RESPONSE_CODES.SUCCESS) {
+
+          this.data = response.data as Usuario;
 
           console.log("Mostramos la data " + JSON.stringify(response.data));
 
 
           // 🔹 Simulación de datos del usuario (backend)
           this.accountForm.patchValue({
-            name: response.data.nombre_usuarios,
-            email: response.data.email_usuarios
+            name: this.data.nombre_usuarios,
+            email: this.data.email_usuarios
           });
 
         }
@@ -126,6 +112,84 @@ export class ComponenteMiPerfilComponent {
         });
       }
     });
+  }
+
+
+  saveChanges() {
+    if (this.accountForm.invalid) {
+      this.accountForm.markAllAsTouched();
+      return;
+    }
+
+    /*  const formData = new FormData();
+     formData.append('name', this.accountForm.get('name')?.value);
+     formData.append('email', this.accountForm.get('email')?.value);
+     formData.append('password', this.accountForm.get('password')?.value || ''); */
+
+    /*  if (this.accountForm.get('photo')?.value) {
+       formData.append('photo', this.accountForm.get('photo')?.value);
+     } */
+
+    const datos: Usuario = {
+      id_usuarios: this.data.id_usuarios, // El ID que guardamos en el login
+      nombre_usuarios: this.accountForm.get('name')?.value,
+      email_usuarios: this.accountForm.get('email')?.value,
+      password_usuarios: this.accountForm.get('password')?.value || null // Si está vacío, envía null
+    };
+
+    console.log('Datos enviados:', datos);
+
+    // 🔥 Aquí llamas a tu backend
+    this.service.actualizarInformacionUser(datos).subscribe({
+      next: (response) => {
+        if (response.code === API_RESPONSE_CODES.SUCCESS) {
+          console.log("Mostramos la data " + JSON.stringify(response.data));
+
+          // 🔹 Simulación de datos del usuario (backend)
+          this.accountForm.patchValue({
+            name: response.data.nombre_usuarios,
+            email: response.data.email_usuarios
+          });
+
+          Swal.fire({
+            icon: 'success',
+            title: `Se actualizó correctamente la
+            información del usuario: ${this.data.nombre_usuarios}`,
+          });
+
+        }
+
+        if (response.code === API_RESPONSE_CODES.NO_CONTENT) {
+          Swal.fire({
+            icon: 'info',
+            title: 'No hay información del usuario',
+          });
+        }
+      },
+      error: () => {
+        this.isLoading = false;
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en la conexión con el servidor',
+        });
+      }
+    });
+  }
+
+
+  validarCorreo(control: any) {
+    const valor = control.value;
+
+    // Si está vacío, no marcamos error de formato (el error 'required' se encarga en otro validador)
+    if (!valor) return null;
+
+    // Regex estándar moderna para correos electrónicos
+    const regexCorreo = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+    const esValido = regexCorreo.test(valor);
+
+    // Si es válido retornamos null, si no, retornamos el objeto de error
+    return esValido ? null : { formatoInvalido: true };
   }
 
 
