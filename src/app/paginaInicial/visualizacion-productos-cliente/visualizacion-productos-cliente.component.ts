@@ -64,44 +64,73 @@ export class VisualizacionProductosClienteComponent {
           this.productos = [];
           this.isLoading = false;
 
-         /*  Swal.fire({
-            icon: 'warning',
-            title: 'No se encontraron productos',
-            text: response.message || 'La lista está vacía.'
-          }); */
+          /*  Swal.fire({
+             icon: 'warning',
+             title: 'No se encontraron productos',
+             text: response.message || 'La lista está vacía.'
+           }); */
         }
       },
 
-      error: (err) => {
+        error: (err) => {
+          this.isLoading = false;
+
+          // 👉 Detectar si el backend está apagado
+          if (err.status === 0) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Sin conexión con el servidor',
+              text: `No fue posible conectarse al servidor. Verifica que esté activo.`
+            });
+            return;
+          }
+
+          // 👉 Error interno del servidor
+          if (err.status === API_RESPONSE_MESSAGES[500]) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error interno del servidor (500)',
+              text: 'Ocurrió un problema en el backend.'
+            });
+            return;
+          }
+
+          // 👉 Otros tipos de errores (400, 404, etc.)
+          Swal.fire({
+            icon: 'error',
+            title: 'Error inesperado',
+            text: err.message || 'Ocurrió un error no identificado.'
+          });
+        }
+
+     /*  error: (err) => {
         this.isLoading = false;
 
-        // 👉 Detectar si el backend está apagado
         if (err.status === 0) {
           Swal.fire({
             icon: 'error',
-            title: 'Sin conexión con el servidor',
-            text: 'No fue posible conectarse al servidor. Verifica que esté activo.'
+            title: 'Servidor fuera de línea',
+            text: 'Estamos intentando reconectar automáticamente...',
+            showConfirmButton: false, // Quitamos botones para que sea un modal de espera
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+              // Creamos un intervalo que verifique el backend cada 5 segundos
+              const checkInterval = setInterval(() => {
+                this.service.listarProductos().subscribe({
+                  next: (res) => {
+                    if (res) {
+                      clearInterval(checkInterval); // Detenemos el sondeo
+                      Swal.close(); // Cerramos la alerta
+                      this.cargarTodosLosProductos(); // Volvemos a cargar
+                    }
+                  }
+                });
+              }, 5000);
+            }
           });
-          return;
         }
-
-        // 👉 Error interno del servidor
-        if (err.status === API_RESPONSE_MESSAGES[500]) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error interno del servidor (500)',
-            text: 'Ocurrió un problema en el backend.'
-          });
-          return;
-        }
-
-        // 👉 Otros tipos de errores (400, 404, etc.)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error inesperado',
-          text: err.message || 'Ocurrió un error no identificado.'
-        });
-      }
+      } */
     });
   }
 
@@ -114,7 +143,7 @@ export class VisualizacionProductosClienteComponent {
       next: (response) => {
         this.productos = response.data || [];
 
-       
+
         this.updatePage();
         this.isLoading = false;
         if (this.productos.length === 0) {

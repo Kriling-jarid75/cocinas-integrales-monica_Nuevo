@@ -48,8 +48,8 @@ export class ComponenteDireccionesComponent {
     {
       id: 'ORD-001',
       cliente: 'Juan Pérez',
-      direccion: 'Palacio de Bellas Artes, CDMX',
-      coordenadas: { lat: 19.4352, lng: -99.1412 },
+      direccion: 'Manzana 1 Lote 58, Prados de San Francisco, 55796 Col. los Aguiluchos, Méx.',
+      coordenadas: { lat: 19.7251751, lng: -99.0926243},
       estado: 'Pendiente'
     },
     {
